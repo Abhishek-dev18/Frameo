@@ -6,7 +6,7 @@ import React from "react";
 import {AbsoluteFill, Audio, getInputProps, interpolate, interpolateColors, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
 import {CHANNEL} from "./channel";
 
-// Values Frameo passes in for each episode (falls back to the built-in Episode 1).
+// Values PixelScript passes in for each episode (falls back to the built-in Episode 1).
 const INPUT = getInputProps() as {channelName?: string; handle?: string; episodeTitle?: string; episodeNumber?: number; seriesName?: string};
 const EP = {
   channel: INPUT.channelName || CHANNEL.name,

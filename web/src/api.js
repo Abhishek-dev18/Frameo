@@ -133,7 +133,7 @@ export const go = (to) => {
 // Plans, in order. Free makes single videos (watermarked, you upload them);
 // pipelines (scheduled auto-posting) start on Starter.
 export const PLANS = [
-  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "30 credits once", points: ["Make videos one at a time", "Download and upload them yourself", "\"Made with Frameo\" watermark", "Every style"]},
+  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "30 credits once", points: ["Make videos one at a time", "Download and upload them yourself", "\"Made with PixelScript\" watermark", "Every style"]},
   {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "30 credits a month", points: ["1 auto-posting pipeline", "Schedule to Instagram + YouTube", "No watermark", "Telegram alerts"]},
   {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "70 credits a month", points: ["5 pipelines", "60-second episodes", "No watermark", "Everything in Starter"], featured: true},
   {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "200 credits a month", points: ["Unlimited pipelines", "Priority rendering", "No watermark", "Everything in Creator"]},

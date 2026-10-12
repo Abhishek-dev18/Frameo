@@ -92,7 +92,7 @@ export default function Pipeline({id, state, toast, refresh}) {
             <span className="mono dim">{queue.length}</span>
           </div>
           {queue.length === 0 ? (
-            <Empty title={p.status === "active" ? "Preparing episodes" : "Paused"}>{p.status === "active" ? "Frameo prepares the next 3 episodes ahead. They'll appear here within a minute." : "Resume the pipeline to start preparing episodes."}</Empty>
+            <Empty title={p.status === "active" ? "Preparing episodes" : "Paused"}>{p.status === "active" ? "PixelScript prepares the next 3 episodes ahead. They'll appear here within a minute." : "Resume the pipeline to start preparing episodes."}</Empty>
           ) : (
             <div className="queue">
               {queue.map((e) => (

@@ -69,12 +69,12 @@ function Conn({title, code, step, sub, live, children}) {
 }
 
 function StorageCard({c, refresh, toast}) {
-  const [f, setF] = useState({accountId: "", accessKeyId: "", secretAccessKey: "", bucket: c.bucket || "frameo-videos", publicUrl: c.publicUrl || ""});
+  const [f, setF] = useState({accountId: "", accessKeyId: "", secretAccessKey: "", bucket: c.bucket || "pixelscript-videos", publicUrl: c.publicUrl || ""});
   const [busy, run] = useBusy(toast, refresh);
   const set = (k) => (e) => setF((x) => ({...x, [k]: e.target.value}));
   return (
     <Conn title="Video hosting" code="R2" step="1" sub={c.configured ? `Cloudflare R2 · ${c.bucket}` : "Where videos are uploaded so Instagram can fetch them"} live={c.configured}>
-      <p className="help">Instagram downloads each video from a public link, so Frameo uploads the MP4 to a Cloudflare R2 bucket first. The free tier covers this. Setup steps are in README section 3.</p>
+      <p className="help">Instagram downloads each video from a public link, so PixelScript uploads the MP4 to a Cloudflare R2 bucket first. The free tier covers this. Setup steps are in README section 3.</p>
       <div className="grid2">
         <Field label="Account ID"><input value={f.accountId} onChange={set("accountId")} placeholder={c.configured ? "Saved · leave blank to keep" : ""} /></Field>
         <Field label="Bucket name"><input value={f.bucket} onChange={set("bucket")} /></Field>
@@ -108,7 +108,7 @@ function InstagramCard({c, storage, refresh, toast}) {
         Needs an Instagram professional account and a Meta app using the Instagram API with Instagram Login. Generate an access token in the app dashboard and paste it here (README section 4).
         {!storage.configured ? <b> Video hosting must be set up too.</b> : null}
       </p>
-      <Field label="Access token" hint="Long-lived tokens last about 60 days. Frameo refreshes it every Sunday while it's running.">
+      <Field label="Access token" hint="Long-lived tokens last about 60 days. PixelScript refreshes it every Sunday while it's running.">
         <input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder={c.configured ? "Saved · paste a new one to replace it" : "IGAA…"} />
       </Field>
       <div className="panel-foot">
@@ -186,8 +186,8 @@ function KeysCard({c, refresh, toast}) {
   return (
     <Conn title="AI writer and Telegram alerts" code="AI" step="4" sub={c.writer.configured ? "Gemini key saved" : "Without a key, scripts are simple placeholders"} live={c.writer.configured}>
       <p className="help">
-        <b>Gemini API key</b> lets Frameo write a real script for each topic. Get one free at Google AI Studio (aistudio.google.com).{" "}
-        <b>Telegram bot token</b> lets Frameo message you when something needs review: create a bot with @BotFather, paste its token here, then add your chat ID under Settings → Notifications.
+        <b>Gemini API key</b> lets PixelScript write a real script for each topic. Get one free at Google AI Studio (aistudio.google.com).{" "}
+        <b>Telegram bot token</b> lets PixelScript message you when something needs review: create a bot with @BotFather, paste its token here, then add your chat ID under Settings → Notifications.
       </p>
       <div className="grid2">
         <Field label="Gemini API key" hint={c.writer.configured ? "Saved. Paste a new one to replace it." : ""}>

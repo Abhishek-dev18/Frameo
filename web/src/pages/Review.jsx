@@ -115,7 +115,7 @@ export default function Review({id, toast, refresh, state}) {
             {single
               ? canPipeline(state)
                 ? "When you post it, mark it as AI-generated (Instagram: \"AI info\", YouTube: \"Altered or synthetic content\")."
-                : "Free plan videos carry a small \"Made with Frameo\" mark. Starter and up remove it."
+                : "Free plan videos carry a small \"Made with PixelScript\" mark. Starter and up remove it."
               : "Labelled \"Made with AI\" when posted."}
           </p>
         </div>
@@ -142,7 +142,7 @@ export default function Review({id, toast, refresh, state}) {
           ) : null}
 
           {s === "writing" ? (
-            <div className="panel"><b>Frameo is writing this script.</b><span className="dim small">It usually takes under a minute. You'll be notified when it's ready.</span></div>
+            <div className="panel"><b>PixelScript is writing this script.</b><span className="dim small">It usually takes under a minute. You'll be notified when it's ready.</span></div>
           ) : (
             <div className="panel">
               <div className="rv-tabs mono">{captionOnly ? (single ? "POST TEXT · COPY IT WHEN YOU UPLOAD" : "POST TEXT") : "SCRIPT"}</div>

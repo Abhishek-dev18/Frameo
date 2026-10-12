@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 import {db, id, now, event} from "./db.mjs";
 import {log} from "../scripts/lib/env.mjs";
 
-const COOKIE = "frameo_sid";
+const COOKIE = "pixelscript_sid";
 const SESSION_DAYS = 30;
 export const FREE_CREDITS = 30;
 

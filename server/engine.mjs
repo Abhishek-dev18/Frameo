@@ -49,7 +49,7 @@ export async function notify(userId, text, {tone = "info", link = null} = {}) {
     fetch(`https://api.telegram.org/bot${bot}/sendMessage`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({chat_id: chat, text: `Frameo: ${text}`}),
+      body: JSON.stringify({chat_id: chat, text: `PixelScript: ${text}`}),
     }).catch((e) => log(`Telegram send failed: ${e.message}`));
   }
 }

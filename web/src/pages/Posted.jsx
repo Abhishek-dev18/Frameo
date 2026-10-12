@@ -11,7 +11,7 @@ export default function Posted({toast}) {
   return (
     <div>
       <h1 className="title-l">Posted</h1>
-      <p className="lede">Everything Frameo has published for you. View counts arrive once Instagram and YouTube insights are connected.</p>
+      <p className="lede">Everything PixelScript has published for you. View counts arrive once Instagram and YouTube insights are connected.</p>
       {eps.length === 0 ? (
         <Empty title="Nothing posted yet">Approved episodes show up here once they're live, with links to each post.</Empty>
       ) : (

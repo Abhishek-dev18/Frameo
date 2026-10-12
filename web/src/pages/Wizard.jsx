@@ -71,7 +71,7 @@ export default function Wizard({state, route, toast, refresh}) {
         missedPolicy: f.missedPolicy,
         channels: f.channels,
       });
-      toast("Pipeline saved. Frameo is writing the first scripts now.", "good");
+      toast("Pipeline saved. PixelScript is writing the first scripts now.", "good");
       refresh();
       go(`pipelines/${p.id}`);
     } catch (e) {
@@ -173,7 +173,7 @@ export default function Wizard({state, route, toast, refresh}) {
                 </button>
                 <button type="button" role="radio" aria-checked={f.reviewMode === "auto"} className={f.reviewMode === "auto" ? "on" : ""} onClick={() => setF({...f, reviewMode: "auto"})}>
                   <b>Fully automatic</b>
-                  <span className="dim small">Frameo writes, makes and posts without asking. You can still check everything afterwards.</span>
+                  <span className="dim small">PixelScript writes, makes and posts without asking. You can still check everything afterwards.</span>
                 </button>
               </div>
             </div>

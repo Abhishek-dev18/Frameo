@@ -34,8 +34,8 @@ export default function Create({state, route, toast, refresh}) {
         <a className="linkbtn" href="#/videos">← Videos</a>
         <h1 className="title-l">Make a video</h1>
         <p className="lede">
-          Pick a style and tell Frameo what the video is about. You'll check the script, then download the finished MP4 and post it yourself.
-          {free ? " Free videos carry a small \"Made with Frameo\" mark." : ""}
+          Pick a style and tell PixelScript what the video is about. You'll check the script, then download the finished MP4 and post it yourself.
+          {free ? " Free videos carry a small \"Made with PixelScript\" mark." : ""}
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export default function Create({state, route, toast, refresh}) {
           <div className="upsell">
             <div>
               <b>Want it to post by itself?</b>
-              <span className="dim small">Starter adds pipelines: give Frameo a list of topics and a schedule, and it makes and posts every episode to Instagram and YouTube, without the watermark.</span>
+              <span className="dim small">Starter adds pipelines: give PixelScript a list of topics and a schedule, and it makes and posts every episode to Instagram and YouTube, without the watermark.</span>
             </div>
             <a className="btn small" href="#/settings/plan">See plans</a>
           </div>

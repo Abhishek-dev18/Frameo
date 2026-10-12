@@ -1,4 +1,4 @@
-# Frameo roadmap: from "works on my laptop" to a public SaaS
+# PixelScript roadmap: from "works on my laptop" to a public SaaS
 
 This file lists everything that is **built as a placeholder or stub today** and what it needs to become real. Read it top to bottom: section 1 blocks launch, the rest can follow.
 
@@ -10,7 +10,7 @@ Legend: **[blocker]** must be done before strangers can use it · **[launch]** n
 
 - [ ] **[blocker] Employer side-project approval.** Check your employment contract and company side-project / outside-work policy (Ericsson) and get written approval before launching a paid product.
 - [ ] **[blocker] Business entity + bank account.** Needed for Meta business verification, Razorpay, GST and invoices. Sole proprietorship with Udyam registration is the cheapest start; a Private Limited / LLP later.
-- [ ] **[blocker] Domain + email.** e.g. `frameo.app` / `getframeo.com`. Set up `support@`, `privacy@`, `grievance@` mailboxes (Zoho Mail free tier or Google Workspace).
+- [ ] **[blocker] Domain + email.** e.g. `pixelscript.app` / `getpixelscript.com`. Set up `support@`, `privacy@`, `grievance@` mailboxes (Zoho Mail free tier or Google Workspace).
 
 ---
 
@@ -26,7 +26,7 @@ To let any user connect their own Instagram:
   - Needs: a screencast of the full flow (login → connect Instagram → schedule → video posted), a test account for reviewers, a clear description of why each permission is used.
 - [ ] Public **Privacy Policy URL**, **Terms URL** and **Data Deletion** callback URL or instructions page. Drafts exist at `#/legal/privacy`, `#/legal/terms`, `#/legal/data`; they need real details and a lawyer's review (section 6).
 - [ ] Switch app to **Live** mode.
-- [ ] Respect limits: 100 API-published posts per account per 24h, Reels 3s–15min (90s recommended), 9:16, H.264/AAC, < 300 MB (Frameo renders fit this).
+- [ ] Respect limits: 100 API-published posts per account per 24h, Reels 3s–15min (90s recommended), 9:16, H.264/AAC, < 300 MB (PixelScript renders fit this).
 - Expect 2–6 weeks including rejections. Typical rejection reasons: screencast doesn't show the permission being used end-to-end, privacy policy missing data-deletion info.
 
 ### Google / YouTube  **[blocker]**
@@ -53,7 +53,7 @@ Today: one YouTube channel connected through a **Desktop OAuth client** with a l
 Today: plans and prices are shown (Free / Starter ₹499 / Creator ₹999 / Pro ₹2,499), "Upgrade" buttons are disabled, credits and plans are only changed by the admin (Admin page).
 
 Plan rules already enforced in code (`server/templates.mjs` → `PLANS`):
-- **Free**: 30 credits once; single videos only, one at a time; "Made with Frameo" watermark; user downloads the MP4 and uploads it by hand. No pipelines, no auto-posting.
+- **Free**: 30 credits once; single videos only, one at a time; "Made with PixelScript" watermark; user downloads the MP4 and uploads it by hand. No pipelines, no auto-posting.
 - **Starter**: 1 live pipeline, auto-posting, no watermark. **Creator**: 5 pipelines. **Pro**: unlimited.
 - Downgrading to Free stops that user's pipelines (nothing renders or posts until they upgrade).
 
@@ -79,7 +79,7 @@ Today: everything runs on one laptop, listening on 127.0.0.1 only. Data is a JSO
   - a VPS with 4–8 vCPU (Hetzner/DigitalOcean, ~₹1,500–4,000/month) running 1–2 concurrent renders, or
   - **Remotion Lambda** on AWS (pay per render, scales automatically; ~₹1–3 per 30s video).
 - [ ] **Remotion licence.** Remotion is free for individuals and companies up to 3 people; a **Company License** is required once the company has 4+ people. A SaaS that renders for customers should also check the "Automators" pricing on remotion.pro.
-- [ ] **Storage: Frameo-owned Cloudflare R2 bucket**, one folder per user. Today `/videos` is served **without authentication**: move to private bucket + short-lived signed URLs; give Instagram a signed URL that lives long enough for it to fetch.
+- [ ] **Storage: PixelScript-owned Cloudflare R2 bucket**, one folder per user. Today `/videos` is served **without authentication**: move to private bucket + short-lived signed URLs; give Instagram a signed URL that lives long enough for it to fetch.
 - [ ] Lifecycle rules: delete rendered videos N days after posting (cost + privacy).
 - [ ] **Hosting** for the web + API: Railway / Render / Fly.io / a VPS behind Caddy. **HTTPS**, domain, `NODE_ENV=production`, secure cookies (`Secure` flag), trust proxy.
 - [ ] Secrets in the host's secret manager, not `.env` files.

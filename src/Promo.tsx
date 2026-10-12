@@ -1,5 +1,5 @@
-// FrameoPromo.tsx — landing-page video: what Frameo is, in 30 seconds.
-// 1920x1080 · 30fps · 900 frames. Render: npx remotion render FrameoPromo web/public/promo.mp4
+// PixelScriptPromo.tsx — landing-page video: what PixelScript is, in 30 seconds.
+// 1920x1080 · 30fps · 900 frames. Render: npx remotion render PixelScriptPromo web/public/promo.mp4
 import React from "react";
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig, Easing} from "remotion";
 import "@fontsource-variable/archivo/wdth.css";
@@ -149,7 +149,7 @@ const Topics: React.FC = () => {
   let t = 14;
   return (
     <Scene len={T.topics[1]}>
-      <StepHead n="01" text="Drop in your ideas." sub="One topic per line. Frameo writes the script for each one." />
+      <StepHead n="01" text="Drop in your ideas." sub="One topic per line. PixelScript writes the script for each one." />
       <Panel>
         <Label>TOPICS · TECH EXPLAINED</Label>
         <div style={{display: "flex", flexDirection: "column", gap: 14}}>
@@ -305,7 +305,7 @@ const Video: React.FC = () => {
   const lineIn = spring({frame: f - 66 - line * 18, fps, config: {damping: 14}});
   return (
     <Scene len={T.video[1]}>
-      <StepHead n="05" text="Frameo makes the video." sub="Scenes, motion, subtitles and music, in your style. No editing app." />
+      <StepHead n="05" text="PixelScript makes the video." sub="Scenes, motion, subtitles and music, in your style. No editing app." />
       <div style={{position: "absolute", right: 320, top: "47%", transform: `translateY(-50%) translateY(${(1 - phoneIn) * 80}px)`, opacity: phoneIn}}>
         <div style={{width: 392, height: 740, borderRadius: 46, border: `10px solid #2A2522`, background: "#000", overflow: "hidden", position: "relative", boxShadow: "0 50px 120px rgba(0,0,0,.7)"}}>
           <div style={{position: "absolute", inset: 0, background: "linear-gradient(170deg, #0F3322, #050A07)", filter: ready ? "none" : `blur(${(100 - p) / 6}px) grayscale(${1 - p / 100})`}}>
@@ -388,7 +388,7 @@ const Outro: React.FC = () => {
         <Words text="while you sleep." size={120} delay={16} color={C.accent} />
       </div>
       <div style={{opacity: cta, transform: `translateY(${(1 - cta) * 16}px)`, display: "flex", alignItems: "center", gap: 26}}>
-        <span style={{...DISPLAY, fontSize: 64, color: C.ink}}>Frameo</span>
+        <span style={{...DISPLAY, fontSize: 64, color: C.ink}}>Pixel<span style={{color: C.accent}}>Script</span></span>
         <span style={{height: 66, padding: "0 30px", borderRadius: 16, background: C.accent, color: C.accentInk, fontFamily: SANS, fontWeight: 800, fontSize: 28, display: "flex", alignItems: "center"}}>Start free · 30 credits</span>
       </div>
     </AbsoluteFill>
@@ -405,7 +405,7 @@ const Chrome: React.FC = () => {
     <AbsoluteFill style={{pointerEvents: "none"}}>
       <div style={{position: "absolute", left: 120, top: 64, display: "flex", alignItems: "center", gap: 16, opacity: interpolate(f, [T.outro[0] - 6, T.outro[0]], [1, 0], {extrapolateLeft: "clamp", extrapolateRight: "clamp"})}}>
         <Logo size={46} />
-        <span style={{...DISPLAY, fontSize: 40, color: C.ink}}>Frameo</span>
+        <span style={{...DISPLAY, fontSize: 40, color: C.ink}}>Pixel<span style={{color: C.accent}}>Script</span></span>
       </div>
       <div style={{position: "absolute", left: 120, right: 120, bottom: 64, display: "flex", gap: 14, opacity: vis}}>
         {STEP_SCENES.map(([s, len], i) => {
@@ -427,7 +427,7 @@ const Chrome: React.FC = () => {
   );
 };
 
-export const FrameoPromo: React.FC = () => (
+export const PixelScriptPromo: React.FC = () => (
   <AbsoluteFill style={{background: C.bg}}>
     <AbsoluteFill style={{background: "radial-gradient(1200px 700px at 78% 50%, rgba(255,122,69,.09), transparent 70%)"}} />
     <Sequence from={T.hook[0]} durationInFrames={T.hook[1]}><Hook /></Sequence>

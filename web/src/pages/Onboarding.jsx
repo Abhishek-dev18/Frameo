@@ -86,7 +86,7 @@ export default function Onboarding({state, refresh, toast}) {
             <h1 className="title-l">{paid ? "Where should episodes post?" : "How posting works"}</h1>
             <p className="dim">
               {paid
-                ? "Frameo posts to Instagram as Reels and to YouTube as Shorts."
+                ? "PixelScript posts to Instagram as Reels and to YouTube as Shorts."
                 : "On the Free plan you download each video and post it yourself. Starter and up connect Instagram and YouTube so pipelines post for you."}
             </p>
             <div className="onb-conns">

@@ -105,7 +105,7 @@ function Notifications({user, state, refresh, toast}) {
   };
   return (
     <>
-      <p className="dim small">Frameo pops up a message when a script or video is ready, when something posts, and when something goes wrong.</p>
+      <p className="dim small">PixelScript pops up a message when a script or video is ready, when something posts, and when something goes wrong.</p>
       <div className="notif-list">
         <div className="panel notif">
           <div><b>In the app</b><span className="dim small">Pop-ups and the bell at the top. Always on.</span></div>
@@ -117,11 +117,11 @@ function Notifications({user, state, refresh, toast}) {
             <span className={`state mono ${user.notify?.telegramChatId && state.connections.telegram.configured ? "ok" : ""}`}>{user.notify?.telegramChatId && state.connections.telegram.configured ? "ON" : "OFF"}</span>
           </div>
           {!state.connections.telegram.configured ? (
-            <p className="small warn-text">{user.role === "admin" ? "Add a Telegram bot token under Settings → Connections first." : "Telegram alerts aren't available on this Frameo yet."}</p>
+            <p className="small warn-text">{user.role === "admin" ? "Add a Telegram bot token under Settings → Connections first." : "Telegram alerts aren't available on this PixelScript yet."}</p>
           ) : (
             <>
               <ol className="dim small steps-list">
-                <li>Open Telegram and start a chat with your Frameo bot (send it any message).</li>
+                <li>Open Telegram and start a chat with your PixelScript bot (send it any message).</li>
                 <li>Message @userinfobot to see your chat ID, and paste it below.</li>
               </ol>
               <div className="inline-form">

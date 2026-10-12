@@ -32,5 +32,5 @@ export function log(msg) {
   const line = `[${new Date().toLocaleString("en-IN", {hour12: false})}] ${msg}`;
   console.log(line);
   fs.mkdirSync(path.join(ROOT, "out"), {recursive: true});
-  fs.appendFileSync(path.join(ROOT, "out", "frameo.log"), line + "\n");
+  fs.appendFileSync(path.join(ROOT, "out", "pixelscript.log"), line + "\n");
 }

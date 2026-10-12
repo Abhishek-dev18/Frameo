@@ -1,4 +1,4 @@
-// "Made with Frameo" mark, shown on videos rendered for the Free plan (props.watermark = true).
+// "Made with PixelScript" mark, shown on videos rendered for the Free plan (props.watermark = true).
 // Sits top-right, clear of Instagram/YouTube's bottom and right-side buttons.
 import React from "react";
 import {AbsoluteFill, getInputProps} from "remotion";
@@ -38,7 +38,7 @@ export const Watermark: React.FC = () => {
         </svg>
         <div style={{display: "flex", flexDirection: "column", lineHeight: 1.05}}>
           <span style={{fontSize: 15, opacity: 0.75}}>Made with</span>
-          <span style={{fontSize: 24, fontWeight: 900, letterSpacing: "0.02em"}}>FRAMEO</span>
+          <span style={{fontSize: 24, fontWeight: 900, letterSpacing: "0.02em"}}>PIXEL<span style={{color: "#FF7A45"}}>SCRIPT</span></span>
         </div>
       </div>
     </AbsoluteFill>

@@ -1,4 +1,4 @@
-// A small JSON-file database for running Frameo on one computer.
+// A small JSON-file database for running PixelScript on one computer.
 // Everything lives in content/db.json. Swap for Postgres before going public (see ROADMAP.md).
 import fs from "node:fs";
 import path from "node:path";
@@ -54,7 +54,7 @@ export const db = {
   },
 };
 
-// Activity events shown on the Activity page (per user) and written to out/frameo.log.
+// Activity events shown on the Activity page (per user) and written to out/pixelscript.log.
 export function event(userId, text, tone = "info") {
   const row = {id: id("ev"), userId, at: now(), text, tone};
   const d = load();

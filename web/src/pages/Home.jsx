@@ -42,7 +42,7 @@ export default function Home({state, toast}) {
         {videos.length === 0 ? (
           <div className="section-gap">
             <Empty title="Make your first video" action={<a className="btn primary big" href="#/create">Make a video</a>}>
-              Pick a style, type a topic and approve the script. Frameo makes a finished vertical video you can download and post anywhere.
+              Pick a style, type a topic and approve the script. PixelScript makes a finished vertical video you can download and post anywhere.
             </Empty>
           </div>
         ) : (
@@ -84,7 +84,7 @@ export default function Home({state, toast}) {
         </div>
         {inbox.length ? inboxBlock : null}
         <Empty title="Create your first pipeline" action={<a className="btn primary big" href="#/pipelines/new">Create a pipeline</a>}>
-          A pipeline is a recipe: a video style, a list of topics, a schedule and where to post. Frameo then writes, makes and posts one episode per slot.
+          A pipeline is a recipe: a video style, a list of topics, a schedule and where to post. PixelScript then writes, makes and posts one episode per slot.
         </Empty>
       </div>
     );

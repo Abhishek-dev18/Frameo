@@ -18,9 +18,9 @@ export function Logo({size = 30}) {
 
 export function Brand({to = "#/"}) {
   return (
-    <a className="brand" href={to} aria-label="Frameo">
+    <a className="brand" href={to} aria-label="PixelScript">
       <Logo />
-      <span className="wordmark">FRAMEO</span>
+      <span className="wordmark">PIXEL<span className="accent">SCRIPT</span></span>
     </a>
   );
 }
@@ -96,7 +96,7 @@ export function Credits({n}) {
 export function Footer() {
   return (
     <footer className="footer">
-      <span>© {new Date().getFullYear()} Frameo</span>
+      <span>© {new Date().getFullYear()} PixelScript</span>
       <nav aria-label="Legal">
         <a href="#/legal/privacy">Privacy</a>
         <a href="#/legal/terms">Terms</a>

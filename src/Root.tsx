@@ -4,7 +4,7 @@ import {HowRagWorks, TOTAL} from "./HowRagWorks";
 import {RagStory, STORY_TOTAL} from "./RagStory";
 import {MidnightDeploy, MD_TOTAL} from "./MidnightDeploy";
 import {LastBlade, LB_TOTAL} from "./LastBlade";
-import {FrameoPromo, PROMO_TOTAL} from "./FrameoPromo";
+import {PixelScriptPromo, PROMO_TOTAL} from "./Promo";
 import {withWatermark} from "./Watermark";
 
 // Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
@@ -19,6 +19,6 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="RagStory" component={RagStoryW} durationInFrames={STORY_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="MidnightDeploy" component={MidnightDeployW} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="LastBlade" component={LastBladeW} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
-    <Composition id="FrameoPromo" component={FrameoPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
+    <Composition id="PixelScriptPromo" component={PixelScriptPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
   </>
 );

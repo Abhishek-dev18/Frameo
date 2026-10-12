@@ -1,4 +1,4 @@
-// Frameo server. Runs on your computer only (127.0.0.1).
+// PixelScript server. Runs on your computer only (127.0.0.1).
 // Serves the website, the API, and runs the engine that writes, renders and posts episodes.
 import fs from "node:fs";
 import path from "node:path";
@@ -230,7 +230,7 @@ app.get("/api/episodes/:id/download", requireUser, (req, res) => {
     const ep = mine("episodes", req);
     const file = ep.file && path.resolve(ROOT, ep.file);
     if (!file || !fs.existsSync(file)) return res.status(404).json({error: "This video hasn't been made yet."});
-    const name = `${(ep.script?.title || ep.title).replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").slice(0, 60) || "frameo-video"}.mp4`;
+    const name = `${(ep.script?.title || ep.title).replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").slice(0, 60) || "pixelscript-video"}.mp4`;
     res.download(file, name);
   } catch (e) {
     res.status(e.status || 400).json({error: e.message});
@@ -337,7 +337,7 @@ app.post("/api/admin/users/:id/plan", requireAdmin, wrap((req) => {
   return publicUser(u);
 }));
 app.get("/api/admin/log", requireAdmin, wrap(() => {
-  const f = path.join(OUT, "frameo.log");
+  const f = path.join(OUT, "pixelscript.log");
   return {lines: fs.existsSync(f) ? fs.readFileSync(f, "utf8").trim().split("\n").slice(-300) : []};
 }));
 
@@ -404,4 +404,4 @@ process.on("SIGINT", () => {
   process.exit(0);
 });
 startEngine();
-app.listen(PORT, HOST, () => log(`Frameo running at http://${HOST}:${PORT}`));
+app.listen(PORT, HOST, () => log(`PixelScript running at http://${HOST}:${PORT}`));

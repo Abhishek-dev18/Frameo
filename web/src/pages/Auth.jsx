@@ -38,7 +38,7 @@ export function Login({onAuthed}) {
   const [password, setPassword] = useState("");
   const {busy, error, submit} = useSubmit(async () => onAuthed(await api.login({email, password})));
   return (
-    <AuthCard title="Log in" foot={<>New to Frameo? <a href="#/signup">Create an account</a></>}>
+    <AuthCard title="Log in" foot={<>New to PixelScript? <a href="#/signup">Create an account</a></>}>
       <form className="auth-form" onSubmit={submit}>
         <Field label="Email">
           <input id="login-email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
@@ -102,7 +102,7 @@ export function Forgot() {
     <AuthCard title="Reset password" foot={<a href="#/login">Back to log in</a>}>
       {sent ? (
         <p className="ok-box">
-          If an account exists for <b>{email}</b>, a reset link is on its way. While Frameo runs on your own computer, the link appears in the terminal window running Frameo.
+          If an account exists for <b>{email}</b>, a reset link is on its way. While PixelScript runs on your own computer, the link appears in the terminal window running PixelScript.
         </p>
       ) : (
         <form className="auth-form" onSubmit={submit}>

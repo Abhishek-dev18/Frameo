@@ -1,8 +1,8 @@
-# Frameo
+# PixelScript
 
-Frameo turns story scripts into anime-style tech Reels (rendered with [Remotion](https://www.remotion.dev)) and posts them to Instagram and YouTube on a schedule.
+PixelScript turns story scripts into anime-style tech Reels (rendered with [Remotion](https://www.remotion.dev)) and posts them to Instagram and YouTube on a schedule.
 
-It's built to become a public SaaS: anyone signs up, picks a video style, drops in topics, sets a schedule, and Frameo writes, makes and posts an episode on every slot. Right now it runs on your own computer. **[ROADMAP.md](ROADMAP.md)** lists everything still needed to run it publicly (Meta and Google approvals, payments, hosting, legal).
+It's built to become a public SaaS: anyone signs up, picks a video style, drops in topics, sets a schedule, and PixelScript writes, makes and posts an episode on every slot. Right now it runs on your own computer. **[ROADMAP.md](ROADMAP.md)** lists everything still needed to run it publicly (Meta and Google approvals, payments, hosting, legal).
 
 ## Quick start
 
@@ -18,9 +18,9 @@ Open **http://127.0.0.1:5173**. The first account you create becomes the **admin
 
 1. **Landing page** → sign up (30 free credits).
 2. **Onboarding**: name the channel → how posting works → pick a first style.
-3. **Free plan: single videos.** Pick a style, type a topic → approve the script → download the MP4 (with a small "Made with Frameo" mark) and upload it yourself. One video at a time.
+3. **Free plan: single videos.** Pick a style, type a topic → approve the script → download the MP4 (with a small "Made with PixelScript" mark) and upload it yourself. One video at a time.
 4. **Starter and up: pipelines.** New pipeline (5 steps): style + episode length → topics (one per line) → days and time + review mode → Instagram / YouTube → cost check and save.
-5. Frameo plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
+5. PixelScript plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
 6. **Home** shows what needs your review, your pipelines and the week's calendar. The bell and Telegram tell you when something needs you.
 
 Episode stages: `writing → script_review → render_queued → rendering → video_review → scheduled → posting → posted` (or `failed` / `skipped`). Credits are charged when a video is made and refunded if it fails.
@@ -36,11 +36,11 @@ Episode stages: `writing → script_review → render_queued → rendering → v
 | `server/writer.mjs` | Gemini script writer (placeholder script when no key). |
 | `server/templates.mjs` | The video styles and their credit cost. |
 | `web/` | The website (React + Vite): landing, auth, onboarding, app, admin. |
-| `web/public/promo.mp4` | Landing-page video (`src/FrameoPromo.tsx`). |
+| `web/public/promo.mp4` | Landing-page video (`src/PixelScriptPromo.tsx`). |
 | `src/` | The Remotion videos. |
-| `out/` | Rendered MP4s and `frameo.log` (not committed). |
+| `out/` | Rendered MP4s and `pixelscript.log` (not committed). |
 
-To re-render the landing video: `npx remotion render src/index.ts FrameoPromo web/public/promo.mp4 --crf=24`.
+To re-render the landing video: `npx remotion render src/index.ts PixelScriptPromo web/public/promo.mp4 --crf=24`.
 
 ## Commands
 
@@ -69,8 +69,8 @@ You can enter every key on the dashboard's **Connections** page instead of editi
 - **Git**: https://git-scm.com
 
 ```bash
-git clone https://github.com/Abhishek-dev18/Frameo.git
-cd Frameo
+git clone https://github.com/Abhishek-dev18/PixelScript.git
+cd PixelScript
 npm install
 cp .env.example .env        # Windows PowerShell: copy .env.example .env
 ```
@@ -93,7 +93,7 @@ Set the name and handle on the dashboard's Connections page (or in `content/sett
 Instagram doesn't accept file uploads through its API. It downloads the video from a public link, so the MP4 needs to be online first. R2's free tier (10 GB) is plenty.
 
 1. Create a free Cloudflare account and open **R2 Object Storage**.
-2. **Create bucket** named `frameo-videos`.
+2. **Create bucket** named `pixelscript-videos`.
 3. In the bucket's **Settings**, turn on **Public Development URL** (r2.dev). Copy the URL (looks like `https://pub-xxxx.r2.dev`) into `R2_PUBLIC_URL`.
 4. Back in R2, open **Manage API tokens** and create a token with **Object Read & Write** on that bucket. Copy the **Access Key ID** and **Secret Access Key** into `.env`.
 5. Your **Account ID** is shown on the R2 overview page; put it in `R2_ACCOUNT_ID`.
@@ -107,13 +107,13 @@ You need an Instagram **professional account** (Creator or Business) for the cha
 3. In the app, open **Instagram**, then **API setup with Instagram login**.
 4. Add your channel's Instagram account. In development mode the account must have a role on the app: add it under **App roles** as an **Instagram Tester**, then accept the invite in Instagram (Settings, then Apps and websites, then Tester invites).
 5. Make sure the permissions include `instagram_business_basic` and `instagram_business_content_publish`.
-6. Click **Generate token** next to your account. Paste it into the dashboard's Instagram card and click **Connect**; Frameo fills in your user ID itself. (Terminal alternative: put it in `IG_ACCESS_TOKEN` in `.env`, run `npm run ig:check` and copy the ID into `IG_USER_ID`.)
+6. Click **Generate token** next to your account. Paste it into the dashboard's Instagram card and click **Connect**; PixelScript fills in your user ID itself. (Terminal alternative: put it in `IG_ACCESS_TOKEN` in `.env`, run `npm run ig:check` and copy the ID into `IG_USER_ID`.)
 
 Tokens last about 60 days. The scheduler refreshes it every Sunday; you can also run `npm run ig:refresh`.
 
 ## 5. YouTube
 
-1. Go to https://console.cloud.google.com and create a project called `frameo`.
+1. Go to https://console.cloud.google.com and create a project called `pixelscript`.
 2. **APIs & Services**, then **Library**: enable **YouTube Data API v3**.
 3. **OAuth consent screen**: choose **External**, fill in the app name and your email, and add yourself as a **test user**.
 4. **Important:** on the consent screen, click **Publish app** to move it to **In production**. In "Testing" mode Google expires your login every 7 days and uploads stop. Google will show an "unverified app" warning when you sign in; that's fine for your own account.
@@ -139,7 +139,7 @@ Or let it post at the scheduled time:
 npm run scheduler
 ```
 
-Keep the terminal open and the computer awake (turn off sleep while it runs). Results are saved into `content/episodes.json` and `out/frameo.log`.
+Keep the terminal open and the computer awake (turn off sleep while it runs). Results are saved into `content/episodes.json` and `out/pixelscript.log`.
 
 ## Adding the next episode
 

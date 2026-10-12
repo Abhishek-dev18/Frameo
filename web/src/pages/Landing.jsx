@@ -12,8 +12,8 @@ const STYLES = [
 const FAQ = [
   ["Do I need to show my face or record my voice?", "No. Every episode is fully animated, with subtitles. Voiceover is on the way."],
   ["Can I check videos before they go live?", "Yes. By default you approve each script and each video before it posts. You can switch a pipeline to fully automatic once you trust it."],
-  ["Will YouTube and Instagram allow these videos?", "Yes, when each episode teaches something real. Frameo writes a different story for every topic and labels videos as AI-made, which both platforms ask for. Endless near-identical uploads are what get channels in trouble."],
-  ["What do I get for free?", "30 credits to make videos one at a time. You approve the script, download the finished video and post it yourself. Free videos carry a small \"Made with Frameo\" mark. Pipelines that post on a schedule, without the mark, start on Starter."],
+  ["Will YouTube and Instagram allow these videos?", "Yes, when each episode teaches something real. PixelScript writes a different story for every topic and labels videos as AI-made, which both platforms ask for. Endless near-identical uploads are what get channels in trouble."],
+  ["What do I get for free?", "30 credits to make videos one at a time. You approve the script, download the finished video and post it yourself. Free videos carry a small \"Made with PixelScript\" mark. Pipelines that post on a schedule, without the mark, start on Starter."],
   ["What's a credit?", "One credit makes one 30-second explainer. Story styles use 2–3 credits. A 60-second episode costs double. If a video fails, the credits come back."],
   ["Which languages?", "English today. Hindi and Hinglish are next."],
 ];
@@ -40,7 +40,7 @@ export default function Landing() {
           <div className="eyebrow mono">ANIME-STYLE TECH REELS · ON AUTOPILOT</div>
           <h1 className="l-h1">Your channel posts while you sleep.</h1>
           <p className="l-lede">
-            Pick a story style, drop in your topics, set a schedule. Frameo writes each episode, animates it, and posts it to Instagram and YouTube.
+            Pick a story style, drop in your topics, set a schedule. PixelScript writes each episode, animates it, and posts it to Instagram and YouTube.
             You approve everything before it goes live.
           </p>
           <div className="l-hero-cta">
@@ -49,11 +49,11 @@ export default function Landing() {
           </div>
         </div>
         <div className="l-hero-video">
-          <video src="/promo.mp4" poster="/promo-poster.jpg" autoPlay muted loop playsInline aria-label="Frameo in 30 seconds: topics become animated episodes that post on schedule" />
+          <video src="/promo.mp4" poster="/promo-poster.jpg" autoPlay muted loop playsInline aria-label="PixelScript in 30 seconds: topics become animated episodes that post on schedule" />
         </div>
       </section>
 
-      <section className="l-strip" aria-label="What Frameo does">
+      <section className="l-strip" aria-label="What PixelScript does">
         <div><b>4</b><span>story styles</span></div>
         <div><b>2</b><span>platforms, one schedule</span></div>
         <div><b>0</b><span>editing software</span></div>
@@ -65,7 +65,7 @@ export default function Landing() {
         <ol className="l-steps">
           <li><span className="mono">01</span><h3>Pick a style</h3><p>Explainer cards, character story, anime story or full anime action.</p></li>
           <li><span className="mono">02</span><h3>Add topics</h3><p>Paste a list like "JWT expiry bug" or "What is RAG". One topic becomes one episode.</p></li>
-          <li><span className="mono">03</span><h3>Set a schedule</h3><p>Choose days and a time. Frameo prepares the next few episodes ahead.</p></li>
+          <li><span className="mono">03</span><h3>Set a schedule</h3><p>Choose days and a time. PixelScript prepares the next few episodes ahead.</p></li>
           <li><span className="mono">04</span><h3>Approve and post</h3><p>Check each script and video on your phone. Approved episodes post on time to Instagram and YouTube.</p></li>
         </ol>
       </section>
@@ -94,7 +94,7 @@ export default function Landing() {
           <div><h3>You stay in control</h3><p>Every script and video waits for your approval unless you say otherwise. Edit a line, remake the video, or skip it.</p></div>
           <div><h3>Real tech, explained right</h3><p>Episodes are built around real bugs and real code, with one takeaway viewers can repeat in an interview.</p></div>
           <div><h3>A series, not random clips</h3><p>Recurring characters, numbered episodes and cliffhangers give people a reason to follow.</p></div>
-          <div><h3>Never misses a slot</h3><p>Frameo prepares episodes days ahead and tells you on Telegram when something needs you.</p></div>
+          <div><h3>Never misses a slot</h3><p>PixelScript prepares episodes days ahead and tells you on Telegram when something needs you.</p></div>
         </div>
       </section>
 
