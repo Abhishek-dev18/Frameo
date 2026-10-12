@@ -1,62 +1,125 @@
 async function call(method, url, body) {
   const res = await fetch(url, {
     method,
+    credentials: "same-origin",
     headers: body ? {"Content-Type": "application/json"} : undefined,
     body: body ? JSON.stringify(body) : undefined,
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  if (!res.ok) {
+    const err = new Error(data.error || `Request failed (${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
   return data;
 }
 
+const get = (u) => call("GET", u);
+const post = (u, b) => call("POST", u, b || {});
+const patch = (u, b) => call("PATCH", u, b);
+const del = (u) => call("DELETE", u);
+
 export const api = {
-  state: () => call("GET", "/api/state"),
-  episodes: () => call("GET", "/api/episodes"),
-  createEpisode: (b) => call("POST", "/api/episodes", b),
-  updateEpisode: (id, b) => call("PATCH", `/api/episodes/${id}`, b),
-  deleteEpisode: (id) => call("DELETE", `/api/episodes/${id}`),
-  render: (id) => call("POST", `/api/episodes/${id}/render`),
-  post: (id) => call("POST", `/api/episodes/${id}/post`),
-  logs: () => call("GET", "/api/logs"),
-  settings: (b) => call("PATCH", "/api/settings", b),
-  saveStorage: (b) => call("POST", "/api/connections/storage", b),
-  testStorage: () => call("POST", "/api/connections/storage/test"),
-  connectInstagram: (token) => call("POST", "/api/connections/instagram", {token}),
-  checkInstagram: () => call("POST", "/api/connections/instagram/check"),
-  refreshInstagram: () => call("POST", "/api/connections/instagram/refresh"),
-  saveYouTube: (b) => call("POST", "/api/connections/youtube", b),
-  youtubeAuthUrl: (back) => call("GET", `/api/connections/youtube/auth-url?back=${encodeURIComponent(back)}`),
-  disconnectYouTube: () => call("DELETE", "/api/connections/youtube"),
+  // auth
+  me: () => get("/api/auth/me"),
+  signup: (b) => post("/api/auth/signup", b),
+  login: (b) => post("/api/auth/login", b),
+  logout: () => post("/api/auth/logout"),
+  forgot: (email) => post("/api/auth/forgot", {email}),
+  reset: (token, password) => post("/api/auth/reset", {token, password}),
+  // account
+  state: () => get("/api/state"),
+  updateMe: (b) => patch("/api/me", b),
+  deleteMe: () => del("/api/me"),
+  // pipelines
+  pipelines: () => get("/api/pipelines"),
+  pipeline: (id) => get(`/api/pipelines/${id}`),
+  createPipeline: (b) => post("/api/pipelines", b),
+  updatePipeline: (id, b) => patch(`/api/pipelines/${id}`, b),
+  addTopics: (id, topics) => post(`/api/pipelines/${id}/topics`, {topics}),
+  removeTopic: (id, topicId) => del(`/api/pipelines/${id}/topics/${topicId}`),
+  deletePipeline: (id) => del(`/api/pipelines/${id}`),
+  // episodes
+  episodes: (q = {}) => get(`/api/episodes?${new URLSearchParams(q)}`),
+  episode: (id) => get(`/api/episodes/${id}`),
+  updateEpisode: (id, b) => patch(`/api/episodes/${id}`, b),
+  act: (id, action) => post(`/api/episodes/${id}/${action}`),
+  // notifications
+  notifications: () => get("/api/notifications"),
+  readAll: () => post("/api/notifications/read"),
+  testNotify: () => post("/api/notifications/test"),
+  activity: () => get("/api/activity"),
+  // admin
+  admin: () => get("/api/admin/overview"),
+  addCredits: (userId, add) => post(`/api/admin/users/${userId}/credits`, {add}),
+  adminLog: () => get("/api/admin/log"),
+  // connections (admin)
+  saveStorage: (b) => post("/api/connections/storage", b),
+  testStorage: () => post("/api/connections/storage/test"),
+  connectInstagram: (token) => post("/api/connections/instagram", {token}),
+  checkInstagram: () => post("/api/connections/instagram/check"),
+  refreshInstagram: () => post("/api/connections/instagram/refresh"),
+  saveYouTube: (b) => post("/api/connections/youtube", b),
+  youtubeAuthUrl: (back) => get(`/api/connections/youtube/auth-url?back=${encodeURIComponent(back)}`),
+  disconnectYouTube: () => del("/api/connections/youtube"),
+  saveKeys: (b) => post("/api/connections/keys", b),
 };
 
-export const STATUS = {
-  draft: {label: "Draft", tone: "neutral"},
+// ---------- helpers ----------
+export const STAGES = {
+  writing: {label: "Writing script", tone: "work"},
+  script_review: {label: "Review script", tone: "review"},
+  render_queued: {label: "Waiting to render", tone: "work"},
+  rendering: {label: "Making video", tone: "work"},
+  video_review: {label: "Review video", tone: "review"},
   scheduled: {label: "Scheduled", tone: "info"},
-  posting: {label: "Posting", tone: "accent"},
+  posting: {label: "Posting", tone: "work"},
   posted: {label: "Posted", tone: "good"},
   failed: {label: "Failed", tone: "bad"},
+  skipped: {label: "Skipped", tone: "neutral"},
 };
+export const PIPELINE_STEPS = ["writing", "script_review", "rendering", "video_review", "scheduled", "posted"];
+export const isReview = (e) => e.stage === "script_review" || e.stage === "video_review";
+
+export const DAYS = [
+  [1, "Mon"],
+  [2, "Tue"],
+  [3, "Wed"],
+  [4, "Thu"],
+  [5, "Fri"],
+  [6, "Sat"],
+  [7, "Sun"],
+];
 
 export function fmtWhen(iso) {
   if (!iso) return "Not scheduled";
-  const d = new Date(iso);
-  return d.toLocaleString(undefined, {weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit"});
+  return new Date(iso).toLocaleString(undefined, {weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit"});
 }
-
+export function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString(undefined, {hour: "numeric", minute: "2-digit"});
+}
 export function relative(iso) {
   if (!iso) return "";
   const diff = new Date(iso) - Date.now();
-  const abs = Math.abs(diff);
-  const mins = Math.round(abs / 60000);
-  const text = mins < 60 ? `${mins} min` : mins < 1440 ? `${Math.round(mins / 60)} h` : `${Math.round(mins / 1440)} d`;
+  const mins = Math.round(Math.abs(diff) / 60000);
+  const text = mins < 1 ? "now" : mins < 60 ? `${mins} min` : mins < 1440 ? `${Math.round(mins / 60)} h` : `${Math.round(mins / 1440)} d`;
+  if (text === "now") return "now";
   return diff >= 0 ? `in ${text}` : `${text} ago`;
 }
+export function scheduleText(s) {
+  if (!s?.days?.length) return "No days set";
+  const d = s.days.length === 7 ? "Every day" : s.days.join() === "1,2,3,4,5" ? "Weekdays" : s.days.map((n) => DAYS[n - 1][1]).join(", ");
+  const [h, m] = s.time.split(":").map(Number);
+  const t = new Date(2000, 0, 1, h, m).toLocaleTimeString(undefined, {hour: "numeric", minute: "2-digit"});
+  return `${d} · ${t}`;
+}
 
-// <input type="datetime-local"> works in local time without a timezone
-export const toLocalInput = (iso) => {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const pad = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+// Tiny hash router: "#/pipelines/abc?tab=x" -> {path: ["pipelines","abc"], query}
+export function readRoute() {
+  const raw = window.location.hash.replace(/^#\/?/, "");
+  const [p, q] = raw.split("?");
+  return {path: p ? p.split("/").filter(Boolean) : [], query: Object.fromEntries(new URLSearchParams(q || ""))};
+}
+export const go = (to) => {
+  window.location.hash = to.startsWith("#") ? to : `#/${to.replace(/^\//, "")}`;
 };
-export const fromLocalInput = (v) => (v ? new Date(v).toISOString() : null);

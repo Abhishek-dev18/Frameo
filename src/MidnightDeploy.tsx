@@ -3,8 +3,18 @@
 // Cinematic letterbox, no header. Handle appears only on the end card.
 
 import React from "react";
-import {AbsoluteFill, Audio, interpolate, interpolateColors, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
+import {AbsoluteFill, Audio, getInputProps, interpolate, interpolateColors, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
 import {CHANNEL} from "./channel";
+
+// Values Frameo passes in for each episode (falls back to the built-in Episode 1).
+const INPUT = getInputProps() as {channelName?: string; handle?: string; episodeTitle?: string; episodeNumber?: number; seriesName?: string};
+const EP = {
+  channel: INPUT.channelName || CHANNEL.name,
+  handle: INPUT.handle || CHANNEL.handle,
+  title: INPUT.episodeTitle || "The Expired Token",
+  number: INPUT.episodeNumber || 1,
+  series: (INPUT.seriesName || "Midnight Deploy").toUpperCase(),
+};
 
 export const MD_TOTAL = 690;
 
@@ -432,7 +442,7 @@ const EndCard: React.FC<{f: number}> = ({f}) => {
   const stroke = interpolate(f, [T.end + 4, T.end + 24], [0, 860], clamp);
   return (
     <AbsoluteFill style={{background: C.black, alignItems: "center", justifyContent: "center"}}>
-      <div style={{fontFamily: JP, fontSize: 64, color: C.green, opacity: p, letterSpacing: 10}}>第1話</div>
+      <div style={{fontFamily: JP, fontSize: 64, color: C.green, opacity: p, letterSpacing: 10}}>第{EP.number}話</div>
       <div
         style={{
           fontFamily: SANS,
@@ -447,13 +457,19 @@ const EndCard: React.FC<{f: number}> = ({f}) => {
           opacity: p,
         }}
       >
-        MIDNIGHT
-        <br />
-        DEPLOY
+        {EP.series.split(" ").length > 1 ? (
+          <>
+            {EP.series.split(" ")[0]}
+            <br />
+            {EP.series.split(" ").slice(1).join(" ")}
+          </>
+        ) : (
+          EP.series
+        )}
       </div>
       <div style={{width: stroke, height: 10, background: C.green, marginTop: 30, transform: "skewX(-30deg)"}} />
       <div style={{fontFamily: SANS, fontSize: 40, color: C.muted, marginTop: 34, opacity: interpolate(f, [T.end + 20, T.end + 32], [0, 1], clamp)}}>
-        Episode 1 · The Expired Token
+        Episode {EP.number} · {EP.title}
       </div>
       <div
         style={{
@@ -472,7 +488,7 @@ const EndCard: React.FC<{f: number}> = ({f}) => {
         To be continued ➜
       </div>
       <div style={{position: "absolute", bottom: 490, left: 0, right: 0, textAlign: "center", fontFamily: MONO, fontSize: 26, color: C.muted, letterSpacing: 4, opacity: interpolate(f, [T.end + 46, T.end + 56], [0, 1], clamp)}}>
-        a {CHANNEL.name} story · {CHANNEL.handle}
+        a {EP.channel} story · {EP.handle}
       </div>
     </AbsoluteFill>
   );

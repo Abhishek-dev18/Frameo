@@ -4,3 +4,5 @@ out/
 .tokens/
 *.log
 dist-web/
+content/db.json
+content/db.json.tmp

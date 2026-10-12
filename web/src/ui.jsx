@@ -1,30 +1,53 @@
 import React from "react";
-import {STATUS} from "./api.js";
+import {STAGES} from "./api.js";
 
-export function Pill({status}) {
-  const s = STATUS[status] || {label: status, tone: "neutral"};
-  return <span className={`pill pill-${s.tone}`}>{s.label}</span>;
+export function Logo({size = 30}) {
+  return (
+    <svg className="logo" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="14" fill="#FF7A45" />
+      <rect x="21" y="11" width="22" height="42" rx="3" fill="#0E0C0B" />
+      {[13, 23, 33, 43].map((y) => (
+        <g key={y} fill="#0E0C0B">
+          <rect x="11" y={y} width="5" height="5" rx="1.5" />
+          <rect x="48" y={y} width="5" height="5" rx="1.5" />
+        </g>
+      ))}
+    </svg>
+  );
 }
 
-export function Chip({ok, children}) {
-  return <span className={`chip ${ok ? "chip-ok" : "chip-off"}`}><i />{children}</span>;
+export function Brand({to = "#/"}) {
+  return (
+    <a className="brand" href={to} aria-label="Frameo">
+      <Logo />
+      <span className="wordmark">FRAMEO</span>
+    </a>
+  );
+}
+
+export function Stage({stage}) {
+  const s = STAGES[stage] || {label: stage, tone: "neutral"};
+  return <span className={`stage stage-${s.tone}`}>{s.label}</span>;
 }
 
 export function Platform({name, small}) {
   const label = name === "instagram" ? "IG" : name === "youtube" ? "YT" : name;
-  return <span className={`plat plat-${name} ${small ? "plat-sm" : ""}`} title={name}>{label}</span>;
+  return (
+    <span className={`plat plat-${name} ${small ? "plat-sm" : ""}`} title={name === "instagram" ? "Instagram" : "YouTube"}>
+      {label}
+    </span>
+  );
 }
 
-export function Toggle({checked, onChange, label}) {
+export function Toggle({checked, onChange, label, id}) {
   return (
-    <button type="button" role="switch" aria-checked={checked} className={`toggle ${checked ? "on" : ""}`} onClick={() => onChange(!checked)}>
+    <button type="button" id={id} role="switch" aria-checked={checked} aria-label={label} className={`toggle ${checked ? "on" : ""}`} onClick={() => onChange(!checked)}>
       <span className="knob" />
-      {label ? <span className="toggle-label">{label}</span> : null}
     </button>
   );
 }
 
-export function Field({label, hint, children, counter}) {
+export function Field({label, hint, children, counter, error}) {
   return (
     <label className="field">
       <span className="field-top">
@@ -32,25 +55,21 @@ export function Field({label, hint, children, counter}) {
         {counter ? <span className="field-counter">{counter}</span> : null}
       </span>
       {children}
-      {hint ? <span className="field-hint">{hint}</span> : null}
+      {error ? <span className="field-hint bad">{error}</span> : hint ? <span className="field-hint">{hint}</span> : null}
     </label>
   );
 }
 
-export function Progress({job}) {
-  // Post failures are shown by the episode's own error; only show finished/running jobs and render failures here.
-  if (!job || (job.state === "error" && job.type === "post")) return null;
-  const pct = Math.round((job.progress || 0) * 100);
+export function RenderBar({progress}) {
+  if (progress == null) return null;
+  const pct = Math.round(progress * 100);
   return (
-    <div className={`job job-${job.state}`}>
+    <div className="job">
       <div className="job-row">
-        <span>{job.state === "error" ? "Failed" : job.state === "done" ? (job.type === "render" ? "Render finished" : "Posted") : job.step}</span>
-        {job.state === "running" && job.step === "Rendering video" ? <span className="mono">{pct}%</span> : null}
+        <span>Making video</span>
+        <span className="mono">{pct}%</span>
       </div>
-      {job.state === "running" ? (
-        <div className="bar"><div className={job.step === "Rendering video" ? "" : "indeterminate"} style={job.step === "Rendering video" ? {width: `${pct}%`} : undefined} /></div>
-      ) : null}
-      {job.error ? <div className="job-error">{job.error}</div> : null}
+      <div className="bar"><div style={{width: `${pct}%`}} /></div>
     </div>
   );
 }
@@ -58,10 +77,32 @@ export function Progress({job}) {
 export function Empty({title, children, action}) {
   return (
     <div className="empty">
-      <div className="empty-frame" aria-hidden="true"><span /><span /><span /></div>
-      <h3>{title}</h3>
-      <p>{children}</p>
+      <span className="frame-icon" aria-hidden="true" />
+      <h3 className="title-s">{title}</h3>
+      {children ? <p>{children}</p> : null}
       {action}
     </div>
+  );
+}
+
+export function Credits({n}) {
+  return (
+    <a className="credits mono" href="#/settings/plan" title="Credits left">
+      <span aria-hidden="true">◆</span> {n} credits
+    </a>
+  );
+}
+
+export function Footer() {
+  return (
+    <footer className="footer">
+      <span>© {new Date().getFullYear()} Frameo</span>
+      <nav aria-label="Legal">
+        <a href="#/legal/privacy">Privacy</a>
+        <a href="#/legal/terms">Terms</a>
+        <a href="#/legal/refunds">Refunds</a>
+        <a href="#/legal/data-deletion">Data deletion</a>
+      </nav>
+    </footer>
   );
 }

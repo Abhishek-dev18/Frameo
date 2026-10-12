@@ -1,12 +1,13 @@
-// Frameo dashboard server. Runs on your computer only (127.0.0.1).
-// It serves the dashboard, exposes a small API, runs render/post jobs and the scheduler.
+// Frameo server. Runs on your computer only (127.0.0.1).
+// Serves the website, the API, and runs the engine that writes, renders and posts episodes.
 import fs from "node:fs";
 import path from "node:path";
 import express from "express";
 import {ROOT, setEnvValue, log} from "../scripts/lib/env.mjs";
-import {loadEpisodes, saveEpisodes, postEpisode, createEpisode, deleteEpisode, update} from "../scripts/lib/episodes.mjs";
-import {loadSettings, saveSettings} from "../scripts/lib/settings.mjs";
-import {createScheduler} from "../scripts/lib/scheduler.mjs";
+import {db, id, now, event} from "./db.mjs";
+import {signup, login, logout, forgot, reset, currentUser, requireUser, requireAdmin, publicUser} from "./auth.mjs";
+import {TEMPLATES, getTemplate, costOf} from "./templates.mjs";
+import {startEngine, kick, nextSlots, renderProgress, notify} from "./engine.mjs";
 import {whoami, refreshToken} from "../scripts/lib/instagram.mjs";
 import {oauthClient, TOKEN_FILE} from "../scripts/lib/youtube.mjs";
 import {testStorage} from "../scripts/lib/storage.mjs";
@@ -18,145 +19,277 @@ const WEB = path.join(ROOT, "dist-web");
 const app = express();
 app.use(express.json({limit: "1mb"}));
 
-// ---------- jobs (render / post) with live progress ----------
-const jobs = new Map();
-function runJob(id, type, fn) {
-  if (jobs.get(id)?.state === "running") throw new Error("This episode is already busy");
-  const job = {type, state: "running", step: type === "render" ? "Rendering video" : "Starting", progress: 0, error: null, startedAt: Date.now()};
-  jobs.set(id, job);
-  fn({onStep: (s) => (job.step = s), onProgress: (p) => (job.progress = p)})
-    .then(() => Object.assign(job, {state: "done", step: "Done", progress: 1}))
-    .catch((e) => Object.assign(job, {state: "error", error: e.message || String(e)}))
-    .finally(() => setTimeout(() => jobs.get(id) === job && jobs.delete(id), 120000));
-  return job;
-}
-
-const scheduler = createScheduler({
-  run: (id) =>
-    new Promise((resolve, reject) => {
-      try {
-        const job = runJob(id, "post", (cb) => postEpisode(id, cb));
-        const t = setInterval(() => job.state !== "running" && (clearInterval(t), job.state === "done" ? resolve() : reject(new Error(job.error))), 1000);
-      } catch (e) {
-        reject(e);
-      }
-    }),
-});
-if (loadSettings().scheduler.enabled) scheduler.start();
-
-// ---------- helpers ----------
-const compositions = () => [...fs.readFileSync(path.join(ROOT, "src", "Root.tsx"), "utf8").matchAll(/<Composition\s+id="([^"]+)"/g)].map((m) => m[1]);
-const has = (k) => Boolean(process.env[k]);
 const wrap = (fn) => async (req, res) => {
   try {
     res.json(await fn(req, res));
   } catch (e) {
-    res.status(400).json({error: e.message || String(e)});
+    res.status(e.status || 400).json({error: e.message || String(e)});
   }
 };
-function withExtras(ep) {
-  const file = path.resolve(ROOT, ep.file);
-  const rendered = fs.existsSync(file);
+const notFound = (what) => Object.assign(new Error(`${what} not found`), {status: 404});
+const has = (k) => Boolean(process.env[k]);
+const mine = (table, req) => {
+  const row = db.find(table, (r) => r.id === req.params.id);
+  if (!row || (row.userId !== req.user.id && req.user.role !== "admin")) throw notFound(table === "pipelines" ? "Pipeline" : "Episode");
+  return row;
+};
+
+// ---------- shaping rows for the website ----------
+function connections() {
+  return {
+    storage: {configured: ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET", "R2_PUBLIC_URL"].every(has), bucket: process.env.R2_BUCKET || "", publicUrl: process.env.R2_PUBLIC_URL || ""},
+    instagram: {configured: has("IG_ACCESS_TOKEN") && has("IG_USER_ID"), userId: process.env.IG_USER_ID || ""},
+    youtube: {configured: has("YT_CLIENT_ID") && has("YT_CLIENT_SECRET"), connected: fs.existsSync(TOKEN_FILE), privacy: process.env.YT_PRIVACY || "private"},
+    writer: {configured: has("GEMINI_API_KEY")},
+    telegram: {configured: has("TELEGRAM_BOT_TOKEN")},
+  };
+}
+function shapeEpisode(ep) {
+  const file = ep.file ? path.resolve(ROOT, ep.file) : null;
+  const rendered = Boolean(file && fs.existsSync(file));
+  const p = db.find("pipelines", (x) => x.id === ep.pipelineId);
   return {
     ...ep,
-    rendered,
-    videoUrl: rendered ? `/videos/${encodeURIComponent(path.basename(file))}?v=${Math.round(fs.statSync(file).mtimeMs)}` : null,
-    job: jobs.get(ep.id) || null,
+    pipelineName: p?.name || "",
+    template: p?.template,
+    reviewMode: p?.reviewMode,
+    videoUrl: rendered ? `/videos/${path.relative(OUT, file).split(path.sep).map(encodeURIComponent).join("/")}?v=${Math.round(fs.statSync(file).mtimeMs)}` : null,
+    progress: renderProgress(ep.id),
+  };
+}
+function shapePipeline(p) {
+  const eps = db.all("episodes", (e) => e.pipelineId === p.id);
+  return {
+    ...p,
+    counts: {
+      review: eps.filter((e) => ["script_review", "video_review"].includes(e.stage)).length,
+      upcoming: eps.filter((e) => !["posted", "failed", "skipped"].includes(e.stage)).length,
+      posted: eps.filter((e) => e.stage === "posted").length,
+      failed: eps.filter((e) => e.stage === "failed").length,
+    },
+    topicsLeft: p.topics.filter((t) => !t.used).length,
+    nextSlots: p.status === "active" ? nextSlots(p.schedule, 3).map((d) => d.toISOString()) : [],
+    costPerEpisode: costOf(p.template, p.length),
   };
 }
 
-// ---------- API ----------
-app.get("/api/state", wrap(() => {
-  const s = loadSettings();
-  return {
-    channel: s.channel,
-    scheduler: {enabled: s.scheduler.enabled, running: scheduler.running},
-    compositions: compositions(),
-    connections: {
-      storage: {configured: ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET", "R2_PUBLIC_URL"].every(has), bucket: process.env.R2_BUCKET || "", publicUrl: process.env.R2_PUBLIC_URL || ""},
-      instagram: {configured: has("IG_ACCESS_TOKEN") && has("IG_USER_ID"), userId: process.env.IG_USER_ID || ""},
-      youtube: {configured: has("YT_CLIENT_ID") && has("YT_CLIENT_SECRET"), connected: fs.existsSync(TOKEN_FILE), privacy: process.env.YT_PRIVACY || "private"},
-    },
-  };
-}));
+// ---------- auth ----------
+app.post("/api/auth/signup", wrap(signup));
+app.post("/api/auth/login", wrap(login));
+app.post("/api/auth/logout", wrap(logout));
+app.post("/api/auth/forgot", wrap(forgot));
+app.post("/api/auth/reset", wrap(reset));
+app.get("/api/auth/me", wrap((req) => ({user: publicUser(currentUser(req))})));
 
-app.get("/api/episodes", wrap(() => loadEpisodes().map(withExtras)));
-app.post("/api/episodes", wrap((req) => withExtras(createEpisode(req.body))));
-app.patch("/api/episodes/:id", wrap((req) => {
-  const allowed = ["title", "caption", "tags", "platforms", "at", "status", "composition"];
-  const patch = Object.fromEntries(Object.entries(req.body).filter(([k]) => allowed.includes(k)));
-  const before = loadEpisodes().find((e) => e.id === req.params.id);
-  if (!before) throw new Error("Episode not found");
-  if (patch.composition && patch.composition !== before.composition) {
-    const f = path.resolve(ROOT, before.file);
-    if (fs.existsSync(f)) fs.unlinkSync(f);
-  }
-  if (patch.status === "scheduled" && !(patch.at || before.at)) throw new Error("Pick a date and time before scheduling");
-  if (patch.status === "scheduled") patch.error = null;
-  return withExtras(update(req.params.id, patch));
+// ---------- account ----------
+app.patch("/api/me", requireUser, wrap((req) => {
+  const b = req.body;
+  const patch = {};
+  if (b.name !== undefined) patch.name = String(b.name).trim();
+  if (b.profile) patch.profile = {...req.user.profile, ...b.profile};
+  if (b.notify) patch.notify = {...req.user.notify, ...b.notify};
+  if (b.onboarded !== undefined) patch.onboarded = Boolean(b.onboarded);
+  return publicUser(db.update("users", req.user.id, patch));
 }));
-app.delete("/api/episodes/:id", wrap((req) => {
-  deleteEpisode(req.params.id);
+app.delete("/api/me", requireUser, wrap((req) => {
+  if (req.user.role === "admin" && db.all("users", (u) => u.role === "admin").length === 1) throw new Error("You're the only admin, so this account can't be deleted here.");
+  const uid = req.user.id;
+  for (const t of ["pipelines", "episodes", "notifications", "events", "sessions"]) db.remove(t, (r) => r.userId === uid);
+  db.remove("users", (u) => u.id === uid);
+  fs.rmSync(path.join(OUT, uid), {recursive: true, force: true});
   return {ok: true};
 }));
-app.post("/api/episodes/:id/render", wrap((req) => {
-  const ep = loadEpisodes().find((e) => e.id === req.params.id);
-  if (!ep) throw new Error("Episode not found");
-  const f = path.resolve(ROOT, ep.file);
-  if (fs.existsSync(f)) fs.unlinkSync(f);
-  return runJob(ep.id, "render", (cb) => postEpisode(ep.id, {...cb, dryRun: true}));
+
+app.get("/api/state", requireUser, wrap((req) => ({
+  user: publicUser(req.user),
+  templates: TEMPLATES,
+  connections: connections(),
+  unread: db.all("notifications", (n) => n.userId === req.user.id && !n.read).length,
+})));
+
+// ---------- pipelines ----------
+function cleanPipeline(b, existing = {}) {
+  const t = getTemplate(b.template ?? existing.template);
+  if (!t) throw new Error("Pick a video style.");
+  const name = String(b.name ?? existing.name ?? "").trim() || t.series;
+  const schedule = b.schedule ?? existing.schedule;
+  if (!schedule?.days?.length) throw new Error("Pick at least one day to post.");
+  if (!/^\d{2}:\d{2}$/.test(schedule.time || "")) throw new Error("Pick a posting time.");
+  const channels = (b.channels ?? existing.channels ?? []).filter((c) => ["instagram", "youtube"].includes(c));
+  if (!channels.length) throw new Error("Pick at least one place to post.");
+  return {
+    name,
+    template: t.id,
+    custom: {...(existing.custom || {}), ...(b.custom || {})},
+    language: b.language ?? existing.language ?? "English",
+    length: Number(b.length ?? existing.length ?? 30) >= 60 ? 60 : 30,
+    schedule: {days: [...new Set(schedule.days.map(Number))].sort(), time: schedule.time, startDate: schedule.startDate || new Date().toISOString().slice(0, 10)},
+    reviewMode: (b.reviewMode ?? existing.reviewMode) === "auto" ? "auto" : "review",
+    missedPolicy: ["skip", "next", "post"].includes(b.missedPolicy ?? existing.missedPolicy) ? (b.missedPolicy ?? existing.missedPolicy) : "next",
+    channels,
+  };
+}
+const toTopics = (list) =>
+  (Array.isArray(list) ? list : String(list || "").split("\n"))
+    .map((t) => String(t).trim())
+    .filter(Boolean)
+    .map((text) => ({id: id("tp"), text, used: false}));
+
+app.get("/api/pipelines", requireUser, wrap((req) => db.all("pipelines", (p) => p.userId === req.user.id).map(shapePipeline)));
+app.post("/api/pipelines", requireUser, wrap((req) => {
+  const topics = toTopics(req.body.topics);
+  if (!topics.length) throw new Error("Add at least one topic.");
+  const p = db.insert("pipelines", {id: id("pl"), userId: req.user.id, ...cleanPipeline(req.body), topics, status: "active", createdAt: now()});
+  event(req.user.id, `Pipeline "${p.name}" created with ${topics.length} topics.`, "good");
+  kick();
+  return shapePipeline(p);
 }));
-app.post("/api/episodes/:id/post", wrap((req) => {
-  const ep = loadEpisodes().find((e) => e.id === req.params.id);
-  if (!ep) throw new Error("Episode not found");
-  if (!ep.platforms?.length) throw new Error("Pick at least one platform");
-  return runJob(ep.id, "post", (cb) => postEpisode(ep.id, cb));
+app.get("/api/pipelines/:id", requireUser, wrap((req) => shapePipeline(mine("pipelines", req))));
+app.patch("/api/pipelines/:id", requireUser, wrap((req) => {
+  const p = mine("pipelines", req);
+  const patch = req.body.status ? {status: req.body.status === "paused" ? "paused" : "active"} : cleanPipeline(req.body, p);
+  const out = db.update("pipelines", p.id, patch);
+  if (req.body.status) event(req.user.id, `Pipeline "${p.name}" ${out.status === "paused" ? "paused" : "resumed"}.`);
+  kick();
+  return shapePipeline(out);
+}));
+app.post("/api/pipelines/:id/topics", requireUser, wrap((req) => {
+  const p = mine("pipelines", req);
+  const added = toTopics(req.body.topics);
+  if (!added.length) throw new Error("Type at least one topic.");
+  const out = db.update("pipelines", p.id, {topics: [...p.topics, ...added], outOfTopicsAt: null});
+  kick();
+  return shapePipeline(out);
+}));
+app.delete("/api/pipelines/:id/topics/:topicId", requireUser, wrap((req) => {
+  const p = mine("pipelines", req);
+  return shapePipeline(db.update("pipelines", p.id, {topics: p.topics.filter((t) => t.id !== req.params.topicId || t.used)}));
+}));
+app.delete("/api/pipelines/:id", requireUser, wrap((req) => {
+  const p = mine("pipelines", req);
+  db.remove("episodes", (e) => e.pipelineId === p.id && !["posted"].includes(e.stage));
+  db.remove("pipelines", (x) => x.id === p.id);
+  event(req.user.id, `Pipeline "${p.name}" deleted.`);
+  return {ok: true};
 }));
 
-app.get("/api/logs", wrap(() => {
+// ---------- episodes ----------
+app.get("/api/episodes", requireUser, wrap((req) => {
+  const q = req.query;
+  return db
+    .all("episodes", (e) => e.userId === req.user.id && (!q.pipeline || e.pipelineId === q.pipeline) && (!q.stage || String(q.stage).split(",").includes(e.stage)))
+    .sort((a, b) => new Date(a.at) - new Date(b.at))
+    .map(shapeEpisode);
+}));
+app.get("/api/episodes/:id", requireUser, wrap((req) => shapeEpisode(mine("episodes", req))));
+app.patch("/api/episodes/:id", requireUser, wrap((req) => {
+  const ep = mine("episodes", req);
+  const patch = {};
+  if (req.body.script) patch.script = {...ep.script, ...req.body.script};
+  if (patch.script?.title) patch.title = patch.script.title;
+  if (req.body.at) patch.at = new Date(req.body.at).toISOString();
+  return shapeEpisode(db.update("episodes", ep.id, patch));
+}));
+const ACTIONS = {
+  approveScript: (ep) => (ep.stage === "script_review" ? {stage: "render_queued"} : null),
+  approveVideo: (ep) => (ep.stage === "video_review" ? {stage: "scheduled"} : null),
+  rewrite: (ep) => (["script_review", "failed", "video_review"].includes(ep.stage) ? {stage: "writing", error: null} : null),
+  remake: (ep) => (["video_review", "failed", "scheduled"].includes(ep.stage) && ep.script ? {stage: "render_queued", error: null} : null),
+  skip: (ep) => (!["posted", "posting", "rendering"].includes(ep.stage) ? {stage: "skipped"} : null),
+  postNow: (ep) => (["video_review", "scheduled"].includes(ep.stage) ? {stage: "scheduled", at: now()} : null),
+  retry: (ep) => (ep.stage === "failed" ? {stage: ep.file ? "scheduled" : ep.script ? "render_queued" : "writing", error: null} : null),
+};
+app.post("/api/episodes/:id/:action", requireUser, wrap((req) => {
+  const ep = mine("episodes", req);
+  const fn = ACTIONS[req.params.action];
+  if (!fn) throw notFound("Action");
+  const patch = fn(ep);
+  if (!patch) throw new Error("That can't be done at this stage.");
+  if (req.params.action === "retry" && patch.stage === "scheduled" && new Date(ep.at) < new Date()) patch.at = now();
+  const out = db.update("episodes", ep.id, patch);
+  kick();
+  return shapeEpisode(out);
+}));
+
+// ---------- notifications + activity ----------
+app.get("/api/notifications", requireUser, wrap((req) => db.all("notifications", (n) => n.userId === req.user.id).slice(-50).reverse()));
+app.post("/api/notifications/read", requireUser, wrap((req) => {
+  for (const n of db.all("notifications", (x) => x.userId === req.user.id && !x.read)) db.update("notifications", n.id, {read: true});
+  return {ok: true};
+}));
+app.get("/api/activity", requireUser, wrap((req) => db.all("events", (e) => e.userId === req.user.id).slice(-300)));
+app.post("/api/notifications/test", requireUser, wrap(async (req) => {
+  await notify(req.user.id, "Test notification. If you see this on Telegram, alerts are working.", {tone: "good"});
+  return {ok: true};
+}));
+
+// ---------- admin ----------
+app.get("/api/admin/overview", requireAdmin, wrap(() => {
+  const eps = db.all("episodes");
+  const users = db.all("users").map((u) => ({
+    ...publicUser(u),
+    pipelines: db.all("pipelines", (p) => p.userId === u.id).length,
+    posted: eps.filter((e) => e.userId === u.id && e.stage === "posted").length,
+    failed: eps.filter((e) => e.userId === u.id && e.stage === "failed").length,
+  }));
+  return {
+    totals: {
+      users: users.length,
+      pipelines: db.all("pipelines").length,
+      live: db.all("pipelines", (p) => p.status === "active").length,
+      posted: eps.filter((e) => e.stage === "posted").length,
+      inProgress: eps.filter((e) => ["writing", "render_queued", "rendering", "posting"].includes(e.stage)).length,
+      failed: eps.filter((e) => e.stage === "failed").length,
+      creditsUsed: eps.reduce((s, e) => s + (e.creditsCharged || 0), 0),
+    },
+    users,
+    failures: eps.filter((e) => e.stage === "failed").slice(-20).reverse().map(shapeEpisode),
+    connections: connections(),
+  };
+}));
+app.post("/api/admin/users/:id/credits", requireAdmin, wrap((req) => {
+  const n = Number(req.body.add || 0);
+  const u = db.update("users", req.params.id, (x) => ({credits: Math.max(0, x.credits + n)}));
+  if (!u) throw notFound("User");
+  event(u.id, `${n > 0 ? "Added" : "Removed"} ${Math.abs(n)} credits.`, "good");
+  return publicUser(u);
+}));
+app.get("/api/admin/log", requireAdmin, wrap(() => {
   const f = path.join(OUT, "frameo.log");
-  return {lines: fs.existsSync(f) ? fs.readFileSync(f, "utf8").trim().split("\n").slice(-200) : []};
+  return {lines: fs.existsSync(f) ? fs.readFileSync(f, "utf8").trim().split("\n").slice(-300) : []};
 }));
 
-app.patch("/api/settings", wrap((req) => {
-  const s = saveSettings(req.body);
-  if (req.body.scheduler) s.scheduler.enabled ? scheduler.start() : scheduler.stop();
-  return s;
-}));
-
-// ---------- connections ----------
-app.post("/api/connections/storage", wrap((req) => {
+// ---------- connections (one set for this install; admin only until one-click connect exists) ----------
+app.post("/api/connections/storage", requireAdmin, wrap((req) => {
   const map = {accountId: "R2_ACCOUNT_ID", accessKeyId: "R2_ACCESS_KEY_ID", secretAccessKey: "R2_SECRET_ACCESS_KEY", bucket: "R2_BUCKET", publicUrl: "R2_PUBLIC_URL"};
   for (const [k, envName] of Object.entries(map)) if (req.body[k]) setEnvValue(envName, String(req.body[k]).trim());
   return {ok: true};
 }));
-app.post("/api/connections/storage/test", wrap(async () => ({url: await testStorage()})));
-
-app.post("/api/connections/instagram", wrap(async (req) => {
-  if (!req.body.token) throw new Error("Paste the access token first");
+app.post("/api/connections/storage/test", requireAdmin, wrap(async () => ({url: await testStorage()})));
+app.post("/api/connections/instagram", requireAdmin, wrap(async (req) => {
+  if (!req.body.token) throw new Error("Paste the access token first.");
   setEnvValue("IG_ACCESS_TOKEN", String(req.body.token).trim());
   const me = await whoami();
   setEnvValue("IG_USER_ID", String(me.user_id));
   log(`Instagram connected as @${me.username}`);
   return me;
 }));
-app.post("/api/connections/instagram/check", wrap(() => whoami()));
-app.post("/api/connections/instagram/refresh", wrap(async () => ({days: await refreshToken()})));
-
-app.post("/api/connections/youtube", wrap((req) => {
+app.post("/api/connections/instagram/check", requireAdmin, wrap(() => whoami()));
+app.post("/api/connections/instagram/refresh", requireAdmin, wrap(async () => ({days: await refreshToken()})));
+app.post("/api/connections/youtube", requireAdmin, wrap((req) => {
   if (req.body.clientId) setEnvValue("YT_CLIENT_ID", String(req.body.clientId).trim());
   if (req.body.clientSecret) setEnvValue("YT_CLIENT_SECRET", String(req.body.clientSecret).trim());
   if (req.body.privacy) setEnvValue("YT_PRIVACY", req.body.privacy);
   return {ok: true};
 }));
+app.post("/api/connections/keys", requireAdmin, wrap((req) => {
+  if (req.body.gemini) setEnvValue("GEMINI_API_KEY", String(req.body.gemini).trim());
+  if (req.body.telegram) setEnvValue("TELEGRAM_BOT_TOKEN", String(req.body.telegram).trim());
+  return {ok: true};
+}));
 const ytRedirect = `http://${HOST}:${PORT}/oauth/youtube`;
-app.get("/api/connections/youtube/auth-url", wrap((req) => ({
-  url: oauthClient(ytRedirect).generateAuthUrl({
-    access_type: "offline",
-    prompt: "consent",
-    scope: ["https://www.googleapis.com/auth/youtube.upload"],
-    state: String(req.query.back || "/"),
-  }),
+app.get("/api/connections/youtube/auth-url", requireAdmin, wrap((req) => ({
+  url: oauthClient(ytRedirect).generateAuthUrl({access_type: "offline", prompt: "consent", scope: ["https://www.googleapis.com/auth/youtube.upload"], state: String(req.query.back || "/")}),
 })));
 app.get("/oauth/youtube", async (req, res) => {
   const back = String(req.query.state || "/");
@@ -170,21 +303,23 @@ app.get("/oauth/youtube", async (req, res) => {
     res.redirect(`${back}${back.includes("?") ? "&" : "?"}youtube=error&message=${encodeURIComponent(e.message)}`);
   }
 });
-app.delete("/api/connections/youtube", wrap(() => {
+app.delete("/api/connections/youtube", requireAdmin, wrap(() => {
   if (fs.existsSync(TOKEN_FILE)) fs.unlinkSync(TOKEN_FILE);
   return {ok: true};
 }));
 
-// ---------- files + dashboard ----------
-app.use("/videos", express.static(OUT));
+// ---------- files + website ----------
+app.use("/videos", express.static(OUT, {index: false, extensions: false, setHeaders: (res) => res.setHeader("Cache-Control", "private, max-age=3600")}));
 if (fs.existsSync(WEB)) {
   app.use(express.static(WEB));
   app.get(/^\/(?!api|videos|oauth).*/, (_req, res) => res.sendFile(path.join(WEB, "index.html")));
 } else {
-  app.get("/", (_req, res) => res.send("Dashboard not built yet. Run: npm run build:web (or npm run dev for development)."));
+  app.get("/", (_req, res) => res.send("Website not built yet. Run: npm run build:web (or npm run dev while developing)."));
 }
 
-// reset episodes stuck mid-post from a previous crash
-saveEpisodes(loadEpisodes().map((e) => (e.status === "posting" ? {...e, status: "failed", error: "Interrupted (app was closed while posting)"} : e)));
-
-app.listen(PORT, HOST, () => log(`Frameo dashboard running at http://127.0.0.1:${PORT}`));
+process.on("SIGINT", () => {
+  db.flush();
+  process.exit(0);
+});
+startEngine();
+app.listen(PORT, HOST, () => log(`Frameo running at http://${HOST}:${PORT}`));

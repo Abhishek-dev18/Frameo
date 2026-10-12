@@ -2,42 +2,44 @@
 
 Frameo turns story scripts into anime-style tech Reels (rendered with [Remotion](https://www.remotion.dev)) and posts them to Instagram and YouTube on a schedule.
 
-It runs on your own computer as a small web app: a dashboard where you set up episodes, preview the videos, connect Instagram and YouTube, and turn on auto-posting.
+It's built to become a public SaaS: anyone signs up, picks a video style, drops in topics, sets a schedule, and Frameo writes, makes and posts an episode on every slot. Right now it runs on your own computer. **[ROADMAP.md](ROADMAP.md)** lists everything still needed to run it publicly (Meta and Google approvals, payments, hosting, legal).
 
 ## Quick start
 
 ```bash
 npm install
+cp .env.example .env     # fill in what you have; everything is optional to start
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173**. Keep the terminal open: the dashboard, renders and scheduled posts all run from it.
+Open **http://127.0.0.1:5173**. The first account you create becomes the **admin** (it can set up the Instagram, YouTube, storage and AI keys for this install). Password-reset links are printed in the terminal until an email service is added.
 
-| Page | What you do there |
-|---|---|
-| **Episodes** | Create an episode, pick its video template, write the caption, render a preview, set when it airs, queue it, or post it now. |
-| **Connections** | Paste your Cloudflare R2, Instagram and YouTube details and sign in. Each card says what's missing. |
-| **Activity log** | Every render, upload, post and error, live. |
-| **ON AIR** (top right) | The master switch. When it's on, queued episodes post automatically at their time. |
+## How it works for a user
 
-`npm start` builds the dashboard once and serves everything from **http://127.0.0.1:5174** (use this for day-to-day running; `npm run dev` is for changing the dashboard code). Both only listen on your own computer, never your network.
+1. **Landing page** → sign up (30 free credits).
+2. **Onboarding**: name the channel → see connections → pick a first style.
+3. **New pipeline** (5 steps): style + episode length → topics (one per line) → days and time + review mode → Instagram / YouTube → cost check and save.
+4. Frameo plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
+5. **Home** shows what needs your review, your pipelines and the week's calendar. The bell and Telegram tell you when something needs you.
 
-```
-content/episodes.json ──▶ render (Remotion) ──▶ upload MP4 to R2 ──▶ Instagram Reel
-                                             └──────────────────────▶ YouTube Short
-```
+Episode stages: `writing → script_review → render_queued → rendering → video_review → scheduled → posting → posted` (or `failed` / `skipped`). Credits are charged when a video is made and refunded if it fails.
 
 ## What's inside
 
 | Path | What it is |
 |---|---|
-| `server/` | The local API server: episodes, jobs, connections, scheduler. |
-| `web/` | The dashboard (React + Vite). |
-| `src/` | The videos. `MidnightDeploy.tsx` is Episode 1. `LastBlade.tsx`, `RagStory.tsx`, `HowRagWorks.tsx` are style experiments. |
-| `content/settings.json` | Channel name, handle, music and the ON AIR switch (editable from the dashboard). |
-| `content/episodes.json` | Your episode queue: which video, caption, title, platforms, when to post. |
-| `scripts/` | Command-line tools: render, post, scheduler, logins. |
+| `server/index.mjs` | API server: auth, pipelines, episodes, notifications, admin, connections. |
+| `server/engine.mjs` | Runs every minute: plans episodes, writes scripts, renders, posts. |
+| `server/db.mjs` | Small JSON database in `content/db.json` (not committed). |
+| `server/auth.mjs` | Signup, login, sessions, password reset. |
+| `server/writer.mjs` | Gemini script writer (placeholder script when no key). |
+| `server/templates.mjs` | The video styles and their credit cost. |
+| `web/` | The website (React + Vite): landing, auth, onboarding, app, admin. |
+| `web/public/promo.mp4` | Landing-page video (`src/FrameoPromo.tsx`). |
+| `src/` | The Remotion videos. |
 | `out/` | Rendered MP4s and `frameo.log` (not committed). |
+
+To re-render the landing video: `npx remotion render src/index.ts FrameoPromo web/public/promo.mp4 --crf=24`.
 
 ## Commands
 

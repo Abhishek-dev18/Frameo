@@ -4,6 +4,7 @@ import {HowRagWorks, TOTAL} from "./HowRagWorks";
 import {RagStory, STORY_TOTAL} from "./RagStory";
 import {MidnightDeploy, MD_TOTAL} from "./MidnightDeploy";
 import {LastBlade, LB_TOTAL} from "./LastBlade";
+import {FrameoPromo, PROMO_TOTAL} from "./FrameoPromo";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -11,5 +12,6 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="RagStory" component={RagStory} durationInFrames={STORY_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="MidnightDeploy" component={MidnightDeploy} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="LastBlade" component={LastBlade} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="FrameoPromo" component={FrameoPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
   </>
 );

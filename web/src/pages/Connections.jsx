@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {api} from "./api.js";
-import {Field} from "./ui.jsx";
+import {api} from "../api.js";
+import {Field} from "../ui.jsx";
 
-export default function Settings({state, refresh, toast}) {
+export default function Connections({state, refresh, toast}) {
   const c = state.connections;
 
   // Back from Google sign-in?
@@ -10,20 +10,18 @@ export default function Settings({state, refresh, toast}) {
     const q = new URLSearchParams(window.location.hash.split("?")[1] || "");
     if (q.get("youtube") === "connected") toast("YouTube connected", "good");
     if (q.get("youtube") === "error") toast(`YouTube sign-in failed: ${q.get("message") || "unknown error"}`, "bad");
-    if (q.get("youtube")) window.history.replaceState(null, "", "#/settings");
+    if (q.get("youtube")) window.history.replaceState(null, "", "#/settings/connections");
   }, [toast]);
 
   return (
     <>
-      <h1 className="title-l">Connections</h1>
-      <p className="lede">Three things to set up once, in this order. Your keys are saved on this computer only, in the <span className="mono">.env</span> file.</p>
-
-      <ChannelCard state={state} refresh={refresh} toast={toast} />
-
+      <p className="lede">Set these up once, in this order. Keys are saved on this computer only, in the <span className="mono">.env</span> file. Before Frameo goes public, steps 2 and 3 become one-click "Connect" buttons for every user (see ROADMAP.md).</p>
       <h2 className="title-s section-gap">Posting</h2>
       <StorageCard c={c.storage} refresh={refresh} toast={toast} />
       <InstagramCard c={c.instagram} storage={c.storage} refresh={refresh} toast={toast} />
       <YouTubeCard c={c.youtube} refresh={refresh} toast={toast} />
+      <h2 className="title-s section-gap">Writing and alerts</h2>
+      <KeysCard c={c} refresh={refresh} toast={toast} />
     </>
   );
 }
@@ -61,34 +59,6 @@ function Conn({title, code, step, sub, live, children, defaultOpen}) {
       </button>
       {open ? <div className="conn-body">{children}</div> : null}
     </div>
-  );
-}
-
-function ChannelCard({state, refresh, toast}) {
-  const [name, setName] = useState(state.channel.name);
-  const [handle, setHandle] = useState(state.channel.handle);
-  const [busy, run] = useBusy(toast, refresh);
-  const dirty = name !== state.channel.name || handle !== state.channel.handle;
-  return (
-    <>
-      <h2 className="title-s section-gap">Your channel</h2>
-      <div className="panel">
-        <div className="grid2">
-          <Field label="Channel name" hint="Shown on every end card.">
-            <input value={name} onChange={(e) => setName(e.target.value)} />
-          </Field>
-          <Field label="Handle" hint="Shown once, on the end card.">
-            <input value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="@yourchannel" />
-          </Field>
-        </div>
-        <div className="panel-foot">
-          <span className="dim small">Applies to videos rendered after you save.</span>
-          <button className="btn" disabled={!dirty || busy} onClick={() => run(() => api.settings({channel: {name: name.trim(), handle: handle.trim()}}), "Channel saved")}>
-            Save channel
-          </button>
-        </div>
-      </div>
-    </>
   );
 }
 
@@ -167,7 +137,7 @@ function YouTubeCard({c, refresh, toast}) {
   const signIn = () =>
     run(async () => {
       if (f.clientId || f.clientSecret || f.privacy !== c.privacy) await api.saveYouTube(f);
-      const {url} = await api.youtubeAuthUrl(`${window.location.origin}/#/settings`);
+      const {url} = await api.youtubeAuthUrl(`${window.location.origin}/#/settings/connections`);
       window.location.href = url;
     });
   return (
@@ -198,6 +168,31 @@ function YouTubeCard({c, refresh, toast}) {
         <button className="btn primary" disabled={busy || (!c.configured && !(f.clientId && f.clientSecret))} onClick={signIn}>
           {c.connected ? "Sign in again" : "Sign in with Google"}
         </button>
+      </div>
+    </Conn>
+  );
+}
+
+function KeysCard({c, refresh, toast}) {
+  const [gemini, setGemini] = useState("");
+  const [telegram, setTelegram] = useState("");
+  const [busy, run] = useBusy(toast, refresh);
+  return (
+    <Conn title="AI writer and Telegram alerts" code="AI" step="4" sub={c.writer.configured ? "Gemini key saved" : "Without a key, scripts are simple placeholders"} live={c.writer.configured}>
+      <p className="help">
+        <b>Gemini API key</b> lets Frameo write a real script for each topic. Get one free at Google AI Studio (aistudio.google.com).{" "}
+        <b>Telegram bot token</b> lets Frameo message you when something needs review: create a bot with @BotFather, paste its token here, then add your chat ID under Settings → Notifications.
+      </p>
+      <div className="grid2">
+        <Field label="Gemini API key" hint={c.writer.configured ? "Saved. Paste a new one to replace it." : ""}>
+          <input type="password" value={gemini} onChange={(e) => setGemini(e.target.value)} placeholder="AIza…" />
+        </Field>
+        <Field label="Telegram bot token" hint={c.telegram.configured ? "Saved. Paste a new one to replace it." : ""}>
+          <input type="password" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="123456:ABC-…" />
+        </Field>
+      </div>
+      <div className="panel-foot">
+        <button className="btn primary" disabled={busy || (!gemini && !telegram)} onClick={() => run(() => api.saveKeys({gemini, telegram}), "Keys saved").then(() => (setGemini(""), setTelegram("")))}>Save keys</button>
       </div>
     </Conn>
   );
