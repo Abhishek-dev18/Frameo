@@ -66,7 +66,19 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <a className="wordmark" href="#/home">FRAMEO</a>
+        <a className="brand" href="#/home" aria-label="Frameo home">
+          <svg className="logo" viewBox="0 0 64 64" aria-hidden="true">
+            <rect width="64" height="64" rx="14" fill="#FF7A45" />
+            <rect x="21" y="11" width="22" height="42" rx="3" fill="#0E0C0B" />
+            {[13, 23, 33, 43].map((y) => (
+              <g key={y} fill="#0E0C0B">
+                <rect x="11" y={y} width="5" height="5" rx="1.5" />
+                <rect x="48" y={y} width="5" height="5" rx="1.5" />
+              </g>
+            ))}
+          </svg>
+          <span className="wordmark">FRAMEO</span>
+        </a>
         <nav className="nav" aria-label="Main">
           {PAGES.map(([id, label]) => (
             <a key={id} href={`#/${id}`} className={page === id ? "on" : ""} aria-current={page === id ? "page" : undefined}>

@@ -326,3 +326,6 @@ input[type="datetime-local"] { color-scheme: dark; font-family: var(--mono); fon
   .air { order: 2; margin-left: auto; }
   .nav { order: 3; flex-basis: 100%; }
 }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand:hover { color: var(--ink); }
+.logo { width: 30px; height: 30px; flex: 0 0 30px; display: block; }
