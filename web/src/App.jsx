@@ -13,7 +13,6 @@ import Posted from "./pages/Posted.jsx";
 import Create from "./pages/Create.jsx";
 import Videos from "./pages/Videos.jsx";
 import Settings from "./pages/Settings.jsx";
-import Activity from "./pages/Activity.jsx";
 import Admin from "./pages/Admin.jsx";
 
 const PUBLIC = ["", "login", "signup", "forgot", "reset", "legal"];
@@ -24,10 +23,12 @@ export default function App() {
   const [state, setState] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  const toast = useCallback((text, tone = "info") => {
+  const dismiss = useCallback((id) => setToasts((t) => t.filter((x) => x.id !== id)), []);
+  // Pop-up messages. Failures stay until closed; everything else fades after a few seconds.
+  const toast = useCallback((text, tone = "info", {link = null, sticky = tone === "bad"} = {}) => {
     const id = Math.random();
-    setToasts((t) => [...t, {id, text, tone}]);
-    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 5000);
+    setToasts((t) => [...t.slice(-3), {id, text, tone, link, sticky}]);
+    if (!sticky) setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 5000);
   }, []);
 
   useEffect(() => {
@@ -71,6 +72,37 @@ export default function App() {
 
   const page = route.path[0] || "";
 
+  // Watch for new notifications (script ready, video ready, posted, failed) and pop them up.
+  const seen = useRef(null);
+  const uid = user?.id;
+  useEffect(() => {
+    if (!uid) {
+      seen.current = null;
+      return;
+    }
+    let alive = true;
+    const check = async () => {
+      const list = await api.notifications().catch(() => null);
+      if (!alive || !list) return;
+      if (!seen.current) {
+        seen.current = new Set(list.map((n) => n.id)); // don't replay old ones on load
+        return;
+      }
+      const fresh = list.filter((n) => !seen.current.has(n.id)).reverse();
+      for (const n of fresh) {
+        seen.current.add(n.id);
+        toast(n.text, n.tone, {link: n.link});
+      }
+      if (fresh.length) refresh();
+    };
+    check();
+    const t = setInterval(check, 5000);
+    return () => {
+      alive = false;
+      clearInterval(t);
+    };
+  }, [uid, toast, refresh]);
+
   useEffect(() => {
     if (user === undefined) return;
     if (!user && !PUBLIC.includes(page)) go("login");
@@ -107,7 +139,6 @@ export default function App() {
   else if (page === "create") body = <Create {...props} />;
   else if (page === "videos") body = <Videos {...props} />;
   else if (page === "posted") body = <Posted {...props} />;
-  else if (page === "activity") body = <Activity {...props} />;
   else if (page === "settings") body = <Settings {...props} tab={route.path[1] || "profile"} />;
   else if (page === "admin" && user.role === "admin") body = <Admin {...props} />;
   else body = <Home {...props} />;
@@ -126,8 +157,8 @@ export default function App() {
           go("");
         }}
       />
-      <main className={`main ${page === "home" ? "main-home" : ""}`}>{body}</main>
-      <Toasts toasts={toasts} />
+      <main className={`main ${page === "home" ? "main-home" : page === "settings" ? "main-fill" : ""}`}>{body}</main>
+      <Toasts toasts={toasts} dismiss={dismiss} />
     </div>
   );
 }
@@ -144,10 +175,16 @@ function Shell({children}) {
   );
 }
 
-function Toasts({toasts}) {
+function Toasts({toasts, dismiss}) {
   return (
     <div className="toasts" aria-live="polite">
-      {toasts.map((t) => <div key={t.id} className={`toast toast-${t.tone}`}>{t.text}</div>)}
+      {toasts.map((t) => (
+        <div key={t.id} className={`toast toast-${t.tone}`} role={t.tone === "bad" ? "alert" : "status"}>
+          <span className="toast-text">{t.text}</span>
+          {t.link ? <a className="toast-link" href={t.link} onClick={() => dismiss(t.id)}>Open</a> : null}
+          <button className="toast-x" onClick={() => dismiss(t.id)} aria-label="Close">✕</button>
+        </div>
+      ))}
     </div>
   );
 }
@@ -156,7 +193,6 @@ const NAV = [
   ["home", "Home"],
   ["videos", "Videos"],
   ["posted", "Posted", "pipelines"],
-  ["activity", "Activity"],
   ["settings", "Settings"],
 ];
 
@@ -208,7 +244,7 @@ function TopBar({user, state, page, onLogout, refresh}) {
               <div className="pop-head">Notifications</div>
               {items.length === 0 ? <p className="dim small pad">Nothing yet. You'll hear here when an episode needs review or gets posted.</p> : null}
               {items.map((n) => (
-                <a key={n.id} href={n.link || "#/activity"} className={`note note-${n.tone}`} onClick={() => setOpen(null)}>
+                <a key={n.id} href={n.link || "#/home"} className={`note note-${n.tone}`} onClick={() => setOpen(null)}>
                   <span>{n.text}</span>
                   <span className="dim mono">{relative(n.at)}</span>
                 </a>

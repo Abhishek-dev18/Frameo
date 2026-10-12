@@ -109,7 +109,7 @@ async function doWriting(ep) {
     db.update("episodes", ep.id, {script, title: script.title, stage: review ? "script_review" : "render_queued", error: null});
     if (review) notify(ep.userId, `Script ready to review: "${script.title}"`, {link: `#/review/${ep.id}`});
   } catch (e) {
-    fail(ep, e.message, false);
+    fail(ep, "Couldn't write the script. Try again in a minute.", e);
   }
 }
 
@@ -156,7 +156,7 @@ async function doRender(ep) {
   } catch (e) {
     db.update("users", user.id, (u) => ({credits: u.credits + cost}));
     db.update("episodes", ep.id, {creditsCharged: 0});
-    fail(ep, `${e.message} (${cost} credits refunded)`);
+    fail(ep, `Couldn't make the video. Your ${cost} credit${cost === 1 ? " was" : "s were"} refunded.`, e);
   } finally {
     progress.delete(ep.id);
   }
@@ -183,15 +183,17 @@ async function doPost(ep) {
     notify(ep.userId, `Posted "${ep.title}"`, {tone: "good", link: "#/posted"});
   } catch (e) {
     db.update("episodes", ep.id, {results});
-    fail(ep, e.message);
+    const where = p.channels.includes("instagram") && !results.instagram ? "Instagram" : "YouTube";
+    fail(ep, `Couldn't post to ${where}: ${shortError(e)}`, e);
   }
 }
 
-function fail(ep, message, alert = true) {
+// Users see a short, plain message; the full error goes to the server log (Admin page).
+const shortError = (e) => String(e?.message || e || "Unknown error").split("\n")[0].replace(/\s+at\s.*$/, "").slice(0, 140);
+function fail(ep, message, detail = null) {
   db.update("episodes", ep.id, {stage: "failed", error: message});
-  log(`✗ ${ep.id} failed: ${message}`);
-  if (alert) notify(ep.userId, `"${ep.title}" failed: ${message}`, {tone: "bad", link: `#/review/${ep.id}`});
-  else event(ep.userId, `"${ep.title}" failed: ${message}`, "bad");
+  log(`✗ ${ep.id} failed: ${message}${detail ? ` | ${String(detail?.stack || detail).replace(/\s+/g, " ")}` : ""}`);
+  notify(ep.userId, `"${ep.title}" failed. ${message}`, {tone: "bad", link: `#/review/${ep.id}`});
 }
 
 // What happens when an episode is still waiting for review at its posting time.

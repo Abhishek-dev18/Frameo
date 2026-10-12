@@ -1,4 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
+
+// One card open at a time, so the page fits on one screen.
+const Accordion = createContext({open: null, setOpen: () => {}});
 import {api} from "../api.js";
 import {Field} from "../ui.jsx";
 
@@ -13,16 +16,17 @@ export default function Connections({state, refresh, toast}) {
     if (q.get("youtube")) window.history.replaceState(null, "", "#/settings/connections");
   }, [toast]);
 
+  const [open, setOpen] = useState(null);
   return (
-    <>
-      <p className="lede">Set these up once, in this order. Keys are saved on this computer only, in the <span className="mono">.env</span> file. Before Frameo goes public, steps 2 and 3 become one-click "Connect" buttons for every user (see ROADMAP.md).</p>
-      <h2 className="title-s section-gap">Posting</h2>
-      <StorageCard c={c.storage} refresh={refresh} toast={toast} />
-      <InstagramCard c={c.instagram} storage={c.storage} refresh={refresh} toast={toast} />
-      <YouTubeCard c={c.youtube} refresh={refresh} toast={toast} />
-      <h2 className="title-s section-gap">Writing and alerts</h2>
-      <KeysCard c={c} refresh={refresh} toast={toast} />
-    </>
+    <Accordion.Provider value={{open, setOpen}}>
+      <p className="dim small">Set these up once, in order. Keys stay on this computer, in the <span className="mono">.env</span> file.</p>
+      <div className="conn-list">
+        <StorageCard c={c.storage} refresh={refresh} toast={toast} />
+        <InstagramCard c={c.instagram} storage={c.storage} refresh={refresh} toast={toast} />
+        <YouTubeCard c={c.youtube} refresh={refresh} toast={toast} />
+        <KeysCard c={c} refresh={refresh} toast={toast} />
+      </div>
+    </Accordion.Provider>
   );
 }
 
@@ -44,11 +48,13 @@ function useBusy(toast, refresh) {
   return [busy, run];
 }
 
-function Conn({title, code, step, sub, live, children, defaultOpen}) {
-  const [open, setOpen] = useState(defaultOpen ?? !live);
+function Conn({title, code, step, sub, live, children}) {
+  const acc = useContext(Accordion);
+  const open = acc.open === title;
+  const setOpen = () => acc.setOpen(open ? null : title);
   return (
     <div className={`conn-card ${open ? "open" : ""}`}>
-      <button className="dev" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+      <button className="dev" onClick={setOpen} aria-expanded={open}>
         <div className={`ic mono ${live ? "ok" : ""}`}>{live ? "✓" : step}</div>
         <div>
           <div className="nm">{title}</div>

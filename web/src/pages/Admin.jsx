@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {api, fmtWhen, PLANS} from "../api.js";
 import {Stage} from "../ui.jsx";
+import ServerLog from "./ServerLog.jsx";
 
 export default function Admin({toast, refresh}) {
   const [d, setD] = useState(null);
@@ -102,6 +103,9 @@ export default function Admin({toast, refresh}) {
           ))}
         </div>
       )}
+
+      <h2 className="title-s section-gap">Server log</h2>
+      <ServerLog />
     </div>
   );
 }

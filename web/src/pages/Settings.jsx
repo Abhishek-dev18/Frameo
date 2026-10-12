@@ -14,28 +14,32 @@ export default function Settings({tab, state, user, refresh, toast}) {
   const t = TABS.some(([id]) => id === tab) ? tab : "profile";
   return (
     <div className="settings">
-      <h1 className="title-l">Settings</h1>
-      <nav className="tabs" aria-label="Settings sections">
-        {TABS.map(([id, label]) => (
-          <a key={id} href={`#/settings/${id}`} className={t === id ? "on" : ""} aria-current={t === id ? "page" : undefined}>{label}</a>
-        ))}
-      </nav>
-      {t === "profile" ? <Profile user={user} refresh={refresh} toast={toast} /> : null}
-      {t === "connections" ? (user.role === "admin" ? <Connections state={state} refresh={refresh} toast={toast} /> : <ComingSoon />) : null}
-      {t === "notifications" ? <Notifications user={user} state={state} refresh={refresh} toast={toast} /> : null}
-      {t === "plan" ? <Plan user={user} /> : null}
+      <aside className="set-side">
+        <h1 className="title-m">Settings</h1>
+        <nav className="set-tabs" aria-label="Settings sections">
+          {TABS.map(([id, label]) => (
+            <a key={id} href={`#/settings/${id}`} className={t === id ? "on" : ""} aria-current={t === id ? "page" : undefined}>{label}</a>
+          ))}
+        </nav>
+      </aside>
+      <section className="set-body">
+        {t === "profile" ? <Profile user={user} refresh={refresh} toast={toast} /> : null}
+        {t === "connections" ? (user.role === "admin" ? <Connections state={state} refresh={refresh} toast={toast} /> : <ComingSoon />) : null}
+        {t === "notifications" ? <Notifications user={user} state={state} refresh={refresh} toast={toast} /> : null}
+        {t === "plan" ? <Plan user={user} /> : null}
+      </section>
     </div>
   );
 }
 
 function Profile({user, refresh, toast}) {
-  const [f, setF] = useState({name: user.name, channelName: user.profile.channelName, handle: user.profile.handle, niche: user.profile.niche});
+  const [f, setF] = useState({name: user.name, channelName: user.profile.channelName, handle: user.profile.handle, niche: user.profile.niche, language: user.profile.language || "English"});
   const [busy, setBusy] = useState(false);
-  const dirty = f.name !== user.name || f.channelName !== user.profile.channelName || f.handle !== user.profile.handle || f.niche !== user.profile.niche;
+  const dirty = f.name !== user.name || f.channelName !== user.profile.channelName || f.handle !== user.profile.handle || f.niche !== user.profile.niche || f.language !== (user.profile.language || "English");
   async function save() {
     setBusy(true);
     try {
-      await api.updateMe({name: f.name, profile: {channelName: f.channelName.trim(), handle: f.handle.trim() && !f.handle.trim().startsWith("@") ? `@${f.handle.trim()}` : f.handle.trim(), niche: f.niche}});
+      await api.updateMe({name: f.name, profile: {channelName: f.channelName.trim(), handle: f.handle.trim() && !f.handle.trim().startsWith("@") ? `@${f.handle.trim()}` : f.handle.trim(), niche: f.niche, language: f.language}});
       await refresh();
       toast("Profile saved", "good");
     } catch (e) {
@@ -59,23 +63,26 @@ function Profile({user, refresh, toast}) {
       <div className="panel">
         <div className="grid2">
           <Field label="Your name"><input id="pf-name" value={f.name} onChange={(e) => setF({...f, name: e.target.value})} /></Field>
-          <Field label="Email" hint="Can't be changed yet."><input id="pf-email" value={user.email} disabled /></Field>
-          <Field label="Channel name" hint="Shown on every episode's end card."><input id="pf-channel" value={f.channelName} onChange={(e) => setF({...f, channelName: e.target.value})} /></Field>
+          <Field label="Email"><input id="pf-email" value={user.email} disabled title="Can't be changed yet" /></Field>
+          <Field label="Channel name"><input id="pf-channel" value={f.channelName} onChange={(e) => setF({...f, channelName: e.target.value})} /></Field>
           <Field label="Handle"><input id="pf-handle" value={f.handle} onChange={(e) => setF({...f, handle: e.target.value})} placeholder="@yourchannel" /></Field>
           <Field label="Niche"><input id="pf-niche" value={f.niche} onChange={(e) => setF({...f, niche: e.target.value})} /></Field>
+          <Field label="Default language">
+            <select id="pf-lang" value={f.language} onChange={(e) => setF({...f, language: e.target.value})}>
+              <option>English</option>
+              <option>Hinglish</option>
+              <option>Hindi</option>
+            </select>
+          </Field>
         </div>
         <div className="panel-foot">
-          <span className="dim small">Applies to videos made after you save.</span>
+          <span className="dim small">Channel name and handle appear on your videos' end card.</span>
           <button className="btn primary" disabled={!dirty || busy} onClick={save}>Save profile</button>
         </div>
       </div>
-      <h2 className="title-s section-gap">Danger zone</h2>
-      <div className="panel danger-panel">
-        <div>
-          <b>Delete account</b>
-          <p className="dim small">Removes your pipelines, scripts, videos and connected accounts. Posts already on Instagram and YouTube stay there.</p>
-        </div>
-        <button className="btn danger-btn" onClick={remove}>Delete account</button>
+      <div className="danger-row">
+        <span><b>Delete account</b> <span className="dim small">Removes your videos, pipelines and scripts. Posts already on Instagram and YouTube stay.</span></span>
+        <button className="btn small danger-btn" onClick={remove}>Delete account</button>
       </div>
     </>
   );
@@ -98,10 +105,10 @@ function Notifications({user, state, refresh, toast}) {
   };
   return (
     <>
-      <p className="lede">Frameo tells you when a script or video is ready to review, when something posts, and when something goes wrong.</p>
+      <p className="dim small">Frameo pops up a message when a script or video is ready, when something posts, and when something goes wrong.</p>
       <div className="notif-list">
         <div className="panel notif">
-          <div><b>In the app</b><span className="dim small">The bell at the top. Always on.</span></div>
+          <div><b>In the app</b><span className="dim small">Pop-ups and the bell at the top. Always on.</span></div>
           <span className="state mono ok">ON</span>
         </div>
         <div className="panel notif col">
@@ -138,19 +145,17 @@ function Plan({user}) {
   const current = PLANS.find((p) => p.id === user.plan) || PLANS[0];
   return (
     <>
-      <div className="panel credit-panel">
+      <div className="panel credit-strip">
         <div>
           <span className="mono dim">CREDITS LEFT</span>
           <b className="big-num">{user.credits}</b>
-          <span className="dim small">1 credit ≈ one 30-second explainer. Story styles use 2–3. Failed videos are refunded automatically.</span>
         </div>
         <div>
           <span className="mono dim">CURRENT PLAN</span>
           <b className="plan-name">{current.name}</b>
-          <span className="dim small">{current.id === "free" ? "Single videos with a watermark. You download and post them yourself." : "Pipelines post for you. No watermark."}</span>
         </div>
+        <p className="dim small">1 credit ≈ one 30-second explainer; story styles use 2–3. Failed videos are refunded automatically.</p>
       </div>
-      <h2 className="title-s section-gap">Plans</h2>
       <div className="plan-grid">
         {PLANS.map((p) => (
           <div key={p.id} className={`panel plan ${current.id === p.id ? "current" : ""}`}>
