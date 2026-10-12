@@ -20,8 +20,8 @@ export default function Activity() {
   const tone = (l) => (/✗|failed|error/i.test(l) ? "bad" : /✓|connected|posted|started/i.test(l) ? "good" : "");
   return (
     <>
-      <div className="crumb mono">SYSTEM / <b>Activity log</b></div>
-      <p className="lede">Everything Frameo does: renders, uploads, posts and errors. Also saved to <span className="mono">out/frameo.log</span>.</p>
+      <h1 className="title-l">Activity</h1>
+      <p className="lede">Everything Frameo does: previews, uploads, posts and errors.</p>
       <div className="log" ref={box}>
         {lines.length === 0 ? <div className="dim">No activity yet.</div> : null}
         {lines.map((l, i) => {

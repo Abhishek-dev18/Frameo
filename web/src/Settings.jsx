@@ -15,12 +15,12 @@ export default function Settings({state, refresh, toast}) {
 
   return (
     <>
-      <div className="crumb mono">SYSTEM / <b>Connections</b></div>
-      <p className="lede">Frameo needs three connections to post on its own: somewhere to host the video, your Instagram account, and your YouTube channel. Keys are saved to the <span className="mono">.env</span> file on this computer and never leave it.</p>
+      <h1 className="title-l">Connections</h1>
+      <p className="lede">Three things to set up once, in this order. Your keys are saved on this computer only, in the <span className="mono">.env</span> file.</p>
 
       <ChannelCard state={state} refresh={refresh} toast={toast} />
 
-      <div className="lbl">CONNECTIONS</div>
+      <h2 className="title-s section-gap">Posting</h2>
       <StorageCard c={c.storage} refresh={refresh} toast={toast} />
       <InstagramCard c={c.instagram} storage={c.storage} refresh={refresh} toast={toast} />
       <YouTubeCard c={c.youtube} refresh={refresh} toast={toast} />
@@ -46,17 +46,17 @@ function useBusy(toast, refresh) {
   return [busy, run];
 }
 
-function Conn({title, code, sub, live, children, defaultOpen}) {
+function Conn({title, code, step, sub, live, children, defaultOpen}) {
   const [open, setOpen] = useState(defaultOpen ?? !live);
   return (
     <div className={`conn-card ${open ? "open" : ""}`}>
       <button className="dev" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-        <div className="ic mono">{code}</div>
+        <div className={`ic mono ${live ? "ok" : ""}`}>{live ? "✓" : step}</div>
         <div>
           <div className="nm">{title}</div>
-          <div className="mt mono">{sub}</div>
+          <div className="mt">{sub}</div>
         </div>
-        <span className={live ? "live" : "idle"} />
+        <span className={`state mono ${live ? "ok" : ""}`}>{live ? "CONNECTED" : "NOT SET UP"}</span>
         <span className="chev mono">{open ? "−" : "+"}</span>
       </button>
       {open ? <div className="conn-body">{children}</div> : null}
@@ -71,7 +71,7 @@ function ChannelCard({state, refresh, toast}) {
   const dirty = name !== state.channel.name || handle !== state.channel.handle;
   return (
     <>
-      <div className="lbl">CHANNEL</div>
+      <h2 className="title-s section-gap">Your channel</h2>
       <div className="panel">
         <div className="grid2">
           <Field label="Channel name" hint="Shown on every end card.">
@@ -97,7 +97,7 @@ function StorageCard({c, refresh, toast}) {
   const [busy, run] = useBusy(toast, refresh);
   const set = (k) => (e) => setF((x) => ({...x, [k]: e.target.value}));
   return (
-    <Conn title="Video hosting" code="R2" sub={c.configured ? `CLOUDFLARE R2 · ${c.bucket}` : "NOT SET UP · NEEDED FOR INSTAGRAM"} live={c.configured}>
+    <Conn title="Video hosting" code="R2" step="1" sub={c.configured ? `Cloudflare R2 · ${c.bucket}` : "Where videos are uploaded so Instagram can fetch them"} live={c.configured}>
       <p className="help">Instagram downloads each video from a public link, so Frameo uploads the MP4 to a Cloudflare R2 bucket first. The free tier covers this. Setup steps are in README section 3.</p>
       <div className="grid2">
         <Field label="Account ID"><input value={f.accountId} onChange={set("accountId")} placeholder={c.configured ? "Saved · leave blank to keep" : ""} /></Field>
@@ -124,7 +124,8 @@ function InstagramCard({c, storage, refresh, toast}) {
     <Conn
       title="Instagram"
       code="IG"
-      sub={c.configured ? `CONNECTED${who ? ` · @${who.username}` : ""} · ID ${c.userId}` : "NOT CONNECTED"}
+      step="2"
+      sub={c.configured ? (who ? `@${who.username}` : `Account ID ${c.userId}`) : "Posts your episodes as Reels"}
       live={c.configured}
     >
       <p className="help">
@@ -173,7 +174,8 @@ function YouTubeCard({c, refresh, toast}) {
     <Conn
       title="YouTube"
       code="YT"
-      sub={c.connected ? `CONNECTED · UPLOADS AS ${c.privacy.toUpperCase()}` : c.configured ? "APP SAVED · SIGN IN NEEDED" : "NOT CONNECTED"}
+      step="3"
+      sub={c.connected ? `Uploads as ${c.privacy}` : c.configured ? "Almost there: sign in with Google" : "Posts your episodes as Shorts"}
       live={c.connected}
     >
       <p className="help">
