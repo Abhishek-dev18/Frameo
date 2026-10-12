@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ep1",
+    "composition": "MidnightDeploy",
+    "file": "out/ep1-the-expired-token.mp4",
+    "title": "Midnight Deploy · Ep 1: The Expired Token",
+    "caption": "2:59 AM. 10,000 users logged out at once. The bug? One line.\n\nJWT \"exp\" is in seconds. Date.now() is in milliseconds. Compare them directly and every token looks expired.\n\nFix: token.exp * 1000 < Date.now()\n\nEpisode 1 of Midnight Deploy. Follow for Episode 2: The Cache That Lied.\n\n#backend #javascript #jwt #programming #softwareengineering #coding #devlife #techanime",
+    "tags": ["jwt", "javascript", "backend", "authentication", "programming", "software engineering"],
+    "platforms": ["instagram", "youtube"],
+    "at": "2026-10-13T21:00:00+05:30",
+    "status": "scheduled"
+  }
+]
