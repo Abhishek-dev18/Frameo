@@ -1,9 +1,10 @@
-// Edit these once. Every video reads its channel name, handle and music from here.
-export const CHANNEL = {
-  name: "3AM Deploy",
-  handle: "@yourhandle",
-  // Put a royalty-free track in /public (e.g. public/music.mp3) and set its name here.
-  // Leave null for no background music.
-  music: null as string | null,
-  musicVolume: 0.35,
+// Channel name, handle and music come from content/settings.json,
+// which you can edit from the Frameo dashboard (Settings page).
+import settings from "../content/settings.json";
+
+export const CHANNEL = settings.channel as {
+  name: string;
+  handle: string;
+  music: string | null;
+  musicVolume: number;
 };

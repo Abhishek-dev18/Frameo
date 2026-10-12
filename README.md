@@ -2,7 +2,25 @@
 
 Frameo turns story scripts into anime-style tech Reels (rendered with [Remotion](https://www.remotion.dev)) and posts them to Instagram and YouTube on a schedule.
 
-Right now it runs on your own computer: you add episodes to `content/episodes.json`, start the scheduler, and it renders and posts each one at its time.
+It runs on your own computer as a small web app: a dashboard where you set up episodes, preview the videos, connect Instagram and YouTube, and turn on auto-posting.
+
+## Quick start
+
+```bash
+npm install
+npm run dev
+```
+
+Open **http://127.0.0.1:5173**. Keep the terminal open: the dashboard, renders and scheduled posts all run from it.
+
+| Page | What you do there |
+|---|---|
+| **Episodes** | Create an episode, pick its video template, write the caption, render a preview, set when it airs, queue it, or post it now. |
+| **Connections** | Paste your Cloudflare R2, Instagram and YouTube details and sign in. Each card says what's missing. |
+| **Activity log** | Every render, upload, post and error, live. |
+| **ON AIR** (top right) | The master switch. When it's on, queued episodes post automatically at their time. |
+
+`npm start` builds the dashboard once and serves everything from **http://127.0.0.1:5174** (use this for day-to-day running; `npm run dev` is for changing the dashboard code). Both only listen on your own computer, never your network.
 
 ```
 content/episodes.json ──▶ render (Remotion) ──▶ upload MP4 to R2 ──▶ Instagram Reel
@@ -13,8 +31,10 @@ content/episodes.json ──▶ render (Remotion) ──▶ upload MP4 to R2 ─
 
 | Path | What it is |
 |---|---|
+| `server/` | The local API server: episodes, jobs, connections, scheduler. |
+| `web/` | The dashboard (React + Vite). |
 | `src/` | The videos. `MidnightDeploy.tsx` is Episode 1. `LastBlade.tsx`, `RagStory.tsx`, `HowRagWorks.tsx` are style experiments. |
-| `src/channel.ts` | Channel name, handle and background music. Edit once. |
+| `content/settings.json` | Channel name, handle, music and the ON AIR switch (editable from the dashboard). |
 | `content/episodes.json` | Your episode queue: which video, caption, title, platforms, when to post. |
 | `scripts/` | Command-line tools: render, post, scheduler, logins. |
 | `out/` | Rendered MP4s and `frameo.log` (not committed). |
@@ -34,7 +54,11 @@ content/episodes.json ──▶ render (Remotion) ──▶ upload MP4 to R2 ─
 
 ---
 
+The command-line tools above do the same things as the dashboard, if you prefer a terminal.
+
 # Setup (one time, about 1–2 hours)
+
+You can enter every key on the dashboard's **Connections** page instead of editing `.env` by hand; the steps below explain where each value comes from.
 
 ## 1. Install the basics
 
@@ -59,7 +83,7 @@ Your video is now at `out/ep1-the-expired-token.mp4`. Watch it before going furt
 
 ## 2. Set your channel name
 
-Open `src/channel.ts` and set `name` and `handle`. If you have a royalty-free music track, put it in `public/` (for example `public/music.mp3`) and set `music: "music.mp3"`. Instagram's API can't add Instagram's own music, so any music must be inside the video.
+Set the name and handle on the dashboard's Connections page (or in `content/settings.json`). If you have a royalty-free music track, put it in `public/` (for example `public/music.mp3`) and set `"music": "music.mp3"` in `content/settings.json`. Instagram's API can't add Instagram's own music, so any music must be inside the video.
 
 ## 3. Cloudflare R2 (video hosting)
 
@@ -80,12 +104,7 @@ You need an Instagram **professional account** (Creator or Business) for the cha
 3. In the app, open **Instagram**, then **API setup with Instagram login**.
 4. Add your channel's Instagram account. In development mode the account must have a role on the app: add it under **App roles** as an **Instagram Tester**, then accept the invite in Instagram (Settings, then Apps and websites, then Tester invites).
 5. Make sure the permissions include `instagram_business_basic` and `instagram_business_content_publish`.
-6. Click **Generate token** next to your account. Copy the token into `IG_ACCESS_TOKEN` in `.env`.
-7. Run:
-   ```bash
-   npm run ig:check
-   ```
-   Copy the printed user ID into `IG_USER_ID`.
+6. Click **Generate token** next to your account. Paste it into the dashboard's Instagram card and click **Connect**; Frameo fills in your user ID itself. (Terminal alternative: put it in `IG_ACCESS_TOKEN` in `.env`, run `npm run ig:check` and copy the ID into `IG_USER_ID`.)
 
 Tokens last about 60 days. The scheduler refreshes it every Sunday; you can also run `npm run ig:refresh`.
 
@@ -95,18 +114,16 @@ Tokens last about 60 days. The scheduler refreshes it every Sunday; you can also
 2. **APIs & Services**, then **Library**: enable **YouTube Data API v3**.
 3. **OAuth consent screen**: choose **External**, fill in the app name and your email, and add yourself as a **test user**.
 4. **Important:** on the consent screen, click **Publish app** to move it to **In production**. In "Testing" mode Google expires your login every 7 days and uploads stop. Google will show an "unverified app" warning when you sign in; that's fine for your own account.
-5. **Credentials**, then **Create credentials**, then **OAuth client ID**, type **Desktop app**. Copy the client ID and secret into `YT_CLIENT_ID` and `YT_CLIENT_SECRET`.
-6. Run:
-   ```bash
-   npm run yt:auth
-   ```
-   Open the link it prints, sign in with the Google account that owns the channel, and approve.
+5. **Credentials**, then **Create credentials**, then **OAuth client ID**, type **Desktop app**. Paste the client ID and secret into the dashboard's YouTube card (or `YT_CLIENT_ID` and `YT_CLIENT_SECRET` in `.env`).
+6. Click **Sign in with Google** on the dashboard and approve with the Google account that owns the channel. (Terminal alternative: `npm run yt:auth`.)
 
 **Uploads start as private.** Google locks videos uploaded by unaudited API projects to private. Apply for the free audit now (search "YouTube API Services audit and quota extension form"); it can take a few weeks. Until it's approved, open YouTube Studio after each upload and publish or schedule the video by hand.
 
 ## 6. Post your first episode
 
-Edit `content/episodes.json` if you want a different caption or time, then:
+On the dashboard, open Episode 1, check the caption and time, click **Render preview** and watch it. Then either click **Post now**, or switch on **Queue for auto-post** and turn **ON AIR** on in the top bar.
+
+From a terminal instead:
 
 ```bash
 npm run post -- ep1 --dry-run     # renders, posts nothing

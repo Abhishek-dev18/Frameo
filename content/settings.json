@@ -1,0 +1,11 @@
+{
+  "channel": {
+    "name": "3AM Deploy",
+    "handle": "@yourhandle",
+    "music": null,
+    "musicVolume": 0.35
+  },
+  "scheduler": {
+    "enabled": false
+  }
+}

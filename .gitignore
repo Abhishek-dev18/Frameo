@@ -3,3 +3,4 @@ out/
 .env
 .tokens/
 *.log
+dist-web/
