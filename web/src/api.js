@@ -39,6 +39,10 @@ export const api = {
   addTopics: (id, topics) => post(`/api/pipelines/${id}/topics`, {topics}),
   removeTopic: (id, topicId) => del(`/api/pipelines/${id}/topics/${topicId}`),
   deletePipeline: (id) => del(`/api/pipelines/${id}`),
+  // single videos
+  createVideo: (b) => post("/api/videos", b),
+  deleteEpisode: (id) => del(`/api/episodes/${id}`),
+  downloadUrl: (id) => `/api/episodes/${id}/download`,
   // episodes
   episodes: (q = {}) => get(`/api/episodes?${new URLSearchParams(q)}`),
   episode: (id) => get(`/api/episodes/${id}`),
@@ -52,6 +56,7 @@ export const api = {
   // admin
   admin: () => get("/api/admin/overview"),
   addCredits: (userId, add) => post(`/api/admin/users/${userId}/credits`, {add}),
+  setPlan: (userId, plan) => post(`/api/admin/users/${userId}/plan`, {plan}),
   adminLog: () => get("/api/admin/log"),
   // connections (admin)
   saveStorage: (b) => post("/api/connections/storage", b),
@@ -72,6 +77,7 @@ export const STAGES = {
   render_queued: {label: "Waiting to render", tone: "work"},
   rendering: {label: "Making video", tone: "work"},
   video_review: {label: "Review video", tone: "review"},
+  ready: {label: "Ready to download", tone: "good"},
   scheduled: {label: "Scheduled", tone: "info"},
   posting: {label: "Posting", tone: "work"},
   posted: {label: "Posted", tone: "good"},
@@ -123,3 +129,13 @@ export function readRoute() {
 export const go = (to) => {
   window.location.hash = to.startsWith("#") ? to : `#/${to.replace(/^\//, "")}`;
 };
+
+// Plans, in order. Free makes single videos (watermarked, you upload them);
+// pipelines (scheduled auto-posting) start on Starter.
+export const PLANS = [
+  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "30 credits once", points: ["Make videos one at a time", "Download and upload them yourself", "\"Made with Frameo\" watermark", "Every style"]},
+  {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "30 credits a month", points: ["1 auto-posting pipeline", "Schedule to Instagram + YouTube", "No watermark", "Telegram alerts"]},
+  {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "70 credits a month", points: ["5 pipelines", "60-second episodes", "No watermark", "Everything in Starter"], featured: true},
+  {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "200 credits a month", points: ["Unlimited pipelines", "Priority rendering", "No watermark", "Everything in Creator"]},
+];
+export const canPipeline = (state) => Boolean(state?.plan?.pipelines);

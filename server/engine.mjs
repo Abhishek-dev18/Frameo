@@ -2,11 +2,13 @@
 // each episode through its stages:
 //   writing → script_review → render_queued → rendering → video_review → scheduled → posting → posted
 // (review stages are skipped when a pipeline is fully automatic; failed / skipped are end states).
+// One-off videos (ep.single, any plan) go: writing → script_review → render_queued → rendering → ready,
+// and the user downloads the MP4 and uploads it by hand.
 import fs from "node:fs";
 import path from "node:path";
 import cron from "node-cron";
 import {db, id, now, event} from "./db.mjs";
-import {getTemplate, costOf} from "./templates.mjs";
+import {getTemplate, costOf, planOf} from "./templates.mjs";
 import {writeScript} from "./writer.mjs";
 import {ROOT, log} from "../scripts/lib/env.mjs";
 import {render} from "../scripts/lib/render.mjs";
@@ -14,7 +16,7 @@ import {uploadVideo} from "../scripts/lib/storage.mjs";
 import {publishReel, refreshToken} from "../scripts/lib/instagram.mjs";
 import {uploadShort} from "../scripts/lib/youtube.mjs";
 
-export const STAGES = ["writing", "script_review", "render_queued", "rendering", "video_review", "scheduled", "posting", "posted", "failed", "skipped"];
+export const STAGES = ["writing", "script_review", "render_queued", "rendering", "video_review", "ready", "scheduled", "posting", "posted", "failed", "skipped"];
 const PLAN_AHEAD = 3; // episodes prepared ahead per pipeline
 const progress = new Map(); // episodeId -> 0..1 while rendering
 
@@ -55,6 +57,8 @@ export async function notify(userId, text, {tone = "info", link = null} = {}) {
 // ---------- planning ----------
 function planUpcoming() {
   for (const p of db.all("pipelines", (x) => x.status === "active")) {
+    const owner = db.find("users", (u) => u.id === p.userId);
+    if (!planOf(owner).pipelines) continue; // pipelines need Starter or above
     const pending = db.all("episodes", (e) => e.pipelineId === p.id && !["posted", "failed", "skipped"].includes(e.stage));
     if (pending.length >= PLAN_AHEAD) continue;
     const taken = new Set(pending.map((e) => new Date(e.at).getTime()));
@@ -92,12 +96,16 @@ function planUpcoming() {
 }
 
 // ---------- stage workers ----------
+// The settings an episode is made with: its pipeline's, or its own for a one-off video.
+const settingsOf = (ep) => (ep.single ? ep.spec : db.find("pipelines", (x) => x.id === ep.pipelineId));
+const reviews = (ep, p) => ep.single || p.reviewMode === "review";
+
 async function doWriting(ep) {
-  const p = db.find("pipelines", (x) => x.id === ep.pipelineId);
+  const p = settingsOf(ep);
   const user = db.find("users", (u) => u.id === ep.userId);
   try {
     const script = await writeScript(ep.topic, p, user);
-    const review = p.reviewMode === "review";
+    const review = reviews(ep, p);
     db.update("episodes", ep.id, {script, title: script.title, stage: review ? "script_review" : "render_queued", error: null});
     if (review) notify(ep.userId, `Script ready to review: "${script.title}"`, {link: `#/review/${ep.id}`});
   } catch (e) {
@@ -106,7 +114,7 @@ async function doWriting(ep) {
 }
 
 async function doRender(ep) {
-  const p = db.find("pipelines", (x) => x.id === ep.pipelineId);
+  const p = settingsOf(ep);
   const user = db.find("users", (u) => u.id === ep.userId);
   const t = getTemplate(p.template);
   const cost = costOf(p.template, p.length);
@@ -115,7 +123,7 @@ async function doRender(ep) {
       db.update("episodes", ep.id, {error: "credits"});
       notify(ep.userId, `Not enough credits to make "${ep.title}" (needs ${cost}, you have ${user.credits}).`, {tone: "bad", link: "#/settings/plan"});
     }
-    return;
+    return false;
   }
   db.update("users", user.id, {credits: user.credits - cost});
   db.update("episodes", ep.id, {stage: "rendering", creditsCharged: cost, error: null});
@@ -131,12 +139,18 @@ async function doRender(ep) {
       episodeNumber: ep.number,
       seriesName: p.custom?.seriesName || t.series,
       lines: ep.script?.lines || [],
+      watermark: planOf(user).watermark,
     }),
   );
   try {
     progress.set(ep.id, 0);
     await render(t.composition, file, (x) => progress.set(ep.id, x), propsFile);
-    const review = p.reviewMode === "review";
+    if (ep.single) {
+      db.update("episodes", ep.id, {file, stage: "ready", readyAt: now()});
+      notify(ep.userId, `Your video is ready to download: "${ep.title}"`, {tone: "good", link: `#/review/${ep.id}`});
+      return true;
+    }
+    const review = reviews(ep, p);
     db.update("episodes", ep.id, {file, stage: review ? "video_review" : "scheduled"});
     if (review) notify(ep.userId, `Video ready to review: "${ep.title}"`, {link: `#/review/${ep.id}`});
   } catch (e) {
@@ -146,6 +160,7 @@ async function doRender(ep) {
   } finally {
     progress.delete(ep.id);
   }
+  return true;
 }
 
 async function doPost(ep) {
@@ -206,12 +221,15 @@ export async function tick() {
   busy = true;
   try {
     planUpcoming();
-    const live = (e) => db.find("pipelines", (p) => p.id === e.pipelineId)?.status === "active" || e.manual;
+    // a pipeline episode moves only while its pipeline is live and its owner's plan includes pipelines
+    const live = (e) => e.single || (db.find("pipelines", (p) => p.id === e.pipelineId)?.status === "active" && Boolean(planOf(db.find("users", (u) => u.id === e.userId)).pipelines));
     for (const ep of db.all("episodes", (e) => e.stage === "writing" && live(e))) await doWriting(ep);
-    for (const ep of db.all("episodes", (e) => ["script_review", "video_review"].includes(e.stage) && new Date(e.at) <= new Date())) handleMissed(ep);
-    const toRender = db.all("episodes", (e) => e.stage === "render_queued").sort((a, b) => new Date(a.at) - new Date(b.at))[0];
-    if (toRender) await doRender(toRender);
-    for (const ep of db.all("episodes", (e) => e.stage === "scheduled" && new Date(e.at) <= new Date())) await doPost(ep);
+    for (const ep of db.all("episodes", (e) => !e.single && live(e) && ["script_review", "video_review"].includes(e.stage) && new Date(e.at) <= new Date())) handleMissed(ep);
+    // One render per tick: one-off videos first (someone is waiting), then episodes by airing time.
+    // Episodes whose owner is out of credits are skipped so they don't block everyone else.
+    const queue = db.all("episodes", (e) => e.stage === "render_queued" && live(e)).sort((a, b) => (b.single ? 1 : 0) - (a.single ? 1 : 0) || new Date(a.at) - new Date(b.at));
+    for (const ep of queue) if (await doRender(ep)) break;
+    for (const ep of db.all("episodes", (e) => !e.single && live(e) && e.stage === "scheduled" && new Date(e.at) <= new Date())) await doPost(ep);
   } catch (e) {
     log(`Engine error: ${e.message}`);
   } finally {

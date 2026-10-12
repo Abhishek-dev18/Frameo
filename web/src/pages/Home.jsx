@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from "react";
-import {api, isReview, fmtWhen, relative, scheduleText} from "../api.js";
+import {api, isReview, fmtWhen, relative, scheduleText, canPipeline} from "../api.js";
 import {Stage, Platform, Empty} from "../ui.jsx";
 import Calendar from "./Calendar.jsx";
 
@@ -27,11 +27,62 @@ export default function Home({state, toast}) {
   const c = state.connections;
   const missing = [!c.instagram.configured && "Instagram", !c.youtube.connected && "YouTube", !c.storage.configured && "video hosting"].filter(Boolean);
   const greet = new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 17 ? "Good afternoon" : "Good evening";
+  const videos = episodes.filter((e) => e.single).reverse();
+  const inboxBlock = <Inbox inbox={inbox} />;
+
+  // Free plan: single videos only.
+  if (!canPipeline(state)) {
+    return (
+      <div className="home">
+        <div className="home-head">
+          <h1 className="title-l">{greet}, {state.user.name}</h1>
+          <a className="btn primary" href="#/create">+ Make a video</a>
+        </div>
+        {inbox.length ? inboxBlock : null}
+        {videos.length === 0 ? (
+          <div className="section-gap">
+            <Empty title="Make your first video" action={<a className="btn primary big" href="#/create">Make a video</a>}>
+              Pick a style, type a topic and approve the script. Frameo makes a finished vertical video you can download and post anywhere.
+            </Empty>
+          </div>
+        ) : (
+          <section className="section-gap" aria-label="Recent videos">
+            <div className="week-head">
+              <h2 className="title-s">Recent videos</h2>
+              <span className="mono dim">{videos.length}</span>
+              <a className="linkbtn week-nav" href="#/videos">All videos →</a>
+            </div>
+            <div className="inbox-list">
+              {videos.slice(0, 6).map((e) => (
+                <a key={e.id} href={`#/review/${e.id}`} className="pipe">
+                  <Stage stage={e.stage} />
+                  <b>{e.title}</b>
+                  <span className="dim small">{state.templates.find((t) => t.id === e.template)?.name} · {relative(e.createdAt)}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+        <div className="upsell section-gap">
+          <div>
+            <span className="eyebrow mono">STARTER · ₹499/MONTH</span>
+            <b>Let your channel post by itself</b>
+            <span className="dim small">Pipelines take a list of topics and a schedule, then write, make and post every episode to Instagram and YouTube on time. No watermark, no manual uploads.</span>
+          </div>
+          <a className="btn primary" href="#/settings/plan">See plans</a>
+        </div>
+      </div>
+    );
+  }
 
   if (pipelines.length === 0) {
     return (
       <div className="home">
-        <h1 className="title-l">{greet}, {state.user.name}</h1>
+        <div className="home-head">
+          <h1 className="title-l">{greet}, {state.user.name}</h1>
+          <a className="btn" href="#/create">+ Single video</a>
+        </div>
+        {inbox.length ? inboxBlock : null}
         <Empty title="Create your first pipeline" action={<a className="btn primary big" href="#/pipelines/new">Create a pipeline</a>}>
           A pipeline is a recipe: a video style, a list of topics, a schedule and where to post. Frameo then writes, makes and posts one episode per slot.
         </Empty>
@@ -43,7 +94,10 @@ export default function Home({state, toast}) {
     <div className="home">
       <div className="home-head">
         <h1 className="title-l">{greet}, {state.user.name}</h1>
-        <a className="btn primary" href="#/pipelines/new">+ New pipeline</a>
+        <span className="home-actions">
+          <a className="btn" href="#/create">+ Single video</a>
+          <a className="btn primary" href="#/pipelines/new">+ New pipeline</a>
+        </span>
       </div>
 
       {missing.length && state.user.role === "admin" ? (
@@ -54,26 +108,7 @@ export default function Home({state, toast}) {
         </a>
       ) : null}
 
-      <section className="inbox" aria-label="Needs your review">
-        <div className="week-head">
-          <h2 className="title-s">Needs your review</h2>
-          <span className="mono dim">{inbox.length}</span>
-        </div>
-        {inbox.length ? (
-          <div className="inbox-list">
-            {inbox.map((e) => (
-              <a key={e.id} href={`#/review/${e.id}`} className="inbox-item">
-                <Stage stage={e.stage} />
-                <b>{e.title}</b>
-                <span className="dim small">{e.pipelineName} · airs {relative(e.at)}</span>
-                <span className="inbox-go">Review →</span>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <p className="dim small all-clear">All clear. New scripts and videos show up here for your approval.</p>
-        )}
-      </section>
+      {inboxBlock}
 
       <div className="home-grid">
         <section className="pipes" aria-label="Your pipelines">
@@ -102,8 +137,33 @@ export default function Home({state, toast}) {
             })}
           </div>
         </section>
-        <Calendar episodes={episodes.filter((e) => e.stage !== "skipped")} pipelines={pipelines} />
+        <Calendar episodes={episodes.filter((e) => !e.single && e.stage !== "skipped")} pipelines={pipelines} />
       </div>
     </div>
+  );
+}
+
+function Inbox({inbox}) {
+  return (
+    <section className="inbox" aria-label="Needs your review">
+      <div className="week-head">
+        <h2 className="title-s">Needs your review</h2>
+        <span className="mono dim">{inbox.length}</span>
+      </div>
+      {inbox.length ? (
+        <div className="inbox-list">
+          {inbox.map((e) => (
+            <a key={e.id} href={`#/review/${e.id}`} className="inbox-item">
+              <Stage stage={e.stage} />
+              <b>{e.title}</b>
+              <span className="dim small">{e.single ? "Single video" : `${e.pipelineName} · airs ${relative(e.at)}`}</span>
+              <span className="inbox-go">Review →</span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p className="dim small all-clear">All clear. New scripts and videos show up here for your approval.</p>
+      )}
+    </section>
   );
 }

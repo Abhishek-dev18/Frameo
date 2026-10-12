@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {api, go} from "../api.js";
+import {api, go, PLANS} from "../api.js";
 import {Field} from "../ui.jsx";
 import Connections from "./Connections.jsx";
 
@@ -134,14 +134,8 @@ function Notifications({user, state, refresh, toast}) {
   );
 }
 
-const PLANS = [
-  {id: "free", name: "Free", price: "₹0", credits: "30 credits once"},
-  {id: "starter", name: "Starter", price: "₹499/mo", credits: "30 credits a month"},
-  {id: "creator", name: "Creator", price: "₹999/mo", credits: "70 credits a month"},
-  {id: "pro", name: "Pro", price: "₹2,499/mo", credits: "200 credits a month"},
-];
-
 function Plan({user}) {
+  const current = PLANS.find((p) => p.id === user.plan) || PLANS[0];
   return (
     <>
       <div className="panel credit-panel">
@@ -152,21 +146,23 @@ function Plan({user}) {
         </div>
         <div>
           <span className="mono dim">CURRENT PLAN</span>
-          <b className="plan-name">{PLANS.find((p) => p.id === user.plan)?.name || "Free"}</b>
+          <b className="plan-name">{current.name}</b>
+          <span className="dim small">{current.id === "free" ? "Single videos with a watermark. You download and post them yourself." : "Pipelines post for you. No watermark."}</span>
         </div>
       </div>
       <h2 className="title-s section-gap">Plans</h2>
       <div className="plan-grid">
         {PLANS.map((p) => (
-          <div key={p.id} className={`panel plan ${user.plan === p.id ? "current" : ""}`}>
+          <div key={p.id} className={`panel plan ${current.id === p.id ? "current" : ""}`}>
             <b>{p.name}</b>
-            <span className="plan-price">{p.price}</span>
-            <span className="dim small">{p.credits}</span>
-            {user.plan === p.id ? <span className="state mono ok">CURRENT</span> : <button className="btn" disabled title="Payments are coming soon">Upgrade · soon</button>}
+            <span className="plan-price">{p.price}<span className="dim small"> {p.per}</span></span>
+            <span className="mono small accent">{p.credits}</span>
+            <ul className="plan-points">{p.points.map((x) => <li key={x}>{x}</li>)}</ul>
+            {current.id === p.id ? <span className="state mono ok">CURRENT</span> : <button className="btn" disabled title="Payments are coming soon">{p.id === "free" ? "Downgrade · soon" : "Upgrade · soon"}</button>}
           </div>
         ))}
       </div>
-      <p className="dim small">Payments by UPI and card (Razorpay) are coming with the public launch. {user.role === "admin" ? "As admin, you can add credits to any account from the Admin page." : ""}</p>
+      <p className="dim small">Payments by UPI and card (Razorpay) are coming with the public launch. {user.role === "admin" ? "As admin, you can change any account's plan and credits from the Admin page." : ""}</p>
     </>
   );
 }

@@ -6,7 +6,7 @@ import express from "express";
 import {ROOT, setEnvValue, log} from "../scripts/lib/env.mjs";
 import {db, id, now, event} from "./db.mjs";
 import {signup, login, logout, forgot, reset, currentUser, requireUser, requireAdmin, publicUser} from "./auth.mjs";
-import {TEMPLATES, getTemplate, costOf} from "./templates.mjs";
+import {TEMPLATES, PLANS, getTemplate, costOf, planOf} from "./templates.mjs";
 import {startEngine, kick, nextSlots, renderProgress, notify} from "./engine.mjs";
 import {whoami, refreshToken} from "../scripts/lib/instagram.mjs";
 import {oauthClient, TOKEN_FILE} from "../scripts/lib/youtube.mjs";
@@ -47,12 +47,13 @@ function connections() {
 function shapeEpisode(ep) {
   const file = ep.file ? path.resolve(ROOT, ep.file) : null;
   const rendered = Boolean(file && fs.existsSync(file));
-  const p = db.find("pipelines", (x) => x.id === ep.pipelineId);
+  const p = ep.single ? null : db.find("pipelines", (x) => x.id === ep.pipelineId);
   return {
     ...ep,
-    pipelineName: p?.name || "",
-    template: p?.template,
-    reviewMode: p?.reviewMode,
+    pipelineName: ep.single ? "Single video" : p?.name || "",
+    template: ep.single ? ep.spec?.template : p?.template,
+    reviewMode: ep.single ? "review" : p?.reviewMode,
+    cost: ep.single ? costOf(ep.spec?.template, ep.spec?.length) : p ? costOf(p.template, p.length) : null,
     videoUrl: rendered ? `/videos/${path.relative(OUT, file).split(path.sep).map(encodeURIComponent).join("/")}?v=${Math.round(fs.statSync(file).mtimeMs)}` : null,
     progress: renderProgress(ep.id),
   };
@@ -102,6 +103,7 @@ app.delete("/api/me", requireUser, wrap((req) => {
 
 app.get("/api/state", requireUser, wrap((req) => ({
   user: publicUser(req.user),
+  plan: {...planOf(req.user), id: req.user.plan || "free", pipelines: Number.isFinite(planOf(req.user).pipelines) ? planOf(req.user).pipelines : 999},
   templates: TEMPLATES,
   connections: connections(),
   unread: db.all("notifications", (n) => n.userId === req.user.id && !n.read).length,
@@ -136,7 +138,16 @@ const toTopics = (list) =>
     .map((text) => ({id: id("tp"), text, used: false}));
 
 app.get("/api/pipelines", requireUser, wrap((req) => db.all("pipelines", (p) => p.userId === req.user.id).map(shapePipeline)));
+// Pipelines (scheduled auto-posting) start on Starter; each plan has a pipeline limit.
+function canAddPipeline(user, extra = 1) {
+  const plan = planOf(user);
+  if (!plan.pipelines) throw Object.assign(new Error("Pipelines start on the Starter plan. On Free you can make single videos and upload them yourself."), {status: 403});
+  const active = db.all("pipelines", (p) => p.userId === user.id && p.status === "active").length;
+  if (active + extra > plan.pipelines) throw Object.assign(new Error(`Your ${plan.name} plan allows ${plan.pipelines} live pipeline${plan.pipelines === 1 ? "" : "s"}. Pause one or upgrade.`), {status: 403});
+}
+
 app.post("/api/pipelines", requireUser, wrap((req) => {
+  canAddPipeline(req.user);
   const topics = toTopics(req.body.topics);
   if (!topics.length) throw new Error("Add at least one topic.");
   const p = db.insert("pipelines", {id: id("pl"), userId: req.user.id, ...cleanPipeline(req.body), topics, status: "active", createdAt: now()});
@@ -148,6 +159,7 @@ app.get("/api/pipelines/:id", requireUser, wrap((req) => shapePipeline(mine("pip
 app.patch("/api/pipelines/:id", requireUser, wrap((req) => {
   const p = mine("pipelines", req);
   const patch = req.body.status ? {status: req.body.status === "paused" ? "paused" : "active"} : cleanPipeline(req.body, p);
+  if (patch.status === "active" && p.status !== "active") canAddPipeline(req.user);
   const out = db.update("pipelines", p.id, patch);
   if (req.body.status) event(req.user.id, `Pipeline "${p.name}" ${out.status === "paused" ? "paused" : "resumed"}.`);
   kick();
@@ -173,11 +185,72 @@ app.delete("/api/pipelines/:id", requireUser, wrap((req) => {
   return {ok: true};
 }));
 
+// ---------- single videos (every plan): topic → script → video → download ----------
+app.post("/api/videos", requireUser, wrap((req) => {
+  const t = getTemplate(req.body.template);
+  if (!t) throw new Error("Pick a video style.");
+  const topic = String(req.body.topic || "").trim();
+  if (!topic) throw new Error("Type what the video is about.");
+  if (topic.length > 200) throw new Error("Keep the topic under 200 characters.");
+  const spec = {
+    template: t.id,
+    length: Number(req.body.length) >= 60 ? 60 : 30,
+    language: ["English", "Hindi", "Hinglish"].includes(req.body.language) ? req.body.language : "English",
+    custom: {seriesName: String(req.body.seriesName || "").trim().slice(0, 40) || t.series},
+  };
+  const cost = costOf(t.id, spec.length);
+  if (req.user.credits < cost) throw Object.assign(new Error(`This video needs ${cost} credits and you have ${req.user.credits}.`), {status: 402});
+  const open = db.all("episodes", (e) => e.userId === req.user.id && e.single && ["writing", "script_review", "render_queued", "rendering"].includes(e.stage)).length;
+  if (req.user.plan === "free" && open >= 1) throw Object.assign(new Error("Finish or delete the video you're making first. Free makes one video at a time."), {status: 429});
+  const n = db.all("episodes", (e) => e.userId === req.user.id && e.single).length + 1;
+  const ep = db.insert("episodes", {
+    id: id("ep"),
+    userId: req.user.id,
+    pipelineId: null,
+    single: true,
+    spec,
+    number: n,
+    topic,
+    title: topic,
+    at: now(),
+    stage: "writing",
+    script: null,
+    file: null,
+    results: {},
+    error: null,
+    creditsCharged: 0,
+    createdAt: now(),
+  });
+  event(req.user.id, `Started a video: "${topic}".`);
+  kick();
+  return shapeEpisode(ep);
+}));
+app.get("/api/episodes/:id/download", requireUser, (req, res) => {
+  try {
+    const ep = mine("episodes", req);
+    const file = ep.file && path.resolve(ROOT, ep.file);
+    if (!file || !fs.existsSync(file)) return res.status(404).json({error: "This video hasn't been made yet."});
+    const name = `${(ep.script?.title || ep.title).replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").slice(0, 60) || "frameo-video"}.mp4`;
+    res.download(file, name);
+  } catch (e) {
+    res.status(e.status || 400).json({error: e.message});
+  }
+});
+app.delete("/api/episodes/:id", requireUser, wrap((req) => {
+  const ep = mine("episodes", req);
+  if (!ep.single) throw new Error("Pipeline episodes can be skipped, not deleted.");
+  if (ep.stage === "rendering") throw new Error("Wait for the video to finish first.");
+  if (ep.file) fs.rmSync(path.resolve(ROOT, ep.file), {force: true});
+  fs.rmSync(path.join(OUT, ep.userId, `${ep.id}.props.json`), {force: true});
+  db.remove("episodes", (e) => e.id === ep.id);
+  return {ok: true};
+}));
+
 // ---------- episodes ----------
 app.get("/api/episodes", requireUser, wrap((req) => {
   const q = req.query;
   return db
-    .all("episodes", (e) => e.userId === req.user.id && (!q.pipeline || e.pipelineId === q.pipeline) && (!q.stage || String(q.stage).split(",").includes(e.stage)))
+    .all("episodes", (e) => e.userId === req.user.id && (!q.pipeline || e.pipelineId === q.pipeline) && (!q.stage || String(q.stage).split(",").includes(e.stage)) && (q.single === undefined || Boolean(e.single) === (q.single === "1")))
     .sort((a, b) => new Date(a.at) - new Date(b.at))
     .map(shapeEpisode);
 }));
@@ -194,10 +267,10 @@ const ACTIONS = {
   approveScript: (ep) => (ep.stage === "script_review" ? {stage: "render_queued"} : null),
   approveVideo: (ep) => (ep.stage === "video_review" ? {stage: "scheduled"} : null),
   rewrite: (ep) => (["script_review", "failed", "video_review"].includes(ep.stage) ? {stage: "writing", error: null} : null),
-  remake: (ep) => (["video_review", "failed", "scheduled"].includes(ep.stage) && ep.script ? {stage: "render_queued", error: null} : null),
-  skip: (ep) => (!["posted", "posting", "rendering"].includes(ep.stage) ? {stage: "skipped"} : null),
-  postNow: (ep) => (["video_review", "scheduled"].includes(ep.stage) ? {stage: "scheduled", at: now()} : null),
-  retry: (ep) => (ep.stage === "failed" ? {stage: ep.file ? "scheduled" : ep.script ? "render_queued" : "writing", error: null} : null),
+  remake: (ep) => (["video_review", "failed", "scheduled", "ready"].includes(ep.stage) && ep.script ? {stage: "render_queued", error: null} : null),
+  skip: (ep) => (!ep.single && !["posted", "posting", "rendering"].includes(ep.stage) ? {stage: "skipped"} : null),
+  postNow: (ep) => (!ep.single && ["video_review", "scheduled"].includes(ep.stage) ? {stage: "scheduled", at: now()} : null),
+  retry: (ep) => (ep.stage === "failed" ? {stage: ep.file ? (ep.single ? "ready" : "scheduled") : ep.script ? "render_queued" : "writing", error: null} : null),
 };
 app.post("/api/episodes/:id/:action", requireUser, wrap((req) => {
   const ep = mine("episodes", req);
@@ -229,6 +302,7 @@ app.get("/api/admin/overview", requireAdmin, wrap(() => {
   const users = db.all("users").map((u) => ({
     ...publicUser(u),
     pipelines: db.all("pipelines", (p) => p.userId === u.id).length,
+    videos: eps.filter((e) => e.userId === u.id && e.single).length,
     posted: eps.filter((e) => e.userId === u.id && e.stage === "posted").length,
     failed: eps.filter((e) => e.userId === u.id && e.stage === "failed").length,
   }));
@@ -252,6 +326,14 @@ app.post("/api/admin/users/:id/credits", requireAdmin, wrap((req) => {
   const u = db.update("users", req.params.id, (x) => ({credits: Math.max(0, x.credits + n)}));
   if (!u) throw notFound("User");
   event(u.id, `${n > 0 ? "Added" : "Removed"} ${Math.abs(n)} credits.`, "good");
+  return publicUser(u);
+}));
+app.post("/api/admin/users/:id/plan", requireAdmin, wrap((req) => {
+  const plan = String(req.body.plan || "");
+  if (!PLANS[plan]) throw new Error("Unknown plan.");
+  const u = db.update("users", req.params.id, {plan});
+  if (!u) throw notFound("User");
+  event(u.id, `Plan changed to ${PLANS[plan].name}.`, "good");
   return publicUser(u);
 }));
 app.get("/api/admin/log", requireAdmin, wrap(() => {

@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import {api, go, DAYS, fmtWhen, scheduleText} from "../api.js";
+import {api, go, DAYS, fmtWhen, scheduleText, canPipeline} from "../api.js";
 import {Field, Platform} from "../ui.jsx";
 import {TemplateCard} from "./Onboarding.jsx";
 
@@ -24,7 +24,7 @@ export default function Wizard({state, route, toast, refresh}) {
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [f, setF] = useState(() => ({
-    template: route.query.template || "midnight-deploy",
+    template: route.query.template || state.templates[0].id,
     name: "",
     seriesName: "",
     topics: "",
@@ -54,6 +54,7 @@ export default function Wizard({state, route, toast, refresh}) {
     setStep(step + 1);
   };
   const toggleDay = (d) => setF({...f, schedule: {...f.schedule, days: f.schedule.days.includes(d) ? f.schedule.days.filter((x) => x !== d) : [...f.schedule.days, d].sort()}});
+  if (!canPipeline(state)) return <PipelineLocked template={f.template} />;
   const toggleCh = (ch) => setF({...f, channels: f.channels.includes(ch) ? f.channels.filter((x) => x !== ch) : [...f.channels, ch]});
 
   async function save() {
@@ -248,6 +249,33 @@ export default function Wizard({state, route, toast, refresh}) {
         ) : (
           <button className="btn primary big" onClick={save} disabled={busy}>{busy ? "Saving…" : "Save pipeline"}</button>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Free plan: pipelines are locked; point to single videos and plans.
+function PipelineLocked({template}) {
+  return (
+    <div className="wizard">
+      <div className="wiz-head">
+        <a className="linkbtn" href="#/home">← Home</a>
+        <div className="eyebrow mono">STARTER AND UP</div>
+        <h1 className="title-l">Pipelines post for you</h1>
+        <p className="lede">
+          A pipeline takes a list of topics and a schedule, then writes, makes and posts every episode to Instagram and YouTube on time, without a watermark.
+          Pipelines start on the Starter plan.
+        </p>
+      </div>
+      <div className="upsell">
+        <div>
+          <b>On Free, you can still make videos</b>
+          <span className="dim small">Make one video at a time, download it, and post it yourself.</span>
+        </div>
+        <span className="home-actions">
+          <a className="btn" href={`#/create?template=${template}`}>Make a video</a>
+          <a className="btn primary" href="#/settings/plan">See plans</a>
+        </span>
       </div>
     </div>
   );

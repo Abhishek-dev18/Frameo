@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {api, readRoute, go, relative} from "./api.js";
+import {api, readRoute, go, relative, canPipeline} from "./api.js";
 import {Brand, Credits, Footer} from "./ui.jsx";
 import Landing from "./pages/Landing.jsx";
 import {Login, Signup, Forgot, Reset} from "./pages/Auth.jsx";
@@ -10,6 +10,8 @@ import Wizard from "./pages/Wizard.jsx";
 import Pipeline from "./pages/Pipeline.jsx";
 import Review from "./pages/Review.jsx";
 import Posted from "./pages/Posted.jsx";
+import Create from "./pages/Create.jsx";
+import Videos from "./pages/Videos.jsx";
 import Settings from "./pages/Settings.jsx";
 import Activity from "./pages/Activity.jsx";
 import Admin from "./pages/Admin.jsx";
@@ -102,6 +104,8 @@ export default function App() {
   if (page === "pipelines" && route.path[1] === "new") body = <Wizard {...props} />;
   else if (page === "pipelines" && route.path[1]) body = <Pipeline {...props} id={route.path[1]} />;
   else if (page === "review" && route.path[1]) body = <Review {...props} id={route.path[1]} />;
+  else if (page === "create") body = <Create {...props} />;
+  else if (page === "videos") body = <Videos {...props} />;
   else if (page === "posted") body = <Posted {...props} />;
   else if (page === "activity") body = <Activity {...props} />;
   else if (page === "settings") body = <Settings {...props} tab={route.path[1] || "profile"} />;
@@ -150,7 +154,8 @@ function Toasts({toasts}) {
 
 const NAV = [
   ["home", "Home"],
-  ["posted", "Posted"],
+  ["videos", "Videos"],
+  ["posted", "Posted", "pipelines"],
   ["activity", "Activity"],
   ["settings", "Settings"],
 ];
@@ -177,8 +182,8 @@ function TopBar({user, state, page, onLogout, refresh}) {
     <header className="topbar" ref={ref}>
       <Brand to="#/home" />
       <nav className="nav" aria-label="Main">
-        {NAV.map(([id, label]) => (
-          <a key={id} href={`#/${id}`} className={page === id || (id === "home" && ["pipelines", "review"].includes(page)) ? "on" : ""}>
+        {NAV.filter(([, , needs]) => !needs || canPipeline(state)).map(([id, label]) => (
+          <a key={id} href={`#/${id}`} className={page === id || (id === "home" && ["pipelines", "review"].includes(page)) || (id === "videos" && page === "create") ? "on" : ""}>
             {label}
           </a>
         ))}

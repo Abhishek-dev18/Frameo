@@ -1,17 +1,6 @@
-// The video styles users can pick. Each maps to a Remotion composition in src/Root.tsx.
+// The video styles users can pick, in the order they are shown. Each maps to a Remotion composition in src/Root.tsx.
 // credits = cost of one 30-second episode (60 seconds costs double).
 export const TEMPLATES = [
-  {
-    id: "midnight-deploy",
-    name: "Anime story",
-    series: "Midnight Deploy",
-    composition: "MidnightDeploy",
-    credits: 2,
-    blurb: "A developer and his AI drone fix a real bug before sunrise. Letterbox, impact words, real code.",
-    best: "Bugs, outages, security stories",
-    preview: "/samples/midnight-deploy.mp4",
-    characters: ["Kai", "Byte"],
-  },
   {
     id: "explainer-cards",
     name: "Explainer cards",
@@ -35,6 +24,17 @@ export const TEMPLATES = [
     characters: ["Bot", "Retriever"],
   },
   {
+    id: "midnight-deploy",
+    name: "Anime story",
+    series: "Midnight Deploy",
+    composition: "MidnightDeploy",
+    credits: 2,
+    blurb: "A developer and his AI drone fix a real bug before sunrise. Letterbox, impact words, real code.",
+    best: "Bugs, outages, security stories",
+    preview: "/samples/midnight-deploy.mp4",
+    characters: ["Kai", "Byte"],
+  },
+  {
     id: "anime-action",
     name: "Anime action",
     series: "The Last Blade",
@@ -49,3 +49,13 @@ export const TEMPLATES = [
 
 export const getTemplate = (tid) => TEMPLATES.find((t) => t.id === tid);
 export const costOf = (tid, length = 30) => (getTemplate(tid)?.credits || 1) * (length >= 60 ? 2 : 1);
+
+// What each plan can do. Free makes one video at a time to download (watermarked) and
+// upload by hand; pipelines (scheduled auto-posting) start on Starter.
+export const PLANS = {
+  free: {name: "Free", price: 0, credits: 30, monthly: false, pipelines: 0, watermark: true},
+  starter: {name: "Starter", price: 499, credits: 30, monthly: true, pipelines: 1, watermark: false},
+  creator: {name: "Creator", price: 999, credits: 70, monthly: true, pipelines: 5, watermark: false},
+  pro: {name: "Pro", price: 2499, credits: 200, monthly: true, pipelines: Infinity, watermark: false},
+};
+export const planOf = (user) => PLANS[user?.plan] || PLANS.free;

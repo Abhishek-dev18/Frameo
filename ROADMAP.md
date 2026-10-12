@@ -50,7 +50,12 @@ Today: one YouTube channel connected through a **Desktop OAuth client** with a l
 
 ## 2. Money  **[launch]**
 
-Today: plans and prices are shown (Free / Starter ₹499 / Creator ₹999 / Pro ₹2,499), "Upgrade" buttons are disabled, credits are only added by the admin.
+Today: plans and prices are shown (Free / Starter ₹499 / Creator ₹999 / Pro ₹2,499), "Upgrade" buttons are disabled, credits and plans are only changed by the admin (Admin page).
+
+Plan rules already enforced in code (`server/templates.mjs` → `PLANS`):
+- **Free**: 30 credits once; single videos only, one at a time; "Made with Frameo" watermark; user downloads the MP4 and uploads it by hand. No pipelines, no auto-posting.
+- **Starter**: 1 live pipeline, auto-posting, no watermark. **Creator**: 5 pipelines. **Pro**: unlimited.
+- Downgrading to Free stops that user's pipelines (nothing renders or posts until they upgrade).
 
 - [ ] **Razorpay** account (needs the business entity, KYC, website with pricing, refund policy, contact page).
 - [ ] **Subscriptions** via Razorpay Subscriptions + **UPI Autopay** (RBI e-mandate rules: pre-debit notification 24h before each charge, Razorpay handles it).
@@ -60,6 +65,7 @@ Today: plans and prices are shown (Free / Starter ₹499 / Creator ₹999 / Pro 
 - [ ] **Invoices** (auto-generated PDF per payment, GSTIN, HSN/SAC 998314) and a billing history page.
 - [ ] International cards / Stripe later if users outside India sign up.
 - [ ] Credit expiry rules and the "failed renders are refunded" rule written into Terms.
+- [ ] Monthly credit top-up job for paid plans (today credits never reset).
 - [ ] Admin: billing view, manual refunds, coupons.
 
 ---

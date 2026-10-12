@@ -539,3 +539,18 @@ input[type="checkbox"] { width: auto; }
 .btn.ghost { border-color: transparent; }
 .field { align-content: start; }
 .grid2 { align-items: start; }
+
+/* single videos + plans */
+.upsell { display: flex; align-items: center; gap: 16px 20px; flex-wrap: wrap; border: 1px solid var(--accent-line); background: var(--accent-wash); border-radius: 14px; padding: 16px 18px; max-width: 1100px; }
+.upsell > div { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 240px; }
+.upsell .eyebrow { margin-bottom: 0; }
+.upsell b { font-size: 16px; }
+.home-actions { display: inline-flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+.home-head .home-actions .btn { margin-left: 0; }
+.ready-box { border: 1px solid rgba(111, 211, 156, 0.4); background: rgba(111, 211, 156, 0.07); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.posted-video { display: grid; place-items: center; }
+.plan-points { list-style: none; display: grid; gap: 4px; color: var(--ink2); font-size: 13px; margin: 6px 0 2px; }
+.plan-points li::before { content: "— "; color: var(--accent); }
+.plan-select { width: auto; padding: 6px 8px; font-size: 13px; }
+.create .tpl-grid { margin-top: 0; }
+.week-head .linkbtn.week-nav { margin-left: auto; }

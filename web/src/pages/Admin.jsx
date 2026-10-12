@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {api, fmtWhen} from "../api.js";
+import {api, fmtWhen, PLANS} from "../api.js";
 import {Stage} from "../ui.jsx";
 
 export default function Admin({toast, refresh}) {
@@ -17,6 +17,16 @@ export default function Admin({toast, refresh}) {
     try {
       await api.addCredits(u.id, n);
       toast(`Credits updated for ${u.email}`, "good");
+      load();
+      refresh();
+    } catch (e) {
+      toast(e.message, "bad");
+    }
+  };
+  const setPlan = async (u, plan) => {
+    try {
+      await api.setPlan(u.id, plan);
+      toast(`${u.email} is now on ${PLANS.find((p) => p.id === plan).name}`, "good");
       load();
       refresh();
     } catch (e) {
@@ -56,14 +66,19 @@ export default function Admin({toast, refresh}) {
       <h2 className="title-s section-gap">Users</h2>
       <div className="table-wrap">
         <table className="table">
-          <thead><tr><th>User</th><th>Role</th><th>Plan</th><th>Credits</th><th>Pipelines</th><th>Posted</th><th>Failed</th><th>Joined</th><th /></tr></thead>
+          <thead><tr><th>User</th><th>Role</th><th>Plan</th><th>Credits</th><th>Videos</th><th>Pipelines</th><th>Posted</th><th>Failed</th><th>Joined</th><th /></tr></thead>
           <tbody>
             {d.users.map((u) => (
               <tr key={u.id}>
                 <td><b>{u.name}</b><br /><span className="dim small">{u.email}</span></td>
                 <td className="mono small">{u.role}</td>
-                <td>{u.plan}</td>
+                <td>
+                  <select className="plan-select" value={u.plan} onChange={(e) => setPlan(u, e.target.value)} aria-label={`Plan for ${u.email}`}>
+                    {PLANS.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+                  </select>
+                </td>
                 <td className="mono">{u.credits}</td>
+                <td className="mono">{u.videos}</td>
                 <td className="mono">{u.pipelines}</td>
                 <td className="mono">{u.posted}</td>
                 <td className={`mono ${u.failed ? "bad" : ""}`}>{u.failed}</td>

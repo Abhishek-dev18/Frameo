@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {api, go} from "../api.js";
+import {api, go, canPipeline} from "../api.js";
 import {Brand, Field, Platform} from "../ui.jsx";
 
 const NICHES = ["Tech and AI", "Programming", "Cybersecurity", "Cloud and DevOps", "Data science", "Startups", "Other"];
@@ -8,7 +8,8 @@ export default function Onboarding({state, refresh, toast}) {
   const u = state.user;
   const [step, setStep] = useState(1);
   const [p, setP] = useState({channelName: u.profile.channelName || "", handle: u.profile.handle || "", niche: u.profile.niche || "Tech and AI", language: u.profile.language || "English"});
-  const [template, setTemplate] = useState("midnight-deploy");
+  const [template, setTemplate] = useState(state.templates[0].id);
+  const paid = canPipeline(state);
   const [busy, setBusy] = useState(false);
   const c = state.connections;
 
@@ -82,8 +83,12 @@ export default function Onboarding({state, refresh, toast}) {
         ) : step === 2 ? (
           <div className="onb-card">
             <div className="eyebrow mono">STEP 2 OF 3</div>
-            <h1 className="title-l">Where should episodes post?</h1>
-            <p className="dim">Frameo posts to Instagram as Reels and to YouTube as Shorts.</p>
+            <h1 className="title-l">{paid ? "Where should episodes post?" : "How posting works"}</h1>
+            <p className="dim">
+              {paid
+                ? "Frameo posts to Instagram as Reels and to YouTube as Shorts."
+                : "On the Free plan you download each video and post it yourself. Starter and up connect Instagram and YouTube so pipelines post for you."}
+            </p>
             <div className="onb-conns">
               <div className="onb-conn">
                 <Platform name="instagram" />
@@ -103,7 +108,9 @@ export default function Onboarding({state, refresh, toast}) {
               </div>
             </div>
             <p className="note-box">
-              {u.role === "admin"
+              {!paid
+                ? "Nothing to connect yet. You can make your first video right after this."
+                : u.role === "admin"
                 ? "You can connect both later under Settings → Connections. You can still create pipelines and approve videos before connecting."
                 : "One-click connect is coming with the public launch. You can create pipelines and approve videos now; they'll post once your accounts are connected."}
             </p>
@@ -117,7 +124,7 @@ export default function Onboarding({state, refresh, toast}) {
           <div className="onb-card wide">
             <div className="eyebrow mono">STEP 3 OF 3</div>
             <h1 className="title-l">Pick your first style</h1>
-            <p className="dim">You can add more pipelines with other styles anytime.</p>
+            <p className="dim">You can switch styles for every video or pipeline later.</p>
             <div className="tpl-grid">
               {state.templates.map((t) => (
                 <TemplateCard key={t.id} t={t} selected={template === t.id} onSelect={() => setTemplate(t.id)} />
@@ -127,7 +134,11 @@ export default function Onboarding({state, refresh, toast}) {
               <button className="btn" type="button" onClick={() => setStep(2)}>Back</button>
               <span className="spacer" />
               <button className="btn" type="button" onClick={() => finish("home")} disabled={busy}>Skip for now</button>
-              <button className="btn primary big" type="button" onClick={() => finish(`pipelines/new?template=${template}`)} disabled={busy}>Set up my first pipeline</button>
+              {paid ? (
+                <button className="btn primary big" type="button" onClick={() => finish(`pipelines/new?template=${template}`)} disabled={busy}>Set up my first pipeline</button>
+              ) : (
+                <button className="btn primary big" type="button" onClick={() => finish(`create?template=${template}`)} disabled={busy}>Make my first video</button>
+              )}
             </div>
           </div>
         )}

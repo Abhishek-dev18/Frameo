@@ -5,13 +5,20 @@ import {RagStory, STORY_TOTAL} from "./RagStory";
 import {MidnightDeploy, MD_TOTAL} from "./MidnightDeploy";
 import {LastBlade, LB_TOTAL} from "./LastBlade";
 import {FrameoPromo, PROMO_TOTAL} from "./FrameoPromo";
+import {withWatermark} from "./Watermark";
+
+// Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
+const HowRagWorksW = withWatermark(HowRagWorks);
+const RagStoryW = withWatermark(RagStory);
+const MidnightDeployW = withWatermark(MidnightDeploy);
+const LastBladeW = withWatermark(LastBlade);
 
 export const RemotionRoot: React.FC = () => (
   <>
-    <Composition id="HowRagWorks" component={HowRagWorks} durationInFrames={TOTAL} fps={30} width={1080} height={1920} />
-    <Composition id="RagStory" component={RagStory} durationInFrames={STORY_TOTAL} fps={30} width={1080} height={1920} />
-    <Composition id="MidnightDeploy" component={MidnightDeploy} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />
-    <Composition id="LastBlade" component={LastBlade} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="HowRagWorks" component={HowRagWorksW} durationInFrames={TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="RagStory" component={RagStoryW} durationInFrames={STORY_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="MidnightDeploy" component={MidnightDeployW} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="LastBlade" component={LastBladeW} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="FrameoPromo" component={FrameoPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
   </>
 );

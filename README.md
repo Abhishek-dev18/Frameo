@@ -12,15 +12,16 @@ cp .env.example .env     # fill in what you have; everything is optional to star
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173**. The first account you create becomes the **admin** (it can set up the Instagram, YouTube, storage and AI keys for this install). Password-reset links are printed in the terminal until an email service is added.
+Open **http://127.0.0.1:5173**. The first account you create becomes the **admin** (on the Free plan; switch your own plan on the Admin page to test pipelines) (it can set up the Instagram, YouTube, storage and AI keys for this install). Password-reset links are printed in the terminal until an email service is added.
 
 ## How it works for a user
 
 1. **Landing page** → sign up (30 free credits).
-2. **Onboarding**: name the channel → see connections → pick a first style.
-3. **New pipeline** (5 steps): style + episode length → topics (one per line) → days and time + review mode → Instagram / YouTube → cost check and save.
-4. Frameo plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
-5. **Home** shows what needs your review, your pipelines and the week's calendar. The bell and Telegram tell you when something needs you.
+2. **Onboarding**: name the channel → how posting works → pick a first style.
+3. **Free plan: single videos.** Pick a style, type a topic → approve the script → download the MP4 (with a small "Made with Frameo" mark) and upload it yourself. One video at a time.
+4. **Starter and up: pipelines.** New pipeline (5 steps): style + episode length → topics (one per line) → days and time + review mode → Instagram / YouTube → cost check and save.
+5. Frameo plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
+6. **Home** shows what needs your review, your pipelines and the week's calendar. The bell and Telegram tell you when something needs you.
 
 Episode stages: `writing → script_review → render_queued → rendering → video_review → scheduled → posting → posted` (or `failed` / `skipped`). Credits are charged when a video is made and refunded if it fails.
 

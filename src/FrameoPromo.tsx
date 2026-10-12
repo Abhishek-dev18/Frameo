@@ -176,18 +176,18 @@ const Topics: React.FC = () => {
 };
 
 const STYLES = [
-  {name: "Midnight Deploy", tag: "Anime office story", a: "#2B1B4F", b: "#0B0A1A", fg: "#B89CFF"},
   {name: "Explainer Cards", tag: "Clean diagrams", a: "#0F3322", b: "#050A07", fg: "#4ADE80"},
-  {name: "Kahaani", tag: "Story narration", a: "#4A2412", b: "#140A05", fg: "#FFB27A"},
+  {name: "Character Story", tag: "Two characters, one idea", a: "#4A2412", b: "#140A05", fg: "#FFB27A"},
+  {name: "Anime Story", tag: "Dev + AI drone", a: "#2B1B4F", b: "#0B0A1A", fg: "#B89CFF"},
   {name: "Anime Action", tag: "Battle metaphors", a: "#4A0F1A", b: "#12040A", fg: "#FF6B7F"},
-];
+]
 const Style: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const pick = spring({frame: f - 62, fps, config: {damping: 14}});
   return (
     <Scene len={T.style[1]}>
-      <StepHead n="02" text="Pick a look." sub="Anime stories, clean explainers, narrated tales. Every episode keeps the same style." />
+      <StepHead n="02" text="Pick a look." sub="Clean explainers, character stories or full anime. Every episode keeps the same style." />
       <div style={{position: "absolute", right: 120, top: "50%", transform: "translateY(-50%)", display: "flex", gap: 22}}>
         {STYLES.map((s, i) => {
           const inn = spring({frame: f - 6 - i * 5, fps, config: {damping: 16}});
@@ -197,7 +197,7 @@ const Style: React.FC = () => {
             <div key={s.name} style={{width: 222, opacity: inn * dim, transform: `translateY(${(1 - inn) * 80}px) scale(${on ? 1 + pick * 0.06 : 1})`, fontFamily: SANS}}>
               <div style={{position: "relative", height: 396, borderRadius: 22, overflow: "hidden", background: `linear-gradient(170deg, ${s.a}, ${s.b})`, border: `3px solid ${on ? C.accent : C.line2}`, boxShadow: on ? `0 0 0 ${pick * 6}px rgba(255,122,69,.25)` : "none"}}>
                 <div style={{position: "absolute", left: 20, right: 20, top: 26, height: 150, borderRadius: 14, border: `2px solid ${s.fg}55`, background: `${s.fg}14`}}>
-                  <div style={{position: "absolute", left: "50%", top: "50%", width: 56, height: 56, borderRadius: i === 1 ? 10 : 28, border: `4px solid ${s.fg}`, transform: `translate(-50%,-50%) rotate(${(f - i * 9) * (i === 3 ? 4 : 1)}deg)`}} />
+                  <div style={{position: "absolute", left: "50%", top: "50%", width: 56, height: 56, borderRadius: i === 0 ? 10 : 28, border: `4px solid ${s.fg}`, transform: `translate(-50%,-50%) rotate(${(f - i * 9) * (i === 3 ? 4 : 1)}deg)`}} />
                 </div>
                 <div style={{position: "absolute", left: 20, right: 20, bottom: 30, display: "flex", flexDirection: "column", gap: 8}}>
                   <div style={{height: 12, borderRadius: 6, background: `${s.fg}cc`, width: "86%"}} />
@@ -308,15 +308,15 @@ const Video: React.FC = () => {
       <StepHead n="05" text="Frameo makes the video." sub="Scenes, motion, subtitles and music, in your style. No editing app." />
       <div style={{position: "absolute", right: 320, top: "47%", transform: `translateY(-50%) translateY(${(1 - phoneIn) * 80}px)`, opacity: phoneIn}}>
         <div style={{width: 392, height: 740, borderRadius: 46, border: `10px solid #2A2522`, background: "#000", overflow: "hidden", position: "relative", boxShadow: "0 50px 120px rgba(0,0,0,.7)"}}>
-          <div style={{position: "absolute", inset: 0, background: "linear-gradient(170deg, #2B1B4F, #0B0A1A)", filter: ready ? "none" : `blur(${(100 - p) / 6}px) grayscale(${1 - p / 100})`}}>
-            <div style={{position: "absolute", left: 36, right: 36, top: 70, height: 300, borderRadius: 22, border: "3px solid #B89CFF66", background: "#B89CFF14"}}>
-              <div style={{position: "absolute", left: "50%", top: "50%", width: 120, height: 120, borderRadius: 60, border: "6px solid #B89CFF", transform: `translate(-50%,-50%) scale(${1 + Math.sin(f / 8) * 0.06})`}} />
+          <div style={{position: "absolute", inset: 0, background: "linear-gradient(170deg, #0F3322, #050A07)", filter: ready ? "none" : `blur(${(100 - p) / 6}px) grayscale(${1 - p / 100})`}}>
+            <div style={{position: "absolute", left: 36, right: 36, top: 70, height: 300, borderRadius: 22, border: "3px solid #4ADE8066", background: "#4ADE8014"}}>
+              <div style={{position: "absolute", left: "50%", top: "50%", width: 120, height: 120, borderRadius: 24, border: "6px solid #4ADE80", transform: `translate(-50%,-50%) scale(${1 + Math.sin(f / 8) * 0.06})`}} />
               <div style={{position: "absolute", left: "50%", top: "50%", width: 40, height: 40, borderRadius: 20, background: C.accent, transform: "translate(-50%,-50%)"}} />
             </div>
             <div style={{position: "absolute", left: 30, right: 30, bottom: 170, textAlign: "center", fontFamily: SANS, fontSize: 32, fontWeight: 800, lineHeight: 1.15, color: "#fff", opacity: ready ? lineIn : 0, transform: `translateY(${(1 - lineIn) * 16}px)`, textShadow: "0 3px 12px #000"}}>
               {REEL[line]}
             </div>
-            <div style={{position: "absolute", left: 0, right: 0, bottom: 70, textAlign: "center", fontFamily: MONO, fontSize: 18, color: "#B89CFF", letterSpacing: "0.1em"}}>EP 1 · HOW RAG WORKS</div>
+            <div style={{position: "absolute", left: 0, right: 0, bottom: 70, textAlign: "center", fontFamily: MONO, fontSize: 18, color: "#4ADE80", letterSpacing: "0.1em"}}>EP 1 · HOW RAG WORKS</div>
           </div>
           {!ready ? (
             <div style={{position: "absolute", left: 40, right: 40, top: "50%", transform: "translateY(-50%)", background: "rgba(14,12,11,.88)", borderRadius: 20, padding: "26px 26px", border: `2px solid ${C.line2}`}}>
