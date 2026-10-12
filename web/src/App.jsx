@@ -83,7 +83,7 @@ export default function App() {
         ) : null}
       </header>
 
-      <main className="main">
+      <main className={`main ${page === "home" ? "main-home" : ""}`}>
         {offline ? (
           <div className="banner bad">
             Frameo's server isn't responding. Check the terminal where you ran <span className="mono">npm run dev</span>.

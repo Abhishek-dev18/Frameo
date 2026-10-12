@@ -46,7 +46,7 @@ export default function Home({state, episodes, refresh, toast}) {
   const editingEpisode = editing?.id ? episodes.find((e) => e.id === editing.id) : null;
 
   return (
-    <>
+    <div className="home">
       {ready < 3 ? (
         <a className="setup" href="#/settings">
           <span className="setup-count mono">{ready}/3</span>
@@ -59,6 +59,7 @@ export default function Home({state, episodes, refresh, toast}) {
 
       <NextUp next={next} state={state} onOpen={(id) => setEditing({id})} onPlan={() => addOn(new Date(Date.now() + DAY))} refresh={refresh} toast={toast} />
 
+      <div className="home-grid">
       <section className="week" aria-label="Calendar">
         <div className="week-head">
           <h2 className="title-s">This week</h2>
@@ -108,7 +109,7 @@ export default function Home({state, episodes, refresh, toast}) {
 
       <section className="tray" aria-label="Not scheduled yet">
         <div className="week-head">
-          <h2 className="title-s">Not scheduled yet</h2>
+          <h2 className="title-s">Drafts</h2>
           <span className="mono dim">{unscheduled.length}</span>
         </div>
         {unscheduled.length ? (
@@ -119,16 +120,17 @@ export default function Home({state, episodes, refresh, toast}) {
                 <span className="draft-text">
                   <span className="mono dim">{e.id.toUpperCase()} · {e.status === "failed" ? "FAILED" : "DRAFT"}</span>
                   <b>{e.title}</b>
-                  <span className="dim small">Open it and pick a day to schedule</span>
+                  <span className="dim small">Open it to pick a day</span>
                   {e.job ? <Progress job={e.job} /> : null}
                 </span>
               </button>
             ))}
           </div>
         ) : (
-          <p className="dim small">Every episode has a date. Drafts without one wait here.</p>
+          <p className="dim small tray-empty">Episodes without a date wait here.</p>
         )}
       </section>
+      </div>
 
       {editing ? (
         <Editor
@@ -142,7 +144,7 @@ export default function Home({state, episodes, refresh, toast}) {
           toast={toast}
         />
       ) : null}
-    </>
+    </div>
   );
 }
 
@@ -158,10 +160,10 @@ function NextUp({next, state, onOpen, onPlan, refresh, toast}) {
       <section className="next empty-next">
         <div>
           <div className="eyebrow mono">NEXT ON AIR</div>
-          <h1 className="title-xl muted">Nothing scheduled</h1>
+          <h1 className="title-next muted">Nothing scheduled</h1>
           <p className="dim">Pick a day in the calendar below, or start a new episode.</p>
         </div>
-        <button className="btn primary big" onClick={onPlan}>Plan an episode</button>
+        <button className="btn primary" onClick={onPlan}>Plan an episode</button>
       </section>
     );
   }
@@ -187,7 +189,7 @@ function NextUp({next, state, onOpen, onPlan, refresh, toast}) {
     <section className="next" aria-label="Next on air">
       <div className="next-main">
         <div className="eyebrow mono">NEXT ON AIR · {fmtWhen(next.at).toUpperCase()}</div>
-        <h1 className="title-xl">{next.title}</h1>
+        <h1 className="title-next">{next.title}</h1>
         <div className="next-meta">
           {next.platforms.map((p) => <Platform key={p} name={p} />)}
           <span className="dim">{state.scheduler.enabled ? "Will post automatically" : "Auto-posting is off. Turn on ON AIR at the top."}</span>
@@ -201,8 +203,8 @@ function NextUp({next, state, onOpen, onPlan, refresh, toast}) {
           <div><b className="accent">{pad(s)}</b><span>SEC</span></div>
         </div>
         <div className="next-actions">
-          <button className="btn light big" onClick={postNow} disabled={job?.state === "running"}>Post now</button>
-          <button className="btn big" onClick={() => onOpen(next.id)}>Open</button>
+          <button className="btn light" onClick={postNow} disabled={job?.state === "running"}>Post now</button>
+          <button className="btn" onClick={() => onOpen(next.id)}>Open</button>
         </div>
       </div>
     </section>
