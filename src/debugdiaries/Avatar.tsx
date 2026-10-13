@@ -54,4 +54,18 @@ const Diary: React.FC = () => (
   </AbsoluteFill>
 );
 
-export const AVATARS = {Prompt, Braces, Diary};
+// B2 · braces + bug, with ".io" tucked after the closing brace (matches @debugdiaries.io)
+const BracesIO: React.FC = () => (
+  <AbsoluteFill style={{background: C.bg, alignItems: "center", justifyContent: "center"}}>
+    <div style={{display: "flex", alignItems: "center", gap: 40, fontFamily: MONO, fontWeight: 700, fontSize: 330, lineHeight: 1, color: C.g, marginTop: -20, marginLeft: -170}}>
+      <span>{"{"}</span>
+      <span style={{width: 110, height: 110, borderRadius: 55, background: C.bug, boxShadow: `0 0 0 26px ${C.bug}26`}} />
+      <span style={{position: "relative"}}>
+        {"}"}
+        <span style={{position: "absolute", left: "92%", bottom: 34, fontSize: 110, color: C.text, letterSpacing: "-0.02em"}}>.io</span>
+      </span>
+    </div>
+  </AbsoluteFill>
+);
+
+export const AVATARS = {Prompt, Braces, Diary, BracesIO};
