@@ -1,11 +1,12 @@
 import React from "react";
-import {Composition} from "remotion";
+import {Composition, Still} from "remotion";
 import {HowRagWorks, TOTAL} from "./HowRagWorks";
 import {RagStory, STORY_TOTAL} from "./RagStory";
 import {MidnightDeploy, MD_TOTAL} from "./MidnightDeploy";
 import {LastBlade, LB_TOTAL} from "./LastBlade";
 import {PixelScriptPromo, PROMO_TOTAL} from "./Promo";
 import {withWatermark} from "./Watermark";
+import {DESIGNS} from "./designs/DebugDiaries";
 
 // Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
 const HowRagWorksW = withWatermark(HowRagWorks);
@@ -20,5 +21,9 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="MidnightDeploy" component={MidnightDeployW} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="LastBlade" component={LastBladeW} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="PixelScriptPromo" component={PixelScriptPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
+    {/* Debug Diaries channel design options (stills) */}
+    {Object.entries(DESIGNS).flatMap(([name, C]) =>
+      (["hook", "explain", "end"] as const).map((beat) => <Still key={`${name}-${beat}`} id={`DD-${name}-${beat}`} component={() => <C beat={beat} />} width={1080} height={1920} />),
+    )}
   </>
 );
