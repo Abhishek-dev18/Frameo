@@ -29,7 +29,7 @@ export const Banner: React.FC = () => (
             Debug <span style={{color: C.g}}>Diaries</span>
           </div>
           <div style={{fontFamily: MONO, fontSize: 40, color: C.text}}>
-            Real bugs. Real fixes. <span style={{color: C.g}}>30 seconds</span> each.
+            Real bugs. Real fixes. <span style={{color: C.g}}>Explained simply.</span>
           </div>
           <div style={{fontFamily: MONO, fontSize: 30, color: C.dim, letterSpacing: "0.06em"}}>
             NEW ENTRY EVERY WEEK · @debugdiaries.io
