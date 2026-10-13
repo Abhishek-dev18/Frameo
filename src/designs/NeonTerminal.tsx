@@ -10,43 +10,58 @@ export type Beat = "hook" | "explain" | "end";
 const MONO = "'JetBrains Mono', monospace";
 const SANS = "'Archivo Variable', Inter, sans-serif";
 
-export const ACCENTS: Record<string, {a2: string; name: string}> = {
-  magenta: {a2: "#FF3DCB", name: "Green + Magenta"},
-  cyan: {a2: "#38E1FF", name: "Green + Cyan"},
-  amber: {a2: "#FFC53D", name: "Green + Amber"},
+type Th = {name: string; g: string; a2: string; bg: string; card: string; line: string; dim: string; text: string; err: string};
+const GREY = {bg: "#16171A", card: "rgba(32,34,38,.94)", dim: "#80868F", text: "#E6E8EB"};
+// Pairs picked to sit well together on dark grey (softer than pure neon).
+export const ACCENTS: Record<string, Th> = {
+  mintYellow: {name: "Mint + Lemon", g: "#4ADE80", a2: "#FDE047", line: "rgba(74,222,128,.32)", err: "#FB7185", ...GREY},
+  mintBlue: {name: "Mint + Sky blue", g: "#34D399", a2: "#60A5FA", line: "rgba(52,211,153,.32)", err: "#FB7185", ...GREY},
+  limePink: {name: "Lime + Pink", g: "#A3E635", a2: "#F472B6", line: "rgba(163,230,53,.30)", err: "#F472B6", ...GREY},
+  // earlier black versions
+  magenta: {name: "Green + Magenta (black)", g: "#3DFF8F", a2: "#FF3DCB", bg: "#040706", card: "rgba(8,18,13,.92)", line: "rgba(61,255,143,.28)", dim: "#5E8A72", text: "#D6F5E3", err: "#FF7A90"},
+  cyan: {name: "Green + Cyan (black)", g: "#3DFF8F", a2: "#38E1FF", bg: "#040706", card: "rgba(8,18,13,.92)", line: "rgba(61,255,143,.28)", dim: "#5E8A72", text: "#D6F5E3", err: "#FF7A90"},
+  amber: {name: "Green + Amber (black)", g: "#3DFF8F", a2: "#FFC53D", bg: "#040706", card: "rgba(8,18,13,.92)", line: "rgba(61,255,143,.28)", dim: "#5E8A72", text: "#D6F5E3", err: "#FF7A90"},
 };
-const G = "#3DFF8F"; // neon green
-const BG = "#040706";
-const CARD = "rgba(8,18,13,.92)";
-const LINE = "rgba(61,255,143,.28)";
-const DIM = "#5E8A72";
-const TEXT = "#D6F5E3";
+const ThemeCtx = React.createContext<Th>(ACCENTS.mintYellow);
+const useT = () => React.useContext(ThemeCtx);
 const glow = (c: string, r = 18) => `0 0 ${r}px ${c}99, 0 0 ${r * 2}px ${c}44`;
 
-const Grid: React.FC = () => (
+const Grid: React.FC = () => {
+  const {g: G, bg: BG, card: CARD, line: LINE, dim: DIM, text: TEXT} = useT();
+  return (
   <>
-    <AbsoluteFill style={{backgroundImage: `linear-gradient(${LINE.replace(".28", ".07")} 2px, transparent 2px), linear-gradient(90deg, ${LINE.replace(".28", ".07")} 2px, transparent 2px)`, backgroundSize: "60px 60px"}} />
-    <AbsoluteFill style={{background: "radial-gradient(900px 900px at 50% 40%, rgba(61,255,143,.10), transparent 70%)"}} />
-    <AbsoluteFill style={{backgroundImage: "repeating-linear-gradient(to bottom, rgba(0,0,0,.18) 0 2px, transparent 2px 5px)"}} />
-    <AbsoluteFill style={{boxShadow: "inset 0 0 260px rgba(0,0,0,.9)"}} />
+    <AbsoluteFill style={{backgroundImage: `linear-gradient(${G}0F 2px, transparent 2px), linear-gradient(90deg, ${G}0F 2px, transparent 2px)`, backgroundSize: "60px 60px"}} />
+    <AbsoluteFill style={{background: `radial-gradient(900px 900px at 50% 40%, ${G}14, transparent 70%)`}} />
+    <AbsoluteFill style={{backgroundImage: "repeating-linear-gradient(to bottom, rgba(0,0,0,.10) 0 2px, transparent 2px 5px)"}} />
+    <AbsoluteFill style={{boxShadow: "inset 0 0 260px rgba(0,0,0,.55)"}} />
   </>
-);
+  );
+};
 
-const Header: React.FC<{a2: string}> = ({a2}) => (
+const Header: React.FC<{a2: string}> = ({a2}) => {
+  const {g: G, bg: BG, card: CARD, line: LINE, dim: DIM, text: TEXT} = useT();
+  return (
   <div style={{position: "absolute", left: 64, right: 64, top: 150, display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 32, letterSpacing: "0.12em", color: DIM}}>
     <span>DEBUG DIARIES · <span style={{color: a2, textShadow: glow(a2, 10)}}>001</span></span>
     <span style={{letterSpacing: "0.04em"}}>@debugdiaries</span>
   </div>
-);
+  );
+};
 
-const Section: React.FC<{n: string; label: string; top: number; a2: string}> = ({n, label, top, a2}) => (
+const Section: React.FC<{n: string; label: string; top: number; a2: string}> = ({n, label, top, a2}) => {
+  const {g: G, bg: BG, card: CARD, line: LINE, dim: DIM, text: TEXT} = useT();
+  return (
   <div style={{position: "absolute", left: 64, top, display: "flex", alignItems: "center", gap: 22, fontFamily: MONO, fontSize: 36, letterSpacing: "0.16em", color: a2, textShadow: glow(a2, 10)}}>
     <span style={{width: 70, height: 4, background: a2, boxShadow: glow(a2, 8)}} />
     {n} / {label}
   </div>
-);
+  );
+};
 
-const Card: React.FC<{top: number; left?: number; right?: number; height?: number; title?: string; tag?: string; color?: string; children: React.ReactNode}> = ({top, left = 64, right = 150, height, title, tag, color = G, children}) => (
+const Card: React.FC<{top: number; left?: number; right?: number; height?: number; title?: string; tag?: string; color?: string; children: React.ReactNode}> = ({top, left = 64, right = 150, height, title, tag, color: c0, children}) => {
+  const {g: G, card: CARD, dim: DIM} = useT();
+  const color = c0 || G;
+  return (
   <div style={{position: "absolute", top, left, right, height, background: CARD, border: `2.5px solid ${color}`, borderRadius: 26, boxShadow: `${glow(color, 14)}, inset 0 0 40px ${color}14`, overflow: "hidden"}}>
     {title ? (
       <div style={{display: "flex", alignItems: "center", gap: 12, padding: "16px 24px", borderBottom: `2px solid ${color}55`, background: "rgba(0,0,0,.35)"}}>
@@ -57,9 +72,12 @@ const Card: React.FC<{top: number; left?: number; right?: number; height?: numbe
     ) : null}
     <div style={{padding: "26px 30px"}}>{children}</div>
   </div>
-);
+  );
+};
 
-const Node: React.FC<{label: string; color: string; kind: "phone" | "server" | "x" | "clock"; text?: string}> = ({label, color, kind, text}) => (
+const Node: React.FC<{label: string; color: string; kind: "phone" | "server" | "x" | "clock"; text?: string}> = ({label, color, kind, text}) => {
+  const {text: TEXT} = useT();
+  return (
   <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: 14, width: 180}}>
     {kind === "phone" ? (
       <div style={{width: 76, height: 130, border: `4px solid ${color}`, borderRadius: 16, boxShadow: glow(color, 12), position: "relative"}}>
@@ -82,15 +100,21 @@ const Node: React.FC<{label: string; color: string; kind: "phone" | "server" | "
     )}
     <span style={{fontFamily: MONO, fontSize: 28, color: TEXT}}>{label}</span>
   </div>
-);
+  );
+};
 const Arrow: React.FC<{color: string}> = ({color}) => (
   <div style={{flex: 1, height: 4, background: `linear-gradient(90deg, ${color}22, ${color})`, position: "relative", marginBottom: 46, boxShadow: glow(color, 6)}}>
     <div style={{position: "absolute", right: -2, top: -9, width: 0, height: 0, borderLeft: `18px solid ${color}`, borderTop: "11px solid transparent", borderBottom: "11px solid transparent"}} />
   </div>
 );
 
-export const Neon: React.FC<{beat: Beat; accent?: string}> = ({beat, accent = "magenta"}) => {
-  const a2 = ACCENTS[accent].a2;
+export const Neon: React.FC<{beat: Beat; accent?: string}> = ({beat, accent = "mintYellow"}) => (
+  <ThemeCtx.Provider value={ACCENTS[accent]}>
+    <NeonBody beat={beat} />
+  </ThemeCtx.Provider>
+);
+const NeonBody: React.FC<{beat: Beat}> = ({beat}) => {
+  const {g: G, a2, bg: BG, dim: DIM, text: TEXT, err: ERR} = useT();
   return (
     <AbsoluteFill style={{background: BG, color: TEXT, fontFamily: SANS}}>
       <Grid />
@@ -112,13 +136,13 @@ export const Neon: React.FC<{beat: Beat; accent?: string}> = ({beat, accent = "m
               <Node label="user" color={G} kind="phone" />
               <Arrow color={G} />
               <Node label="auth" color={G} kind="server" />
-              <Arrow color={a2} />
-              <Node label="logout" color={a2} kind="x" />
+              <Arrow color={ERR} />
+              <Node label="logout" color={ERR} kind="x" />
             </div>
           </Card>
           <Card top={1290} title="prod — auth-service">
             <div style={{fontFamily: MONO, fontSize: 30, lineHeight: 1.6}}>
-              <div><span style={{color: DIM}}>[03:12:42]</span> <span style={{color: a2, textShadow: glow(a2, 6)}}>ERROR</span> 10,412 users logged out</div>
+              <div><span style={{color: DIM}}>[03:12:42]</span> <span style={{color: ERR, textShadow: glow(ERR, 6)}}>ERROR</span> 10,412 users logged out</div>
               <div><span style={{color: G}}>$</span> why<span style={{background: G, color: BG, boxShadow: glow(G, 8)}}> </span></div>
             </div>
           </Card>
@@ -145,8 +169,8 @@ export const Neon: React.FC<{beat: Beat; accent?: string}> = ({beat, accent = "m
           <Section n="02" label="THE FIX" top={1170} a2={a2} />
           <Card top={1250} title="git diff" tag="FIXED">
             <div style={{fontFamily: MONO, fontSize: 32, lineHeight: 1.7}}>
-              <div style={{color: "#FF7A90", background: "rgba(255,80,110,.10)", margin: "0 -30px", padding: "0 30px"}}>- token.exp &lt; Date.now()</div>
-              <div style={{color: G, background: "rgba(61,255,143,.12)", margin: "0 -30px", padding: "0 30px", textShadow: glow(G, 6)}}>+ token.exp * 1000 &lt; Date.now()</div>
+              <div style={{color: ERR, background: `${ERR}1A`, margin: "0 -30px", padding: "0 30px"}}>- token.exp &lt; Date.now()</div>
+              <div style={{color: G, background: `${G}1F`, margin: "0 -30px", padding: "0 30px", textShadow: glow(G, 6)}}>+ token.exp * 1000 &lt; Date.now()</div>
             </div>
           </Card>
         </>
