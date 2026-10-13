@@ -23,7 +23,7 @@ export type EntryProps = {
 };
 export const ENTRY_001: EntryProps = {
   n: "001",
-  handle: "@debugdiaries",
+  handle: "@debugdiaries.io",
   bug: {file: "incident.log", time: "03:12", lead: "Users keep getting", headline: "LOGGED OUT.", symptom: "Login → kicked out in 0.6s", flow: ["user", "auth", "logout"], log: "10,412 users logged out"},
   cause: {file: "session.js", code: ["if (token.exp < Date.now())", "  logout();"], mark: "Date.now()", left: ["token.exp", "sec", "1735689600"], right: ["Date.now()", "ms", "1735689600000"]},
   fix: {minus: "token.exp < Date.now()", plus: "token.exp * 1000 < Date.now()"},

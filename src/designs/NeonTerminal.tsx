@@ -49,7 +49,7 @@ const Header: React.FC<{a2: string}> = ({a2}) => {
   return (
   <div style={{position: "absolute", left: 64, right: 64, top: 150, display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 32, letterSpacing: "0.12em", color: DIM}}>
     <span>DEBUG DIARIES · <span style={{color: a2, textShadow: glow(a2, 10)}}>001</span></span>
-    <span style={{letterSpacing: "0.04em"}}>@debugdiaries</span>
+    <span style={{letterSpacing: "0.04em"}}>@debugdiaries.io</span>
   </div>
   );
 };
@@ -198,7 +198,7 @@ const NeonBody: React.FC<{beat: Beat}> = ({beat}) => {
           <Card top={1150} color={a2}>
             <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.16em", color: DIM}}>NEXT ENTRY · 002</div>
             <div style={{fontSize: 56, fontWeight: 800, marginTop: 8}}>The cache that <span style={{color: A2, textShadow: glow(A2, 12)}}>lied</span></div>
-            <div style={{fontFamily: MONO, fontSize: 32, color: G, marginTop: 20}}>follow @debugdiaries<span style={{background: G, color: BG}}> </span></div>
+            <div style={{fontFamily: MONO, fontSize: 32, color: G, marginTop: 20}}>follow @debugdiaries.io<span style={{background: G, color: BG}}> </span></div>
           </Card>
         </>
       )}

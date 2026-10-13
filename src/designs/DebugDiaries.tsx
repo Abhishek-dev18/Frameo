@@ -15,7 +15,7 @@ const SANS = "'Archivo Variable', Inter, sans-serif";
 const HAND = "Kalam, cursive";
 const DISPLAY: React.CSSProperties = {fontFamily: SANS, fontWeight: 900, fontStretch: "70%", textTransform: "uppercase", lineHeight: 0.9};
 
-const EP = {n: "01", title: "The token that died too early", handle: "@debugdiaries"};
+const EP = {n: "01", title: "The token that died too early", handle: "@debugdiaries.io"};
 
 // ===================== A · Diary page =====================
 const paper = "#F3E9D2";
