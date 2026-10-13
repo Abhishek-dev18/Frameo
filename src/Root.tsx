@@ -7,6 +7,7 @@ import {LastBlade, LB_TOTAL} from "./LastBlade";
 import {PixelScriptPromo, PROMO_TOTAL} from "./Promo";
 import {withWatermark} from "./Watermark";
 import {DESIGNS, Terminal, TERM_THEMES} from "./designs/DebugDiaries";
+import {Neon, ACCENTS} from "./designs/NeonTerminal";
 
 // Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
 const HowRagWorksW = withWatermark(HowRagWorks);
@@ -27,6 +28,9 @@ export const RemotionRoot: React.FC = () => (
     )}
     {Object.keys(TERM_THEMES).flatMap((theme) =>
       (["hook", "explain", "end"] as const).map((beat) => <Still key={`T-${theme}-${beat}`} id={`DD-Term-${theme}-${beat}`} component={() => <Terminal beat={beat} theme={theme} />} width={1080} height={1920} />),
+    )}
+    {Object.keys(ACCENTS).flatMap((accent) =>
+      (["hook", "explain", "end"] as const).map((beat) => <Still key={`N-${accent}-${beat}`} id={`DD-Neon-${accent}-${beat}`} component={() => <Neon beat={beat} accent={accent} />} width={1080} height={1920} />),
     )}
   </>
 );
