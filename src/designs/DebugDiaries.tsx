@@ -66,75 +66,85 @@ export const Diary: React.FC<{beat: Beat}> = ({beat}) => (
   </AbsoluteFill>
 );
 
-// ===================== B · Terminal log =====================
-const tg = "#7CF29A";
-const amber = "#FFB547";
-const tred = "#FF6B6B";
-const Win: React.FC<{title: string; children: React.ReactNode; style?: React.CSSProperties}> = ({title, children, style}) => (
-  <div style={{background: "#0F1612", border: "2px solid #1F3327", borderRadius: 22, overflow: "hidden", ...style}}>
-    <div style={{display: "flex", alignItems: "center", gap: 12, padding: "18px 24px", borderBottom: "2px solid #1F3327", background: "#0C120F"}}>
+// ===================== B · Terminal log (themeable) =====================
+export type TermTheme = {bg: string; win: string; bar: string; line: string; text: string; strong: string; dim: string; ok: string; warn: string; err: string; accent: string; glow: string};
+export const TERM_THEMES: Record<string, TermTheme> = {
+  // soft pastel on deep indigo (Catppuccin-like)
+  mocha: {bg: "#1E1E2E", win: "#181825", bar: "#11111B", line: "#313244", text: "#BAC2DE", strong: "#CDD6F4", dim: "#7F849C", ok: "#A6E3A1", warn: "#FAB387", err: "#F38BA8", accent: "#CBA6F7", glow: "rgba(203,166,247,.16)"},
+  // night blue with neon blue/purple (Tokyo Night-like)
+  tokyo: {bg: "#1A1B26", win: "#16161E", bar: "#13131A", line: "#292E42", text: "#A9B1D6", strong: "#C0CAF5", dim: "#565F89", ok: "#9ECE6A", warn: "#E0AF68", err: "#F7768E", accent: "#7AA2F7", glow: "rgba(122,162,247,.18)"},
+  // warm dark with coral/amber (sunset)
+  sunset: {bg: "#1C1517", win: "#161012", bar: "#120D0F", line: "#3A2A2E", text: "#D9C7C2", strong: "#FFF1EC", dim: "#8E7A76", ok: "#8BD5A8", warn: "#FFC46B", err: "#FF7A85", accent: "#FF8A5B", glow: "rgba(255,138,91,.16)"},
+};
+const Win: React.FC<{t: TermTheme; title: string; children: React.ReactNode}> = ({t, title, children}) => (
+  <div style={{background: t.win, border: `2px solid ${t.line}`, borderRadius: 24, overflow: "hidden", boxShadow: `0 30px 80px rgba(0,0,0,.35), 0 0 0 1px ${t.glow}`}}>
+    <div style={{display: "flex", alignItems: "center", gap: 12, padding: "18px 24px", borderBottom: `2px solid ${t.line}`, background: t.bar}}>
       {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => <span key={c} style={{width: 18, height: 18, borderRadius: 9, background: c}} />)}
-      <span style={{marginLeft: 16, fontFamily: MONO, fontSize: 24, color: "#6E8C78"}}>{title}</span>
+      <span style={{marginLeft: 16, fontFamily: MONO, fontSize: 24, color: t.dim}}>{title}</span>
     </div>
-    <div style={{padding: "28px 30px", fontFamily: MONO, fontSize: 32, lineHeight: 1.65, color: "#C9D8CE"}}>{children}</div>
+    <div style={{padding: "28px 30px", fontFamily: MONO, fontSize: 32, lineHeight: 1.65, color: t.text}}>{children}</div>
   </div>
 );
-export const Terminal: React.FC<{beat: Beat}> = ({beat}) => (
-  <AbsoluteFill style={{background: "#070A08", color: tg, fontFamily: MONO}}>
-    <AbsoluteFill style={{backgroundImage: "repeating-linear-gradient(to bottom, rgba(124,242,154,.035) 0 2px, transparent 2px 6px)"}} />
-    <div style={{position: "absolute", left: 70, right: 70, top: 110, display: "flex", justifyContent: "space-between", fontSize: 30, color: "#5E7D68"}}>
-      <span>~/debug-diaries</span>
-      <span>entry_{EP.n}.log</span>
-    </div>
-    {beat === "hook" ? (
-      <div style={{position: "absolute", left: 70, right: 70, top: 260}}>
-        <Win title="prod — auth-service">
-          <div><span style={{color: "#5E7D68"}}>[03:12:41]</span> <span style={{color: amber}}>WARN</span> session expired uid=8812</div>
-          <div><span style={{color: "#5E7D68"}}>[03:12:41]</span> <span style={{color: amber}}>WARN</span> session expired uid=8813</div>
-          <div><span style={{color: "#5E7D68"}}>[03:12:42]</span> <span style={{color: tred}}>ERROR</span> 10,412 users logged out</div>
-          <div><span style={{color: "#5E7D68"}}>[03:12:42]</span> <span style={{color: tred}}>ERROR</span> token lifetime: 0.6s ??</div>
-        </Win>
-        <div style={{fontFamily: MONO, fontWeight: 700, fontSize: 96, lineHeight: 1.1, color: "#E8FFEE", marginTop: 90}}>
-          Tokens dying in<br /><span style={{color: tred}}>0.6 seconds.</span>
-        </div>
-        <div style={{fontSize: 44, marginTop: 40, color: tg}}>$ why_<span style={{background: tg, color: "#070A08"}}> </span></div>
+export const Terminal: React.FC<{beat: Beat; theme?: string}> = ({beat, theme = "mocha"}) => {
+  const t = TERM_THEMES[theme];
+  const ts = (x: string) => <span style={{color: t.dim}}>[{x}]</span>;
+  return (
+    <AbsoluteFill style={{background: t.bg, color: t.text, fontFamily: MONO}}>
+      <AbsoluteFill style={{background: `radial-gradient(900px 700px at 85% 8%, ${t.glow}, transparent 65%), radial-gradient(700px 600px at 0% 100%, ${t.glow}, transparent 60%)`}} />
+      <div style={{position: "absolute", left: 70, right: 70, top: 110, display: "flex", justifyContent: "space-between", fontSize: 30, color: t.dim}}>
+        <span><span style={{color: t.accent}}>~</span>/debug-diaries</span>
+        <span>entry_{EP.n}.log</span>
       </div>
-    ) : beat === "explain" ? (
-      <div style={{position: "absolute", left: 70, right: 70, top: 260}}>
-        <div style={{fontSize: 40, color: "#5E7D68", marginBottom: 24}}>$ git diff session.js</div>
-        <Win title="session.js">
-          <div style={{background: "rgba(255,107,107,.12)", color: "#FFB0B0", margin: "0 -30px", padding: "0 30px"}}>- if (token.exp &lt; Date.now())</div>
-          <div style={{background: "rgba(124,242,154,.12)", color: "#B8FFCB", margin: "0 -30px", padding: "0 30px"}}>+ if (token.exp * 1000 &lt; Date.now())</div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;logout();</div>
-        </Win>
-        <div style={{marginTop: 70, display: "grid", gap: 26}}>
-          {[
-            ["exp", "seconds", "1735689600"],
-            ["Date.now()", "milliseconds", "1735689600000"],
-          ].map(([k, u, v]) => (
-            <div key={k} style={{border: "2px solid #1F3327", borderRadius: 18, padding: "24px 28px", background: "#0C120F"}}>
-              <div style={{fontSize: 44, color: "#E8FFEE", fontWeight: 700}}>{k} <span style={{color: amber}}>→ {u}</span></div>
-              <div style={{fontSize: 34, color: "#6E8C78", marginTop: 6}}>{v}</div>
-            </div>
-          ))}
+      {beat === "hook" ? (
+        <div style={{position: "absolute", left: 70, right: 70, top: 260}}>
+          <Win t={t} title="prod — auth-service">
+            <div>{ts("03:12:41")} <span style={{color: t.warn}}>WARN</span> session expired uid=8812</div>
+            <div>{ts("03:12:41")} <span style={{color: t.warn}}>WARN</span> session expired uid=8813</div>
+            <div>{ts("03:12:42")} <span style={{color: t.err}}>ERROR</span> 10,412 users logged out</div>
+            <div>{ts("03:12:42")} <span style={{color: t.err}}>ERROR</span> token lifetime: 0.6s ??</div>
+          </Win>
+          <div style={{fontWeight: 700, fontSize: 96, lineHeight: 1.1, color: t.strong, marginTop: 90}}>
+            Tokens dying in<br /><span style={{color: t.err}}>0.6 seconds.</span>
+          </div>
+          <div style={{fontSize: 44, marginTop: 40, color: t.accent}}>$ why_<span style={{background: t.accent, color: t.bg}}> </span></div>
         </div>
-        <div style={{fontSize: 52, fontWeight: 700, color: "#E8FFEE", marginTop: 60}}>1000× off. That's the bug.</div>
-      </div>
-    ) : (
-      <div style={{position: "absolute", left: 70, right: 70, top: 300}}>
-        <div style={{fontSize: 40, color: "#5E7D68"}}>$ git commit -m</div>
-        <div style={{fontSize: 46, color: "#E8FFEE", marginTop: 10}}>"fix: exp is in seconds"</div>
-        <div style={{fontSize: 40, color: tg, marginTop: 20}}>✓ deployed · 0 logouts since</div>
-        <div style={{...DISPLAY, fontFamily: MONO, fontWeight: 700, textTransform: "none", fontSize: 108, color: "#E8FFEE", marginTop: 150, lineHeight: 1}}>
-          debug<span style={{color: tg}}>_</span>diaries
+      ) : beat === "explain" ? (
+        <div style={{position: "absolute", left: 70, right: 70, top: 260}}>
+          <div style={{fontSize: 40, color: t.dim, marginBottom: 24}}><span style={{color: t.accent}}>$</span> git diff session.js</div>
+          <Win t={t} title="session.js">
+            <div style={{background: `${t.err}22`, color: t.err, margin: "0 -30px", padding: "0 30px"}}>- if (token.exp &lt; Date.now())</div>
+            <div style={{background: `${t.ok}22`, color: t.ok, margin: "0 -30px", padding: "0 30px"}}>+ if (token.exp * 1000 &lt; Date.now())</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;logout();</div>
+          </Win>
+          <div style={{marginTop: 70, display: "grid", gap: 26}}>
+            {[
+              ["exp", "seconds", "1735689600"],
+              ["Date.now()", "milliseconds", "1735689600000"],
+            ].map(([k, u, v]) => (
+              <div key={k} style={{border: `2px solid ${t.line}`, borderRadius: 20, padding: "24px 28px", background: t.win}}>
+                <div style={{fontSize: 44, color: t.strong, fontWeight: 700}}>{k} <span style={{color: t.warn}}>→ {u}</span></div>
+                <div style={{fontSize: 34, color: t.dim, marginTop: 6}}>{v}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{fontSize: 52, fontWeight: 700, color: t.strong, marginTop: 60}}><span style={{color: t.accent}}>1000×</span> off. That's the bug.</div>
         </div>
-        <div style={{fontSize: 40, color: "#6E8C78", marginTop: 30}}>// lesson: always check your units</div>
-        <div style={{fontSize: 40, color: amber, marginTop: 90}}>next: entry_02 — the cache that lied</div>
-        <div style={{fontSize: 40, color: tg, marginTop: 16}}>follow {EP.handle}</div>
-      </div>
-    )}
-  </AbsoluteFill>
-);
+      ) : (
+        <div style={{position: "absolute", left: 70, right: 70, top: 300}}>
+          <div style={{fontSize: 40, color: t.dim}}><span style={{color: t.accent}}>$</span> git commit -m</div>
+          <div style={{fontSize: 46, color: t.strong, marginTop: 10}}>"fix: exp is in seconds"</div>
+          <div style={{fontSize: 40, color: t.ok, marginTop: 20}}>✓ deployed · 0 logouts since</div>
+          <div style={{fontWeight: 700, fontSize: 108, color: t.strong, marginTop: 150, lineHeight: 1}}>
+            debug<span style={{color: t.accent}}>_</span>diaries
+          </div>
+          <div style={{fontSize: 40, color: t.dim, marginTop: 30}}>// lesson: always check your units</div>
+          <div style={{fontSize: 40, color: t.warn, marginTop: 90}}>next: entry_02 — the cache that lied</div>
+          <div style={{fontSize: 40, color: t.accent, marginTop: 16}}>follow {EP.handle}</div>
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+};
 
 // ===================== C · Anime night =====================
 const navy = "linear-gradient(175deg, #0A0F2A 0%, #1A1446 55%, #2A1240 100%)";
