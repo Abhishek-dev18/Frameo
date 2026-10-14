@@ -10,9 +10,10 @@ const C = {bg: "#161719", card: "#1D1E21", card2: "#232428", line: "#2C2E33", di
 const MONO = "'JetBrains Mono', monospace";
 const SANS = "'Archivo Variable', Inter, sans-serif";
 const clamp = {extrapolateLeft: "clamp", extrapolateRight: "clamp"} as const;
-export const E2_TOTAL = 720;
-const S2 = 240;
-const S3 = 540;
+// timed to the voiceover: part 1 ≈ 3.8s, part 2 ≈ 8.2s, part 3 ≈ 4.9s
+export const E2_TOTAL = 594;
+const S2 = 138;
+const S3 = 408;
 const XF = 10;
 
 const useIn = (at: number, damping = 16) => {
@@ -60,8 +61,8 @@ const Field: React.FC<{k: string; v: string; hot?: boolean}> = ({k, v, hot}) => 
 const TheBug: React.FC = () => {
   const f = useCurrentFrame();
   const glow = 0.5 + 0.5 * Math.sin(f / 6);
-  const and = useIn(26);
-  const toast = useIn(90, 12);
+  const and = useIn(50);
+  const toast = useIn(78, 12);
   return (
     <>
       <Section n="00" label="THE BUG" top={280} instant />
@@ -136,7 +137,7 @@ const Cause: React.FC = () => {
   const reqB = lerp(f, 124, 146); // Bob → CDN
   const toBob = lerp(f, 150, 176); // CDN → Bob (stale A)
   const bobHit = f > 176;
-  const fixAt = 214;
+  const fixAt = 192;
   const minus = lerp(f, fixAt + 8, fixAt + 14);
   const strike = lerp(f, fixAt + 24, fixAt + 36, 0, 100);
   const plus = useIn(fixAt + 36, 14);
