@@ -9,12 +9,54 @@ const STYLES = [
   {id: "anime-action", name: "Anime action", line: "Close-ups, a sword clash and a cliffhanger.", credits: 4},
 ];
 
+// Everything a user gets on every plan. Small things, but they are what makes the price feel fair.
+const INCLUDED = [
+  {
+    group: "Ready to post",
+    items: [
+      ["Caption + hashtags", "Every video comes with an Instagram caption and 5–8 hashtags picked for the topic."],
+      ["YouTube title and description", "Title, description, tags and #Shorts written for YouTube search."],
+      ["One video, two platforms", "Each episode goes to Instagram Reels and YouTube Shorts from one schedule."],
+      ["Full HD vertical", "1080×1920, the size both apps want. 30 or 60 seconds."],
+      ["Copyright-safe music", "Every video has a music bed made for PixelScript. No copyright claims, no muted videos."],
+      ["Your name on every video", "Channel name, episode number and your handle are built into each video."],
+    ],
+  },
+  {
+    group: "You stay in control",
+    items: [
+      ["Edit before it posts", "Change the on-screen text, caption or title, then remake the video if you like."],
+      ["Review or autopilot", "Approve every script and video, or let a pipeline run on its own once you trust it."],
+      ["Missed a review?", "You decide: skip that episode, move it to the next slot, or post it anyway."],
+      ["Your days, your time", "Pick posting days and an hour. A calendar shows the week ahead."],
+      ["Hindi, English, Hinglish", "Scripts written in the language your audience speaks."],
+      ["Download anytime", "Every finished MP4 is yours to download and post anywhere else."],
+    ],
+  },
+  {
+    group: "Peace of mind",
+    items: [
+      ["You own your videos", "Use them on any channel, in ads or for clients. Commercial use included."],
+      ["Failed? Credits back", "If a video can't be made, its credits are refunded automatically."],
+      ["Alerts that find you", "In-app and Telegram alerts when a script needs you or a video goes live."],
+      ["Credits renew monthly", "Paid plans top back up every month. Top-up credits never expire."],
+      ["Laid out for each topic", "Diagrams, code, logs and cheat sheets arranged for the idea. No reused stock clips."],
+      ["Free to start", "30 credits, no card. Only Free videos carry a small watermark."],
+    ],
+  },
+];
+
 const FAQ = [
   ["Do I need to show my face or record my voice?", "No. Every episode is fully animated, with subtitles. Add an AI voiceover in Hindi, English or Hinglish, or keep it music-only."],
   ["Can I check videos before they go live?", "Yes. By default you approve each script and each video before it posts. You can switch a pipeline to fully automatic once you trust it."],
   ["Will YouTube and Instagram allow these videos?", "Yes, when each episode teaches something real. PixelScript writes a different story for every topic and labels videos as AI-made, which both platforms ask for. Endless near-identical uploads are what get channels in trouble."],
   ["What do I get for free?", "30 credits to make videos one at a time, with or without a voiceover. You approve the script, download the finished video and post it yourself. Free videos carry a small \"Made with PixelScript\" mark. Pipelines that post on a schedule, without the mark, start on Starter."],
   ["What's a credit?", "Each style has its own price for a 30-second video: explainer cards 1 credit, character and anime stories 2, anime action 4. An AI voiceover adds 2 credits per 30 seconds. A 60-second video is double, and 1 credit less on story styles. If a video fails, the credits come back."],
+  ["Do I get captions and hashtags too?", "Yes, on every plan and at no extra credits. Each video comes with an Instagram caption ending in hashtags, plus a YouTube title, description and tags. With a pipeline they're posted with the video; on Free you copy them with one tap."],
+  ["Can I change things before it posts?", "Yes. Edit the on-screen text, the caption or the title while the episode waits for review, and remake the video if you want. Nothing posts without your approval unless you turn on autopilot."],
+  ["What if I miss a review?", "Each pipeline has a rule you choose: skip that episode, move it to the next free slot, or post it anyway."],
+  ["Will the music get my video muted or claimed?", "No. The music in PixelScript videos is made for PixelScript and cleared for social media. You can still add trending audio inside Instagram if you want."],
+  ["Who owns the videos?", "You do. Download them, post them on any channel, use them in ads or for clients."],
   ["Which languages?", "Hindi, English and Hinglish, for both the script and the voiceover. Mixing Hindi and English in one sentence sounds natural, not robotic."],
 ];
 
@@ -26,6 +68,7 @@ export default function Landing() {
         <nav className="l-links" aria-label="Sections">
           <a href="#how" onClick={(e) => (e.preventDefault(), document.getElementById("how")?.scrollIntoView({behavior: "smooth"}))}>How it works</a>
           <a href="#styles" onClick={(e) => (e.preventDefault(), document.getElementById("styles")?.scrollIntoView({behavior: "smooth"}))}>Styles</a>
+          <a href="#included" onClick={(e) => (e.preventDefault(), document.getElementById("included")?.scrollIntoView({behavior: "smooth"}))}>What's included</a>
           <a href="#pricing" onClick={(e) => (e.preventDefault(), document.getElementById("pricing")?.scrollIntoView({behavior: "smooth"}))}>Pricing</a>
         </nav>
         <div className="l-cta">
@@ -39,7 +82,7 @@ export default function Landing() {
           <div className="eyebrow mono">ANIME-STYLE TECH REELS · ON AUTOPILOT</div>
           <h1 className="l-h1">Your channel posts while you sleep.</h1>
           <p className="l-lede">
-            Pick a story style, drop in your topics, set a schedule. PixelScript writes each episode, animates it, and posts it to Instagram and YouTube.
+            Pick a story style, drop in your topics, set a schedule. PixelScript writes each episode, animates it, and posts it to Instagram and YouTube with the caption, hashtags and title already written.
             You approve everything before it goes live.
           </p>
           <div className="l-hero-cta">
@@ -87,6 +130,23 @@ export default function Landing() {
         </div>
       </section>
 
+      <section id="included" className="l-section">
+        <h2 className="l-h2">Everything included, on every plan</h2>
+        <p className="dim l-sub">The small things that usually cost extra, or take you an hour per post.</p>
+        <div className="l-inc">
+          {INCLUDED.map((g) => (
+            <div key={g.group} className="l-inc-group">
+              <div className="mono l-inc-head">{g.group}</div>
+              <ul>
+                {g.items.map(([t, d]) => (
+                  <li key={t}><b>{t}</b><span>{d}</span></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="l-section l-why">
         <h2 className="l-h2">Built for creators who'd rather build</h2>
         <div className="l-why-grid">
@@ -112,6 +172,26 @@ export default function Landing() {
               <a className={`btn ${p.featured ? "primary" : ""}`} href="#/signup">{p.name === "Free" ? "Start free" : `Choose ${p.name}`}</a>
             </div>
           ))}
+        </div>
+        <div className="l-compare">
+          <div>
+            <span className="mono dim">TYPICAL AUTO-POSTING TOOLS</span>
+            <ul>
+              <li>One series per subscription</li>
+              <li>From $15–19 a month (₹1,250+)</li>
+              <li>Stock clips + voice, Hinglish rarely offered</li>
+              <li>Priced in dollars, card only</li>
+            </ul>
+          </div>
+          <div className="us">
+            <span className="mono">PIXELSCRIPT</span>
+            <ul>
+              <li>1, 5 or unlimited pipelines</li>
+              <li>From ₹499 a month, UPI</li>
+              <li>Hindi, English, Hinglish · animated for each topic</li>
+              <li>Caption, hashtags, YouTube title and music included</li>
+            </ul>
+          </div>
         </div>
         <div className="l-costs mono">
           <span>30s video <b>1–4 credits</b> by style</span>

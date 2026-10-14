@@ -3,11 +3,19 @@ import {api, go, fmtWhen, relative, canPipeline} from "../api.js";
 import {Stage, Field, RenderBar, Platform} from "../ui.jsx";
 import ScreenplayEditor from "./ScreenplayEditor.jsx";
 
+const parseTags = (t) => [...new Set(String(t).split(/[\s,]+/).map((x) => x.replace(/^#+/, "").replace(/[^\p{L}\p{N}_]/gu, "")).filter(Boolean))].slice(0, 15);
+// Swap the hashtag lines at the end of a caption for a new set, so Instagram and YouTube stay in sync.
+const withTags = (caption, tags) => {
+  const body = String(caption).replace(/(\n\s*(#[^\s#]+\s*)+)+\s*$/u, "").trimEnd();
+  return tags.length ? `${body}\n\n${tags.map((x) => `#${x}`).join(" ")}` : body;
+};
+
 const toForm = (s, title) => ({
   title: s?.title || title || "",
   hook: s?.hook || "",
   lines: (s?.lines || []).join("\n"),
   caption: s?.caption || "",
+  hashtags: (s?.hashtags || []).map((h) => `#${String(h).replace(/^#/, "")}`).join(" "),
   ytTitle: s?.ytTitle || "",
   screenplay: s?.screenplay || null,
 });
@@ -44,6 +52,7 @@ export default function Review({id, toast, refresh, state}) {
       hook: form.hook.trim(),
       lines: form.lines.split("\n").map((x) => x.trim()).filter(Boolean),
       caption: form.caption,
+      hashtags: parseTags(form.hashtags),
       ytTitle: form.ytTitle.trim(),
       ...(form.screenplay ? {screenplay: {...form.screenplay, title: form.title.trim()}} : {}),
     },
@@ -162,6 +171,9 @@ export default function Review({id, toast, refresh, state}) {
                   )}
                 </>
               ) : null}
+              <Field label="Hashtags" hint="Used at the end of the Instagram caption and in the YouTube description and tags.">
+                <input id="rv-tags" value={form.hashtags} disabled={!editable} placeholder="#programming #webdev" onChange={(e) => { const tags = parseTags(e.target.value); setForm({...form, hashtags: e.target.value, caption: withTags(form.caption, tags)}); setDirty(true); }} />
+              </Field>
               <Field label="Instagram caption" counter={`${form.caption.length}/2200`}>
                 <textarea id="rv-caption" rows={6} value={form.caption} onChange={set("caption")} disabled={!editable} />
               </Field>

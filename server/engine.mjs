@@ -199,7 +199,7 @@ async function doPost(ep) {
       db.update("episodes", ep.id, {results});
     }
     if (p.channels.includes("youtube") && !results.youtube) {
-      results.youtube = await uploadShort({file, title: s.ytTitle || ep.title, description: s.ytDescription || s.caption || "", tags: s.hashtags || []});
+      results.youtube = await uploadShort({file, title: s.ytTitle || ep.title, description: ytDescriptionOf(s), tags: s.hashtags || []});
       db.update("episodes", ep.id, {results});
     }
     db.update("episodes", ep.id, {stage: "posted", postedAt: now(), results, error: null});
@@ -209,6 +209,14 @@ async function doPost(ep) {
     const where = p.channels.includes("instagram") && !results.instagram ? "Instagram" : "YouTube";
     fail(ep, `Couldn't post to ${where}: ${shortError(e)}`, e);
   }
+}
+
+// YouTube shows the first 3 hashtags of the description above the title, so the top 5 go at the end.
+function ytDescriptionOf(s) {
+  const base = String(s.ytDescription || s.caption || "").trim();
+  const tags = (s.hashtags || []).map((h) => `#${String(h).replace(/^#/, "").replace(/\s+/g, "")}`).filter((h) => h.length > 1 && !base.toLowerCase().includes(h.toLowerCase()));
+  const line = [...tags.slice(0, 5), ...(/#shorts/i.test(base) ? [] : ["#Shorts"])].join(" ");
+  return line ? `${base}\n\n${line}` : base;
 }
 
 // Users see a short, plain message; the full error goes to the server log (Admin page).
