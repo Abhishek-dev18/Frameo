@@ -8,7 +8,7 @@ import {PixelScriptPromo, PROMO_TOTAL} from "./Promo";
 import {withWatermark} from "./Watermark";
 import {DESIGNS, Terminal, TERM_THEMES} from "./designs/DebugDiaries";
 import {Neon, ACCENTS} from "./designs/NeonTerminal";
-import {DebugDiariesEntry, DD_TOTAL, ENTRY_001} from "./debugdiaries/Entry";
+import {DebugDiariesEntry, DD_TOTAL, ENTRY_001, ENTRY_002} from "./debugdiaries/Entry";
 import {AVATARS} from "./debugdiaries/Avatar";
 import {Banner, Highlight, HIGHLIGHTS} from "./debugdiaries/Brand";
 
@@ -26,6 +26,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="LastBlade" component={LastBladeW} durationInFrames={LB_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="PixelScriptPromo" component={PixelScriptPromo} durationInFrames={PROMO_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="DebugDiaries" component={DebugDiariesEntry} durationInFrames={DD_TOTAL} fps={30} width={1080} height={1920} defaultProps={ENTRY_001} />
+    <Composition id="DebugDiaries002" component={DebugDiariesEntry} durationInFrames={DD_TOTAL} fps={30} width={1080} height={1920} defaultProps={ENTRY_002} />
     <Still id="DD-Banner" component={Banner} width={2560} height={1440} />
     {HIGHLIGHTS.map((k) => <Still key={k} id={`DD-Highlight-${k}`} component={() => <Highlight kind={k} />} width={1080} height={1920} />)}
     {Object.entries(AVATARS).map(([name, A]) => <Still key={name} id={`DD-Avatar-${name}`} component={A} width={1080} height={1080} />)}

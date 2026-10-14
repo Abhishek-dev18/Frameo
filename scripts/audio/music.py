@@ -1,6 +1,6 @@
 # Original, generated lo-fi bed: soft electric-piano chords, sub bass, gentle kick + hat. 30 s, 44.1 kHz.
 import numpy as np, wave
-sr = 44100; dur = 30.2; bpm = 84; beat = 60 / bpm
+sr = 44100; dur = float(__import__("os").environ.get("DUR", 30.2)); bpm = 84; beat = 60 / bpm
 t = np.arange(int(sr * dur)) / sr
 out = np.zeros_like(t)
 def note(f, start, length, amp, kind="keys"):
