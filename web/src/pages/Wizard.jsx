@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from "react";
-import {api, go, DAYS, fmtWhen, scheduleText, canPipeline} from "../api.js";
-import {Field, Platform} from "../ui.jsx";
+import {api, go, DAYS, fmtWhen, scheduleText, canPipeline, creditCost} from "../api.js";
+import {Field, Platform, VoiceChoice, LanguageSelect} from "../ui.jsx";
 import {TemplateCard} from "./Onboarding.jsx";
 
 const STEPS = ["Style", "Topics", "Schedule", "Channels", "Review"];
@@ -29,6 +29,8 @@ export default function Wizard({state, route, toast, refresh}) {
     seriesName: "",
     topics: "",
     length: 30,
+    voice: false,
+    language: state.user.profile?.language || "English",
     schedule: {days: [2, 4, 6], time: "21:00", startDate: new Date().toISOString().slice(0, 10)},
     reviewMode: "review",
     missedPolicy: "next",
@@ -37,7 +39,7 @@ export default function Wizard({state, route, toast, refresh}) {
   const t = state.templates.find((x) => x.id === f.template);
   const topics = f.topics.split("\n").map((x) => x.trim()).filter(Boolean);
   const slots = useMemo(() => previewSlots(f.schedule, 3), [f.schedule]);
-  const perEp = (t?.credits || 1) * (f.length === 60 ? 2 : 1);
+  const perEp = creditCost(t?.credits, f.length, f.voice && state.voiceReady);
   const perMonth = Math.round(perEp * f.schedule.days.length * 4.3);
   const c = state.connections;
 
@@ -66,6 +68,8 @@ export default function Wizard({state, route, toast, refresh}) {
         custom: {seriesName: f.seriesName.trim() || t.series},
         topics,
         length: f.length,
+        language: f.language,
+        voice: f.voice,
         schedule: f.schedule,
         reviewMode: f.reviewMode,
         missedPolicy: f.missedPolicy,
@@ -102,7 +106,7 @@ export default function Wizard({state, route, toast, refresh}) {
         {step === 0 ? (
           <>
             <h2 className="title-m">Pick a video style</h2>
-            <p className="dim">Every episode in this pipeline uses this style. Hover to preview.</p>
+            <p className="dim">Every episode in this pipeline uses this style.</p>
             <div className="tpl-grid">
               {state.templates.map((x) => <TemplateCard key={x.id} t={x} selected={f.template === x.id} onSelect={() => setF({...f, template: x.id})} />)}
             </div>
@@ -114,10 +118,16 @@ export default function Wizard({state, route, toast, refresh}) {
                 <div className="seg-choice" role="radiogroup">
                   {[30, 60].map((n) => (
                     <button key={n} type="button" role="radio" aria-checked={f.length === n} className={f.length === n ? "on" : ""} onClick={() => setF({...f, length: n})}>
-                      {n} seconds <span className="dim small">· {(t?.credits || 1) * (n === 60 ? 2 : 1)} credits</span>
+                      {n} seconds <span className="dim small">· {creditCost(t?.credits, n, f.voice && state.voiceReady)} credits</span>
                     </button>
                   ))}
                 </div>
+              </Field>
+              <Field label="Language" hint="Script and voice.">
+                <LanguageSelect id="wiz-lang" value={f.language} languages={state.languages} onChange={(language) => setF({...f, language})} />
+              </Field>
+              <Field label="Voiceover" hint={state.voiceReady ? "Adds 1 credit per 30 seconds." : "AI voiceover in Hindi, English and Hinglish is coming soon."}>
+                <VoiceChoice voice={f.voice} ready={state.voiceReady} length={f.length} onChange={(voice) => setF({...f, voice})} />
               </Field>
             </div>
           </>
@@ -213,7 +223,7 @@ export default function Wizard({state, route, toast, refresh}) {
               <input id="wiz-name" value={f.name} onChange={(e) => setF({...f, name: e.target.value})} placeholder={f.seriesName || t?.series} />
             </Field>
             <div className="summary">
-              <div><span className="mono dim">STYLE</span><b>{t?.name}</b><span className="dim small">{f.length} seconds · series "{f.seriesName || t?.series}"</span></div>
+              <div><span className="mono dim">STYLE</span><b>{t?.name}</b><span className="dim small">{f.length}s · {f.language} · {f.voice && state.voiceReady ? "AI voice" : "music only"} · series "{f.seriesName || t?.series}"</span></div>
               <div><span className="mono dim">TOPICS</span><b>{topics.length} episodes</b><span className="dim small">First: {topics[0]}</span></div>
               <div><span className="mono dim">SCHEDULE</span><b>{scheduleText(f.schedule)}</b><span className="dim small">{f.reviewMode === "review" ? "You review each episode" : "Fully automatic"}</span></div>
               <div><span className="mono dim">POSTS TO</span><b className="row-gap">{f.channels.map((ch) => <Platform key={ch} name={ch} />)}</b></div>

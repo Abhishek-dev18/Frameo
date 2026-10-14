@@ -1,5 +1,6 @@
 // The video styles users can pick, in the order they are shown. Each maps to a Remotion composition in src/Root.tsx.
-// credits = cost of one 30-second episode (60 seconds costs double).
+// credits = cost of one 30-second episode without voice. 60 seconds costs double.
+// A voiceover adds 1 credit per 30 seconds (see costOf).
 export const TEMPLATES = [
   {
     id: "explainer-cards",
@@ -48,14 +49,22 @@ export const TEMPLATES = [
 ];
 
 export const getTemplate = (tid) => TEMPLATES.find((t) => t.id === tid);
-export const costOf = (tid, length = 30) => (getTemplate(tid)?.credits || 1) * (length >= 60 ? 2 : 1);
+// 30s explainer: 1 (2 with voice) · 30s story: 2 (3) · 60s explainer: 2 (4) · 60s story: 4 (6)
+export const costOf = (tid, length = 30, voice = false) => {
+  const m = length >= 60 ? 2 : 1;
+  return (getTemplate(tid)?.credits || 1) * m + (voice ? m : 0);
+};
+// Voiceover languages (Sarvam Bulbul). The voice pipeline is not built yet; until it is, VOICE_READY stays false
+// and requests for a voice are treated as silent videos (and charged as silent).
+export const LANGUAGES = ["English", "Hindi", "Hinglish"];
+export const VOICE_READY = false;
 
 // What each plan can do. Free makes one video at a time to download (watermarked) and
 // upload by hand; pipelines (scheduled auto-posting) start on Starter.
 export const PLANS = {
-  free: {name: "Free", price: 0, credits: 30, monthly: false, pipelines: 0, watermark: true},
-  starter: {name: "Starter", price: 499, credits: 30, monthly: true, pipelines: 1, watermark: false},
-  creator: {name: "Creator", price: 999, credits: 70, monthly: true, pipelines: 5, watermark: false},
-  pro: {name: "Pro", price: 2499, credits: 200, monthly: true, pipelines: Infinity, watermark: false},
+  free: {name: "Free", price: 0, credits: 20, monthly: false, pipelines: 0, watermark: true},
+  starter: {name: "Starter", price: 499, credits: 60, monthly: true, pipelines: 1, watermark: false},
+  creator: {name: "Creator", price: 999, credits: 150, monthly: true, pipelines: 5, watermark: false},
+  pro: {name: "Pro", price: 2499, credits: 400, monthly: true, pipelines: Infinity, watermark: false},
 };
 export const planOf = (user) => PLANS[user?.plan] || PLANS.free;

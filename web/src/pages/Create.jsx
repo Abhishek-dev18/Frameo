@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import {api, go, canPipeline} from "../api.js";
-import {Field} from "../ui.jsx";
+import {api, go, canPipeline, creditCost} from "../api.js";
+import {Field, VoiceChoice, LanguageSelect} from "../ui.jsx";
 import {TemplateCard} from "./Onboarding.jsx";
 
 // Make one video: pick a style, say what it's about, review the script, download the MP4.
 export default function Create({state, route, toast, refresh}) {
-  const [f, setF] = useState({template: route.query.template || state.templates[0].id, topic: "", length: 30, language: state.user.profile?.language || "English"});
+  const [f, setF] = useState({template: route.query.template || state.templates[0].id, topic: "", length: 30, voice: false, language: state.user.profile?.language || "English"});
   const [busy, setBusy] = useState(false);
   const t = state.templates.find((x) => x.id === f.template);
-  const cost = (t?.credits || 1) * (f.length === 60 ? 2 : 1);
+  const cost = creditCost(t?.credits, f.length, f.voice && state.voiceReady);
   const free = !canPipeline(state);
   const short = state.user.credits < cost;
 
@@ -59,20 +59,19 @@ export default function Create({state, route, toast, refresh}) {
               ))}
             </div>
           </Field>
-          <Field label="Language">
-            <select id="create-lang" value={f.language} onChange={(e) => setF({...f, language: e.target.value})}>
-              <option>English</option>
-              <option>Hinglish</option>
-              <option>Hindi</option>
-            </select>
+          <Field label="Language" hint="Script and voice.">
+            <LanguageSelect id="create-lang" value={f.language} languages={state.languages} onChange={(language) => setF({...f, language})} />
           </Field>
         </div>
+        <Field label="Voiceover" hint={state.voiceReady ? `A natural ${f.language} voice reads the script. You can still add trending music when you post.` : "AI voiceover in Hindi, English and Hinglish is coming soon. For now, videos come with music."}>
+          <VoiceChoice voice={f.voice} ready={state.voiceReady} length={f.length} onChange={(voice) => setF({...f, voice})} />
+        </Field>
 
         <div className="cost-box">
           <div>
             <span className="mono dim">COST</span>
             <b>{cost} credit{cost === 1 ? "" : "s"}</b>
-            <span className="dim small">You have {state.user.credits}. Charged when the video is made; refunded if it fails.</span>
+            <span className="dim small">{f.voice && state.voiceReady ? "Includes voiceover. " : ""}You have {state.user.credits}. Charged when the video is made; refunded if it fails.</span>
           </div>
           {short ? <a className="btn small" href="#/settings/plan">Get credits</a> : null}
         </div>

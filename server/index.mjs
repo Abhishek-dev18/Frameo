@@ -6,7 +6,7 @@ import express from "express";
 import {ROOT, setEnvValue, log} from "../scripts/lib/env.mjs";
 import {db, id, now, event} from "./db.mjs";
 import {signup, login, logout, forgot, reset, currentUser, requireUser, requireAdmin, publicUser} from "./auth.mjs";
-import {TEMPLATES, PLANS, getTemplate, costOf, planOf} from "./templates.mjs";
+import {TEMPLATES, PLANS, LANGUAGES, VOICE_READY, getTemplate, costOf, planOf} from "./templates.mjs";
 import {startEngine, kick, nextSlots, renderProgress, notify} from "./engine.mjs";
 import {whoami, refreshToken} from "../scripts/lib/instagram.mjs";
 import {oauthClient, TOKEN_FILE} from "../scripts/lib/youtube.mjs";
@@ -53,7 +53,7 @@ function shapeEpisode(ep) {
     pipelineName: ep.single ? "Single video" : p?.name || "",
     template: ep.single ? ep.spec?.template : p?.template,
     reviewMode: ep.single ? "review" : p?.reviewMode,
-    cost: ep.single ? costOf(ep.spec?.template, ep.spec?.length) : p ? costOf(p.template, p.length) : null,
+    cost: ep.single ? costOf(ep.spec?.template, ep.spec?.length, ep.spec?.voice) : p ? costOf(p.template, p.length, p.voice) : null,
     videoUrl: rendered ? `/videos/${path.relative(OUT, file).split(path.sep).map(encodeURIComponent).join("/")}?v=${Math.round(fs.statSync(file).mtimeMs)}` : null,
     progress: renderProgress(ep.id),
   };
@@ -70,7 +70,7 @@ function shapePipeline(p) {
     },
     topicsLeft: p.topics.filter((t) => !t.used).length,
     nextSlots: p.status === "active" ? nextSlots(p.schedule, 3).map((d) => d.toISOString()) : [],
-    costPerEpisode: costOf(p.template, p.length),
+    costPerEpisode: costOf(p.template, p.length, p.voice),
   };
 }
 
@@ -105,6 +105,8 @@ app.get("/api/state", requireUser, wrap((req) => ({
   user: publicUser(req.user),
   plan: {...planOf(req.user), id: req.user.plan || "free", pipelines: Number.isFinite(planOf(req.user).pipelines) ? planOf(req.user).pipelines : 999},
   templates: TEMPLATES,
+  languages: LANGUAGES,
+  voiceReady: VOICE_READY,
   connections: connections(),
   unread: db.all("notifications", (n) => n.userId === req.user.id && !n.read).length,
 })));
@@ -123,7 +125,8 @@ function cleanPipeline(b, existing = {}) {
     name,
     template: t.id,
     custom: {...(existing.custom || {}), ...(b.custom || {})},
-    language: b.language ?? existing.language ?? "English",
+    language: LANGUAGES.includes(b.language ?? existing.language) ? (b.language ?? existing.language) : "English",
+    voice: VOICE_READY && Boolean(b.voice ?? existing.voice),
     length: Number(b.length ?? existing.length ?? 30) >= 60 ? 60 : 30,
     schedule: {days: [...new Set(schedule.days.map(Number))].sort(), time: schedule.time, startDate: schedule.startDate || new Date().toISOString().slice(0, 10)},
     reviewMode: (b.reviewMode ?? existing.reviewMode) === "auto" ? "auto" : "review",
@@ -195,10 +198,11 @@ app.post("/api/videos", requireUser, wrap((req) => {
   const spec = {
     template: t.id,
     length: Number(req.body.length) >= 60 ? 60 : 30,
-    language: ["English", "Hindi", "Hinglish"].includes(req.body.language) ? req.body.language : "English",
+    language: LANGUAGES.includes(req.body.language) ? req.body.language : "English",
+    voice: VOICE_READY && Boolean(req.body.voice),
     custom: {seriesName: String(req.body.seriesName || "").trim().slice(0, 40) || t.series},
   };
-  const cost = costOf(t.id, spec.length);
+  const cost = costOf(t.id, spec.length, spec.voice);
   if (req.user.credits < cost) throw Object.assign(new Error(`This video needs ${cost} credits and you have ${req.user.credits}.`), {status: 402});
   const open = db.all("episodes", (e) => e.userId === req.user.id && e.single && ["writing", "script_review", "render_queued", "rendering"].includes(e.stage)).length;
   if (req.user.plan === "free" && open >= 1) throw Object.assign(new Error("Finish or delete the video you're making first. Free makes one video at a time."), {status: 429});

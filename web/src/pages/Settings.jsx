@@ -154,7 +154,7 @@ function Plan({user}) {
           <span className="mono dim">CURRENT PLAN</span>
           <b className="plan-name">{current.name}</b>
         </div>
-        <p className="dim small">1 credit ≈ one 30-second explainer; story styles use 2–3. Failed videos are refunded automatically.</p>
+        <p className="dim small">30s explainer = 1 credit · story styles 2–3 · 60s counts double · AI voiceover (Hindi, English, Hinglish) +1 per 30s. Failed videos are refunded automatically.</p>
       </div>
       <div className="plan-grid">
         {PLANS.map((p) => (
@@ -162,6 +162,7 @@ function Plan({user}) {
             <b>{p.name}</b>
             <span className="plan-price">{p.price}<span className="dim small"> {p.per}</span></span>
             <span className="mono small accent">{p.credits}</span>
+            <span className="dim small">{p.note}</span>
             <ul className="plan-points">{p.points.map((x) => <li key={x}>{x}</li>)}</ul>
             {current.id === p.id ? <span className="state mono ok">CURRENT</span> : <button className="btn" disabled title="Payments are coming soon">{p.id === "free" ? "Downgrade · soon" : "Upgrade · soon"}</button>}
           </div>

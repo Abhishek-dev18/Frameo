@@ -117,7 +117,7 @@ async function doRender(ep) {
   const p = settingsOf(ep);
   const user = db.find("users", (u) => u.id === ep.userId);
   const t = getTemplate(p.template);
-  const cost = costOf(p.template, p.length);
+  const cost = costOf(p.template, p.length, p.voice);
   if (user.credits < cost) {
     if (ep.error !== "credits") {
       db.update("episodes", ep.id, {error: "credits"});

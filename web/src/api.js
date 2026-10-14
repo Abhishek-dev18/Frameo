@@ -131,11 +131,17 @@ export const go = (to) => {
 };
 
 // Plans, in order. Free makes single videos (watermarked, you upload them);
-// pipelines (scheduled auto-posting) start on Starter.
+// pipelines (scheduled auto-posting) start on Starter. Voiceover in Hindi, English or Hinglish on every plan.
 export const PLANS = [
-  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "30 credits once", points: ["Make videos one at a time", "Download and upload them yourself", "\"Made with PixelScript\" watermark", "Every style"]},
-  {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "30 credits a month", points: ["1 auto-posting pipeline", "Schedule to Instagram + YouTube", "No watermark", "Telegram alerts"]},
-  {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "70 credits a month", points: ["5 pipelines", "60-second episodes", "No watermark", "Everything in Starter"], featured: true},
-  {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "200 credits a month", points: ["Unlimited pipelines", "Priority rendering", "No watermark", "Everything in Creator"]},
+  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "20 credits once", note: "≈ 10 voiced videos", points: ["Make videos one at a time", "AI voiceover: Hindi, English, Hinglish", "Download and post them yourself", "\"Made with PixelScript\" watermark"]},
+  {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "60 credits a month", note: "≈ 30 voiced videos · 1 a day", points: ["1 auto-posting pipeline", "AI voiceover in 3 languages", "Schedule to Instagram + YouTube", "No watermark"]},
+  {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "150 credits a month", note: "≈ 75 voiced videos", points: ["5 pipelines", "60-second episodes", "AI voiceover in 3 languages", "Everything in Starter"], featured: true},
+  {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "400 credits a month", note: "≈ 200 voiced videos", points: ["Unlimited pipelines", "Priority rendering", "AI voiceover in 3 languages", "Everything in Creator"]},
 ];
+export const TOPUP = {price: "₹199", credits: 50};
 export const canPipeline = (state) => Boolean(state?.plan?.pipelines);
+// Same rule as the server: base × length, plus 1 credit per 30s of voiceover.
+export const creditCost = (tplCredits = 1, length = 30, voice = false) => {
+  const m = length >= 60 ? 2 : 1;
+  return tplCredits * m + (voice ? m : 0);
+};

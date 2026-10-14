@@ -6,7 +6,7 @@ import {log} from "../scripts/lib/env.mjs";
 
 const COOKIE = "pixelscript_sid";
 const SESSION_DAYS = 30;
-export const FREE_CREDITS = 30;
+export const FREE_CREDITS = 20;
 
 const hash = (password, salt) => crypto.scryptSync(password, salt, 64).toString("hex");
 const safeEqual = (a, b) => a.length === b.length && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));

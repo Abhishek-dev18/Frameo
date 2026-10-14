@@ -596,3 +596,12 @@ input[type="checkbox"] { width: auto; }
   .set-tabs a.on { box-shadow: inset 0 -2px 0 var(--accent); background: none; border-radius: 0; }
   .set-body .conn-body { max-height: none; overflow: visible; }
 }
+
+/* landing: credit costs line + voice hint on styles */
+.l-voice { color: var(--ink3); }
+.l-costs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; font-size: 13px; color: var(--ink2); }
+.l-costs span { border: 1px solid var(--line2); border-radius: 999px; padding: 7px 14px; }
+.l-costs b { color: var(--ink); font-weight: 700; }
+.l-plan .dim.small { margin-top: -6px; }
+.voice-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.voice-row .soon { margin-left: 4px; }

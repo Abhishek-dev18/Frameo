@@ -106,3 +106,27 @@ export function Footer() {
     </footer>
   );
 }
+
+// Voiceover choice. Voice adds 1 credit per 30 seconds. Disabled (with "SOON") until the voice pipeline is live.
+export function VoiceChoice({voice, onChange, ready, length = 30}) {
+  const extra = length >= 60 ? 2 : 1;
+  return (
+    <div className="seg-choice" role="radiogroup" aria-label="Voiceover">
+      <button type="button" role="radio" aria-checked={!voice} className={!voice ? "on" : ""} onClick={() => onChange(false)}>
+        Music only
+      </button>
+      <button type="button" role="radio" aria-checked={voice} className={voice ? "on" : ""} disabled={!ready} onClick={() => ready && onChange(true)} title={ready ? "" : "AI voiceover is coming soon"}>
+        AI voice <span className="dim small">+{extra} credit{extra > 1 ? "s" : ""}</span>
+        {!ready ? <span className="soon mono">SOON</span> : null}
+      </button>
+    </div>
+  );
+}
+
+export function LanguageSelect({id, value, onChange, languages = ["English", "Hindi", "Hinglish"]}) {
+  return (
+    <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
+      {languages.map((l) => <option key={l}>{l}</option>)}
+    </select>
+  );
+}
