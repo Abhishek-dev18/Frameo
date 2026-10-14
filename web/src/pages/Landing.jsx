@@ -4,9 +4,9 @@ import {PLANS, TOPUP} from "../api.js";
 
 const STYLES = [
   {id: "explainer-cards", name: "Explainer cards", line: "Animated step-by-step diagrams for any concept.", credits: 1},
-  {id: "kahaani", name: "Character story", line: "Two characters act out the idea as a tiny story.", credits: 1},
-  {id: "midnight-deploy", name: "Anime story", line: "A developer and his AI drone fix a real bug before sunrise.", credits: 1},
-  {id: "anime-action", name: "Anime action", line: "Close-ups, a sword clash and a cliffhanger.", credits: 1},
+  {id: "kahaani", name: "Character story", line: "Two characters act out the idea as a tiny story.", credits: 2},
+  {id: "midnight-deploy", name: "Anime story", line: "A developer and his AI drone fix a real bug before sunrise.", credits: 2},
+  {id: "anime-action", name: "Anime action", line: "Close-ups, a sword clash and a cliffhanger.", credits: 4},
 ];
 
 const FAQ = [
@@ -14,7 +14,7 @@ const FAQ = [
   ["Can I check videos before they go live?", "Yes. By default you approve each script and each video before it posts. You can switch a pipeline to fully automatic once you trust it."],
   ["Will YouTube and Instagram allow these videos?", "Yes, when each episode teaches something real. PixelScript writes a different story for every topic and labels videos as AI-made, which both platforms ask for. Endless near-identical uploads are what get channels in trouble."],
   ["What do I get for free?", "30 credits to make videos one at a time, with or without a voiceover. You approve the script, download the finished video and post it yourself. Free videos carry a small \"Made with PixelScript\" mark. Pipelines that post on a schedule, without the mark, start on Starter."],
-  ["What's a credit?", "A 30-second video is 1 credit in any style, or 3 credits with an AI voiceover. A 60-second video counts double. If a video fails, the credits come back."],
+  ["What's a credit?", "Each style has its own price for a 30-second video: explainer cards 1 credit, character and anime stories 2, anime action 4. An AI voiceover adds 2 credits per 30 seconds. A 60-second video is double, and 1 credit less on story styles. If a video fails, the credits come back."],
   ["Which languages?", "Hindi, English and Hinglish, for both the script and the voiceover. Mixing Hindi and English in one sentence sounds natural, not robotic."],
 ];
 
@@ -80,7 +80,7 @@ export default function Landing() {
               <figcaption>
                 <b>{s.name}</b>
                 <span>{s.line}</span>
-                <span className="mono dim">1 credit per 30s <span className="l-voice">· 3 with voice</span></span>
+                <span className="mono dim">{s.credits} credit{s.credits > 1 ? "s" : ""} per 30s <span className="l-voice">· {s.credits + 2} with voice</span></span>
               </figcaption>
             </figure>
           ))}
@@ -114,10 +114,9 @@ export default function Landing() {
           ))}
         </div>
         <div className="l-costs mono">
-          <span>30s video <b>1 credit</b></span>
-          <span>30s with AI voice <b>3 credits</b></span>
-          <span>60s video <b>×2</b></span>
-          <span>Every style <b>same price</b></span>
+          <span>30s video <b>1–4 credits</b> by style</span>
+          <span>AI voice <b>+2</b> per 30s</span>
+          <span>60s <b>×2</b>, 1 less on story styles</span>
           <span>Top-up <b>{TOPUP.credits} credits · {TOPUP.price}</b></span>
         </div>
       </section>

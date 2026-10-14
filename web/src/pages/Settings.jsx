@@ -154,7 +154,7 @@ function Plan({user}) {
           <span className="mono dim">CURRENT PLAN</span>
           <b className="plan-name">{current.name}</b>
         </div>
-        <p className="dim small">30s video = 1 credit in any style, 3 with AI voiceover (Hindi, English, Hinglish) · 60s counts double. Failed videos are refunded automatically.</p>
+        <p className="dim small">30s video: explainer 1 credit, character/anime story 2, anime action 4 · AI voiceover (Hindi, English, Hinglish) +2 per 30s · 60s is double (1 less on story styles). Failed videos are refunded automatically.</p>
       </div>
       <div className="plan-grid">
         {PLANS.map((p) => (

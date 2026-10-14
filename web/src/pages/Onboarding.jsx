@@ -157,7 +157,7 @@ export function TemplateCard({t, selected, onSelect}) {
       <span className="tpl-text">
         <b>{t.name}</b>
         <span className="dim small">{t.blurb}</span>
-        <span className="mono small accent">1 credit <span className="dim">· 3 with voice</span></span>
+        <span className="mono small accent">{t.credits} credit{t.credits > 1 ? "s" : ""} <span className="dim">· {t.credits + 2} with voice</span></span>
         <span className="dim small">Best for {t.best.toLowerCase()}</span>
       </span>
     </button>
