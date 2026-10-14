@@ -68,7 +68,8 @@ Plan rules already enforced in code (`server/templates.mjs` → `PLANS`):
 - [ ] **Invoices** (auto-generated PDF per payment, GSTIN, HSN/SAC 998314) and a billing history page.
 - [ ] International cards / Stripe later if users outside India sign up.
 - [ ] Credit expiry rules and the "failed renders are refunded" rule written into Terms.
-- [ ] Monthly credit top-up job for paid plans (today credits never reset).
+- [x] Monthly credits for paid plans (`server/credits.mjs`): on a plan change and every month after (`creditsRenewAt`), the balance is topped back up to the plan's allowance; unused monthly credits don't stack. Free credits are one-time. When Razorpay lands, `subscription.charged` should call `applyPlan`.
+- [ ] Top-up purchase (₹199 → 75 credits, never expire): shown as "Buy · soon" in Settings → Plan.
 - [ ] Admin: billing view, manual refunds, coupons.
 
 ---
@@ -111,9 +112,11 @@ Today: email + password with scrypt hashes and cookie sessions; reset links are 
 ## 5. The product itself
 
 ### Videos  **[launch]**
-Today: the four styles are **fixed stories**. Only Midnight Deploy's end card changes per episode (channel name, episode number and title come from the episode). The AI-written script lines are stored but **don't drive the scenes yet**.
+Today: **Explainer cards is fully data-driven.** The writer produces a *screenplay* (`src/screenplay/types.ts`): 3–6 scenes, each with 1–3 blocks from a library of 10 (headline, stat, flow diagram, code, diff, compare, steps, log, cheat sheet, next-video card), built from the Debug Diaries videos. `server/screenplay.mjs` cleans whatever the AI returns (unknown blocks dropped, text clamped on word boundaries, scene seconds fitted to the 30/60s length), the Review page edits the on-screen text scene by scene, and the `Screenplay` composition plays it with crossfades, the hook visible at frame 0, auto-scaling so nothing overflows, and a music bed (3 original lo-fi beds in `public/music`, made by `scripts/audio/music.py`, so no licensing issues). The other three styles are still **fixed stories** (only names/titles change).
 
-- [ ] **Data-driven templates**: define a "screenplay" JSON (scenes, characters, dialogue, on-screen text, timings) that the writer produces and each Remotion template renders. This is the single biggest item to make the product real.
+- [x] Screenplay format + scene library + AI writer + editor (Explainer cards).
+- [ ] Character story / Anime styles on screenplays: same idea, with dialogue blocks and character poses.
+- [ ] More music beds, and let the user pick one (or "no music" to add trending audio in the app).
 - [ ] **Voiceover** (TTS): ElevenLabs / Google Cloud TTS / Azure; Hindi, English, Hinglish voices. Cost per 30s ≈ ₹1–4. Sync subtitles to the audio.
 - [ ] **Captions** word-by-word from the voice track (Remotion `@remotion/captions`, Whisper for timestamps).
 - [ ] Music library with licences that allow commercial use on social platforms (or Instagram/YouTube audio libraries).
@@ -181,15 +184,15 @@ Today: Privacy, Terms, Refunds and Data deletion pages exist as **drafts with [B
 - Signup / login / logout / forgot + reset password (reset link in terminal), sessions.
 - Onboarding (channel → connections → first style).
 - New pipeline wizard with schedule preview and credit cost.
-- Engine: plans 3 episodes ahead, writes scripts with Gemini (or placeholder), script review → render → video review → scheduled → posts to Instagram and YouTube for the admin's connected accounts; missed-review policy; credits charged/refunded.
+- Engine: renders run in the background (`RENDER_CONCURRENCY`, default 1), so writing and posting never wait on a render; monthly credit refills. Plans 3 episodes ahead, writes scripts with Gemini (or placeholder), script review → render → video review → scheduled → posts to Instagram and YouTube for the admin's connected accounts; missed-review policy; credits charged/refunded.
 - Home with review inbox, pipelines and week calendar; pipeline page; review page; posted library; activity log; notifications (in-app + Telegram); settings; admin (users, credits, services, failures).
 
 ## Suggested order
 
 1. Employer approval, entity, domain (week 1).
 2. Submit Meta business verification and Google OAuth verification **now** (they take weeks) while building:
-3. Postgres + hosting + render worker + private storage.
+3. Postgres + hosting + private storage (the render queue is already non-blocking; a separate render machine is a later scale step).
 4. Per-user OAuth connections + encrypted tokens.
-5. Data-driven templates + voiceover (the product is only as good as the videos).
+5. Voiceover, and screenplays for the story/anime styles (Explainer cards is already data-driven).
 6. Email service, Razorpay subscriptions, legal pages finalised.
 7. Private beta with 10–20 creators on the Free plan → fix → public launch.

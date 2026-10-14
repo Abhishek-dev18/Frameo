@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {api, go, fmtWhen, relative, canPipeline} from "../api.js";
 import {Stage, Field, RenderBar, Platform} from "../ui.jsx";
+import ScreenplayEditor from "./ScreenplayEditor.jsx";
 
 const toForm = (s, title) => ({
   title: s?.title || title || "",
@@ -8,6 +9,7 @@ const toForm = (s, title) => ({
   lines: (s?.lines || []).join("\n"),
   caption: s?.caption || "",
   ytTitle: s?.ytTitle || "",
+  screenplay: s?.screenplay || null,
 });
 
 export default function Review({id, toast, refresh, state}) {
@@ -43,6 +45,7 @@ export default function Review({id, toast, refresh, state}) {
       lines: form.lines.split("\n").map((x) => x.trim()).filter(Boolean),
       caption: form.caption,
       ytTitle: form.ytTitle.trim(),
+      ...(form.screenplay ? {screenplay: {...form.screenplay, title: form.title.trim()}} : {}),
     },
   });
 
@@ -149,10 +152,14 @@ export default function Review({id, toast, refresh, state}) {
               {!captionOnly ? (
                 <>
                   <Field label="Title"><input id="rv-title" value={form.title} onChange={set("title")} maxLength={80} disabled={!editable} /></Field>
-                  <Field label="Opening line" hint="The first thing viewers read. Make it grab attention."><input id="rv-hook" value={form.hook} onChange={set("hook")} disabled={!editable} /></Field>
-                  <Field label="Subtitle lines" hint="One per line, in order.">
-                    <textarea id="rv-lines" rows={7} value={form.lines} onChange={set("lines")} disabled={!editable} />
-                  </Field>
+                  {form.screenplay ? null : <Field label="Opening line" hint="The first thing viewers read. Make it grab attention."><input id="rv-hook" value={form.hook} onChange={set("hook")} disabled={!editable} /></Field>}
+                  {form.screenplay ? (
+                    <ScreenplayEditor value={form.screenplay} disabled={!editable} onChange={(screenplay) => { setForm({...form, screenplay}); setDirty(true); }} />
+                  ) : (
+                    <Field label="Subtitle lines" hint="One per line, in order.">
+                      <textarea id="rv-lines" rows={7} value={form.lines} onChange={set("lines")} disabled={!editable} />
+                    </Field>
+                  )}
                 </>
               ) : null}
               <Field label="Instagram caption" counter={`${form.caption.length}/2200`}>

@@ -6,6 +6,8 @@ import express from "express";
 import {ROOT, setEnvValue, log} from "../scripts/lib/env.mjs";
 import {db, id, now, event} from "./db.mjs";
 import {signup, login, logout, forgot, reset, currentUser, requireUser, requireAdmin, publicUser} from "./auth.mjs";
+import {applyPlan} from "./credits.mjs";
+import {cleanScreenplay} from "./screenplay.mjs";
 import {TEMPLATES, PLANS, LANGUAGES, VOICE_READY, getTemplate, costOf, planOf} from "./templates.mjs";
 import {startEngine, kick, nextSlots, renderProgress, notify} from "./engine.mjs";
 import {whoami, refreshToken} from "../scripts/lib/instagram.mjs";
@@ -263,6 +265,10 @@ app.patch("/api/episodes/:id", requireUser, wrap((req) => {
   const ep = mine("episodes", req);
   const patch = {};
   if (req.body.script) patch.script = {...ep.script, ...req.body.script};
+  if (req.body.script?.screenplay) {
+    const length = (ep.single ? ep.spec : db.find("pipelines", (p) => p.id === ep.pipelineId))?.length || 30;
+    patch.script.screenplay = cleanScreenplay(req.body.script.screenplay, length);
+  }
   if (patch.script?.title) patch.title = patch.script.title;
   if (req.body.at) patch.at = new Date(req.body.at).toISOString();
   return shapeEpisode(db.update("episodes", ep.id, patch));
@@ -335,8 +341,8 @@ app.post("/api/admin/users/:id/credits", requireAdmin, wrap((req) => {
 app.post("/api/admin/users/:id/plan", requireAdmin, wrap((req) => {
   const plan = String(req.body.plan || "");
   if (!PLANS[plan]) throw new Error("Unknown plan.");
-  const u = db.update("users", req.params.id, {plan});
-  if (!u) throw notFound("User");
+  if (!db.find("users", (x) => x.id === req.params.id)) throw notFound("User");
+  const u = applyPlan(req.params.id, plan);
   event(u.id, `Plan changed to ${PLANS[plan].name}.`, "good");
   return publicUser(u);
 }));

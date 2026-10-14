@@ -7,9 +7,10 @@ export const TEMPLATES = [
     id: "explainer-cards",
     name: "Explainer cards",
     series: "How it works",
-    composition: "HowRagWorks",
+    composition: "Screenplay",
+    screenplay: true, // the writer produces scenes of blocks (src/screenplay) instead of fixed lines
     credits: 1,
-    blurb: "Step-by-step animated diagrams with a progress tracker. Clean and fast to watch.",
+    blurb: "Animated diagrams, code, logs and cheat sheets in a clean, minimal look. Every video is laid out for its topic.",
     best: "Concepts, interview questions",
     preview: "/samples/explainer-cards.mp4",
     characters: [],
@@ -63,9 +64,9 @@ export const VOICE_READY = false;
 // What each plan can do. Free makes one video at a time to download (watermarked) and
 // upload by hand; pipelines (scheduled auto-posting) start on Starter.
 export const PLANS = {
-  free: {name: "Free", price: 0, credits: 4, monthly: false, pipelines: 0, watermark: true},
-  starter: {name: "Starter", price: 499, credits: 4, monthly: true, pipelines: 1, watermark: false},
-  creator: {name: "Creator", price: 999, credits: 4, monthly: true, pipelines: 5, watermark: false},
-  pro: {name: "Pro", price: 2499, credits: 4, monthly: true, pipelines: Infinity, watermark: false},
+  free: {name: "Free", price: 0, credits: 30, monthly: false, pipelines: 0, watermark: true},
+  starter: {name: "Starter", price: 499, credits: 90, monthly: true, pipelines: 1, watermark: false},
+  creator: {name: "Creator", price: 999, credits: 225, monthly: true, pipelines: 5, watermark: false},
+  pro: {name: "Pro", price: 2499, credits: 600, monthly: true, pipelines: Infinity, watermark: false},
 };
 export const planOf = (user) => PLANS[user?.plan] || PLANS.free;

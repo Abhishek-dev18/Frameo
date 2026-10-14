@@ -10,6 +10,8 @@ import cron from "node-cron";
 import {db, id, now, event} from "./db.mjs";
 import {getTemplate, costOf, planOf} from "./templates.mjs";
 import {writeScript} from "./writer.mjs";
+import {fallbackScreenplay} from "./screenplay.mjs";
+import {refillDue} from "./credits.mjs";
 import {ROOT, log} from "../scripts/lib/env.mjs";
 import {render} from "../scripts/lib/render.mjs";
 import {uploadVideo} from "../scripts/lib/storage.mjs";
@@ -113,10 +115,17 @@ async function doWriting(ep) {
   }
 }
 
-async function doRender(ep) {
+// Renders run in the background so a long render never holds up writing or posting.
+// RENDER_CONCURRENCY (default 1) caps how many run at once; each one uses a full Chrome.
+const MAX_RENDERS = Math.max(1, Number(process.env.RENDER_CONCURRENCY) || 1);
+const active = new Set();
+export const renderingNow = () => active.size;
+
+// Charges credits and claims the episode (synchronously, so two ticks can't take the same one).
+// Returns false when the owner is out of credits.
+function startRender(ep) {
   const p = settingsOf(ep);
   const user = db.find("users", (u) => u.id === ep.userId);
-  const t = getTemplate(p.template);
   const cost = costOf(p.template, p.length, p.voice);
   if (user.credits < cost) {
     if (ep.error !== "credits") {
@@ -127,6 +136,19 @@ async function doRender(ep) {
   }
   db.update("users", user.id, {credits: user.credits - cost});
   db.update("episodes", ep.id, {stage: "rendering", creditsCharged: cost, error: null});
+  active.add(ep.id);
+  doRender(ep, p, user, cost).finally(() => {
+    active.delete(ep.id);
+    kick(); // pick up the next one straight away
+  });
+  return true;
+}
+
+// Background music: one of the beds in public/music, picked from the episode id so a remake sounds the same.
+const musicFor = (ep) => [...ep.id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 3;
+
+async function doRender(ep, p, user, cost) {
+  const t = getTemplate(p.template);
   const file = `out/${user.id}/${ep.id}.mp4`;
   const propsFile = path.join(ROOT, "out", user.id, `${ep.id}.props.json`);
   fs.mkdirSync(path.dirname(propsFile), {recursive: true});
@@ -140,6 +162,8 @@ async function doRender(ep) {
       seriesName: p.custom?.seriesName || t.series,
       lines: ep.script?.lines || [],
       watermark: planOf(user).watermark,
+      music: musicFor(ep),
+      ...(t.screenplay ? {screenplay: ep.script?.screenplay || fallbackScreenplay(ep.title, p.length || 30)} : {}),
     }),
   );
   try {
@@ -148,7 +172,7 @@ async function doRender(ep) {
     if (ep.single) {
       db.update("episodes", ep.id, {file, stage: "ready", readyAt: now()});
       notify(ep.userId, `Your video is ready to download: "${ep.title}"`, {tone: "good", link: `#/review/${ep.id}`});
-      return true;
+      return;
     }
     const review = reviews(ep, p);
     db.update("episodes", ep.id, {file, stage: review ? "video_review" : "scheduled"});
@@ -160,7 +184,6 @@ async function doRender(ep) {
   } finally {
     progress.delete(ep.id);
   }
-  return true;
 }
 
 async function doPost(ep) {
@@ -222,15 +245,19 @@ export async function tick() {
   if (busy) return;
   busy = true;
   try {
+    refillDue();
     planUpcoming();
     // a pipeline episode moves only while its pipeline is live and its owner's plan includes pipelines
     const live = (e) => e.single || (db.find("pipelines", (p) => p.id === e.pipelineId)?.status === "active" && Boolean(planOf(db.find("users", (u) => u.id === e.userId)).pipelines));
     for (const ep of db.all("episodes", (e) => e.stage === "writing" && live(e))) await doWriting(ep);
     for (const ep of db.all("episodes", (e) => !e.single && live(e) && ["script_review", "video_review"].includes(e.stage) && new Date(e.at) <= new Date())) handleMissed(ep);
-    // One render per tick: one-off videos first (someone is waiting), then episodes by airing time.
+    // Start renders up to the limit: one-off videos first (someone is waiting), then episodes by airing time.
     // Episodes whose owner is out of credits are skipped so they don't block everyone else.
     const queue = db.all("episodes", (e) => e.stage === "render_queued" && live(e)).sort((a, b) => (b.single ? 1 : 0) - (a.single ? 1 : 0) || new Date(a.at) - new Date(b.at));
-    for (const ep of queue) if (await doRender(ep)) break;
+    for (const ep of queue) {
+      if (active.size >= MAX_RENDERS) break;
+      startRender(ep);
+    }
     for (const ep of db.all("episodes", (e) => !e.single && live(e) && e.stage === "scheduled" && new Date(e.at) <= new Date())) await doPost(ep);
   } catch (e) {
     log(`Engine error: ${e.message}`);

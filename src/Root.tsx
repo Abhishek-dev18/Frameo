@@ -6,6 +6,9 @@ import {MidnightDeploy, MD_TOTAL} from "./MidnightDeploy";
 import {LastBlade, LB_TOTAL} from "./LastBlade";
 import {PixelScriptPromo, PROMO_TOTAL} from "./Promo";
 import {withWatermark} from "./Watermark";
+import {Screenplay} from "./screenplay/Screenplay";
+import {totalFrames, type ScreenplayProps} from "./screenplay/types";
+import {DEMO_SCREENPLAY} from "./screenplay/demo";
 import {DESIGNS, Terminal, TERM_THEMES} from "./designs/DebugDiaries";
 import {Neon, ACCENTS} from "./designs/NeonTerminal";
 import {DebugDiariesEntry, DD_TOTAL, ENTRY_001, ENTRY_002} from "./debugdiaries/Entry";
@@ -19,9 +22,20 @@ const HowRagWorksW = withWatermark(HowRagWorks);
 const RagStoryW = withWatermark(RagStory);
 const MidnightDeployW = withWatermark(MidnightDeploy);
 const LastBladeW = withWatermark(LastBlade);
+const ScreenplayW = withWatermark(Screenplay);
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition
+      id="Screenplay"
+      component={ScreenplayW}
+      durationInFrames={totalFrames(DEMO_SCREENPLAY)}
+      fps={30}
+      width={1080}
+      height={1920}
+      defaultProps={{screenplay: DEMO_SCREENPLAY, channelName: "PixelScript", handle: "@pixelscript", episodeNumber: 1, music: 0, watermark: false} as ScreenplayProps}
+      calculateMetadata={({props}) => ({durationInFrames: totalFrames((props as ScreenplayProps).screenplay)})}
+    />
     <Composition id="HowRagWorks" component={HowRagWorksW} durationInFrames={TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="RagStory" component={RagStoryW} durationInFrames={STORY_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="MidnightDeploy" component={MidnightDeployW} durationInFrames={MD_TOTAL} fps={30} width={1080} height={1920} />

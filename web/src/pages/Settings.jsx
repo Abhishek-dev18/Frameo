@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {api, go, PLANS} from "../api.js";
+import {api, go, PLANS, TOPUP} from "../api.js";
 import {Field} from "../ui.jsx";
 import Connections from "./Connections.jsx";
 
@@ -154,6 +154,10 @@ function Plan({user}) {
           <span className="mono dim">CURRENT PLAN</span>
           <b className="plan-name">{current.name}</b>
         </div>
+        <div>
+          <span className="mono dim">{user.creditsRenewAt ? "RENEWS" : "MONTHLY"}</span>
+          <b className="plan-name">{user.creditsRenewAt ? new Date(user.creditsRenewAt).toLocaleDateString(undefined, {day: "numeric", month: "short"}) : "—"}</b>
+        </div>
         <p className="dim small">30s video: explainer 1 credit, character/anime story 2, anime action 4 · AI voiceover (Hindi, English, Hinglish) +2 per 30s · 60s is double (1 less on story styles). Failed videos are refunded automatically.</p>
       </div>
       <div className="plan-grid">
@@ -168,7 +172,11 @@ function Plan({user}) {
           </div>
         ))}
       </div>
-      <p className="dim small">Payments by UPI and card (Razorpay) are coming with the public launch. {user.role === "admin" ? "As admin, you can change any account's plan and credits from the Admin page." : ""}</p>
+      <div className="topup-row">
+        <span><b>Top up</b> <span className="dim small">· {TOPUP.credits} credits for {TOPUP.price}, never expire</span></span>
+        <button className="btn small" disabled title="Payments are coming soon">Buy · soon</button>
+      </div>
+      <p className="dim small">{user.creditsRenewAt ? "Each month your balance is topped back up to your plan's credits. " : "Free credits are a one-time gift. "}Payments by UPI and card (Razorpay) are coming with the public launch. {user.role === "admin" ? "As admin, you can change any account's plan and credits from the Admin page." : ""}</p>
     </>
   );
 }

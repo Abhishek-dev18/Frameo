@@ -23,6 +23,8 @@ Open **http://127.0.0.1:5173**. The first account you create becomes the **admin
 5. PixelScript plans the next 3 episodes. For each one: **writes the script** (Gemini) → you **approve the script** → it **makes the video** (Remotion) → you **approve the video** → it **posts** at the slot. In *Autopilot* mode both reviews are skipped.
 6. **Home** shows what needs your review, your pipelines and the week's calendar. The bell and Telegram tell you when something needs you.
 
+For Explainer cards, the script is a **screenplay**: 3–6 scenes of animated blocks (headline, number, diagram, code, diff, comparison, steps, log, cheat sheet, next-video card) that the AI lays out for the topic. On the review page you edit the on-screen words scene by scene. Every video has a music bed; AI voiceover is coming.
+
 Episode stages: `writing → script_review → render_queued → rendering → video_review → scheduled → posting → posted` (or `failed` / `skipped`). Credits are charged when a video is made and refunded if it fails.
 
 ## What's inside
@@ -30,14 +32,18 @@ Episode stages: `writing → script_review → render_queued → rendering → v
 | Path | What it is |
 |---|---|
 | `server/index.mjs` | API server: auth, pipelines, episodes, notifications, admin, connections. |
-| `server/engine.mjs` | Runs every minute: plans episodes, writes scripts, renders, posts. |
+| `server/engine.mjs` | Runs every minute: plans episodes, writes scripts, starts renders in the background (`RENDER_CONCURRENCY`), posts, refills monthly credits. |
+| `server/screenplay.mjs` | Checks and cleans screenplays (the scene-by-scene format the writer produces). |
+| `server/credits.mjs` | Monthly credits for paid plans. |
 | `server/db.mjs` | Small JSON database in `content/db.json` (not committed). |
 | `server/auth.mjs` | Signup, login, sessions, password reset. |
-| `server/writer.mjs` | Gemini script writer (placeholder script when no key). |
+| `server/writer.mjs` | Gemini script writer: a screenplay for Explainer cards, lines for the other styles (placeholder when no key). |
 | `server/templates.mjs` | The video styles and their credit cost. |
 | `web/` | The website (React + Vite): landing, auth, onboarding, app, admin. |
 | `web/public/promo.mp4` | Landing-page video (`src/PixelScriptPromo.tsx`). |
 | `src/` | The Remotion videos. |
+| `src/screenplay/` | The `Screenplay` composition: plays any screenplay with 10 animated block types and a music bed. |
+| `public/music/` | Three original lo-fi beds (`python3 scripts/audio/music.py <0-2> <seconds> <out.wav>` makes more). |
 | `out/` | Rendered MP4s and `pixelscript.log` (not committed). |
 
 To re-render the landing video: `npx remotion render src/index.ts PixelScriptPromo web/public/promo.mp4 --crf=24`.
