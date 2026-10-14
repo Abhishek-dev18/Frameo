@@ -1,10 +1,9 @@
 // Debug Diaries · Entry 004 "The index nobody used" — cinematic cut (kinetic type, 3D point cloud, HUD, flash cuts).
-// Timed to estimated voice parts; re-time P2/P3/RULE/P4/E4_TOTAL once the Sarvam audio is in.
-//   P1 hook  "We added an index on email. Postgres ignored it, and scanned all four point eight million rows. Every single login."
-//   P2 cause "The query said lower of email. The index only knows email. Wrap a column in a function, and the index can't see it."
-//   P3 fix   "Fix: index the expression itself. Create index on lower of email. Two point four seconds became three milliseconds.
-//            Rule: index exactly what your WHERE clause says."
-//   P4 outro "Follow Debug Diaries for entry five."
+// Timed to the Hinglish Sarvam voice (content/debug-diaries/004/voice.wav, pauses tightened to 0.26s).
+//   Hinglish voice, phrase starts (s): P1 0.12 index · 1.79 ignore · 3.54 48 lakh rows scan · 5.26 har ek login
+//   P2 7.03 query · 8.12 lower of email · 9.87 par index ko · 10.77 sirf email · 11.64 wrap karo · 13.41 dekh nahi paata
+//   P3 14.75 fix · 15.64 expression · 16.99 create index · 19.25 dhaai second · 20.77 teen ms · 21.83 rule · 22.73 WHERE · 24.25 wahi index
+//   P4 25.42 follow (ends 27.41)
 import React from "react";
 import {AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig, Easing} from "remotion";
 import "@fontsource-variable/archivo/wdth.css";
@@ -17,11 +16,11 @@ const SANS = "'Archivo Variable', Inter, sans-serif";
 const clamp = {extrapolateLeft: "clamp", extrapolateRight: "clamp"} as const;
 
 // ---- timing (frames @30fps) ----
-export const P2 = 192; // cause starts
-export const P3 = 435; // fix starts
-export const RULE = 627; // "Rule: ..."
-export const P4 = 723; // outro
-export const E4_TOTAL = 825;
+export const P2 = 208; // cause starts
+export const P3 = 440; // fix starts
+export const RULE = 652; // "Rule: ..."
+export const P4 = 763; // outro
+export const E4_TOTAL = 852;
 
 const ease = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
 const out = (f: number, a: number, b: number) => interpolate(f, [a, b], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
@@ -160,7 +159,7 @@ const Card: React.FC<{title: string; tag?: string; tagColor?: string; border?: s
 const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const ax = -0.42, ay = 0.6 + f * 0.012;
-  const sweep = interpolate(f, [104, 172], [-1.05, 1.05], clamp);
+  const sweep = interpolate(f, [106, 156], [-1.05, 1.05], clamp);
   const pts = CUBE.map((p) => {
     const r = rot(p, ax, ay);
     const [x, y, k] = proj(r, 540, 860);
@@ -170,13 +169,13 @@ const Hook: React.FC = () => {
   }).sort((a, b) => b.z - a.z);
   // the scan plane: the slice of the cube at x = sweep
   const plane = ([[-1, -1], [-1, 1], [1, 1], [1, -1]] as const).map(([y, z]) => proj(rot([sweep, y, z], ax, ay), 540, 860));
-  const scanning = f >= 104 && f <= 172;
-  const rows = Math.round(4812330 * interpolate(f, [104, 172], [0, 1], clamp));
+  const scanning = f >= 106 && f <= 156;
+  const rows = Math.round(4812330 * interpolate(f, [106, 156], [0, 1], clamp));
   return (
     <AbsoluteFill>
       <div style={{position: "absolute", left: 64, top: 268}}>
         <Slam at={-30} size={94}>We added an index.</Slam>
-        <Slam at={64} size={94} color={C.bug} style={{marginTop: 10}}>Postgres ignored it.</Slam>
+        <Slam at={54} size={94} color={C.bug} style={{marginTop: 10}}>Postgres ignored it.</Slam>
       </div>
       <svg width={1080} height={1920} style={{position: "absolute", inset: 0}}>
         {pts.map((p, i) => (
@@ -184,23 +183,23 @@ const Hook: React.FC = () => {
         ))}
         {scanning ? <polygon points={plane.map((q) => `${q[0]},${q[1]}`).join(" ")} fill={C.bug} fillOpacity={0.08} stroke={C.bug} strokeWidth={3} strokeOpacity={0.9} /> : null}
       </svg>
-      <div style={{position: "absolute", right: 150, top: 1050, fontFamily: MONO, fontSize: 24, color: C.dim, textAlign: "right", opacity: out(f, 104, 112)}}>
+      <div style={{position: "absolute", right: 150, top: 1050, fontFamily: MONO, fontSize: 24, color: C.dim, textAlign: "right", opacity: out(f, 106, 114)}}>
         TABLE users<br />
         <span style={{color: C.bug, fontSize: 30}}>{rows.toLocaleString("en-US")}</span> rows read
       </div>
-      {f > 160 ? (
+      {f > 156 ? (
         <div style={{position: "absolute", left: 64, top: 1060}}>
-          <Slam at={162} size={46} color={C.bug}>× every single login</Slam>
+          <Slam at={158} size={46} color={C.bug}>× every single login</Slam>
         </div>
       ) : null}
-      <Card title="psql — prod" tag={f > 108 ? "SEQ SCAN" : "QUERY"} tagColor={f > 108 ? C.bug : C.dim} style={{top: 1150}}>
+      <Card title="psql — prod" tag={f > 106 ? "SEQ SCAN" : "QUERY"} tagColor={f > 106 ? C.bug : C.dim} style={{top: 1150}}>
         <span style={{color: C.dim}}>{"> "}</span>
         {typed("SELECT * FROM users", f, -10, 60)}
         {"\n  "}
         {typed("WHERE lower(email) = $1;", f, 14, 60)}
         {"\n"}
-        <span style={{color: C.bug, opacity: f > 108 ? 1 : 0}}>{"Seq Scan on users"}</span>
-        <span style={{color: C.dim, opacity: f > 170 ? 1 : 0}}>{"  2,431 ms"}</span>
+        <span style={{color: C.bug, opacity: f > 106 ? 1 : 0}}>{"Seq Scan on users"}</span>
+        <span style={{color: C.dim, opacity: f > 156 ? 1 : 0}}>{"  2,500 ms"}</span>
       </Card>
     </AbsoluteFill>
   );
@@ -209,25 +208,25 @@ const Hook: React.FC = () => {
 // ---- scene 2: the cause ----
 const Cause: React.FC = () => {
   const f = useCurrentFrame();
-  const close = out(f, 150, 166); // lower( ) wraps around email
-  const arrow = interpolate(f, [176, 198], [0, 1], {...clamp, easing: Easing.in(Easing.quad)});
-  const bounce = f > 198 ? interpolate(f, [198, 214], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)}) : 0;
+  const close = out(f, 141, 157); // lower( ) wraps around email
+  const arrow = interpolate(f, [180, 200], [0, 1], {...clamp, easing: Easing.in(Easing.quad)});
+  const bounce = f > 200 ? interpolate(f, [200, 216], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)}) : 0;
   const ax = 40 + arrow * 180 - bounce * 110;
   return (
     <AbsoluteFill>
       <Section text="02 / THE CAUSE" />
       <div style={{position: "absolute", left: 64, top: 360}}>
-        <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.14em", color: C.dim, opacity: out(f, 14, 20)}}>THE QUERY ASKS FOR</div>
-        <Slam at={18} size={110} color={C.bug} style={{marginTop: 8, textTransform: "none", fontFamily: MONO, fontWeight: 700, letterSpacing: "-0.02em"}}>lower(email)</Slam>
-        <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.14em", color: C.dim, marginTop: 50, opacity: out(f, 80, 86)}}>THE INDEX ONLY KNOWS</div>
-        <Slam at={84} size={110} color={C.g} style={{marginTop: 8, textTransform: "none", fontFamily: MONO, fontWeight: 700}}>email</Slam>
+        <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.14em", color: C.dim, opacity: out(f, 30, 36)}}>THE QUERY ASKS FOR</div>
+        <Slam at={36} size={110} color={C.bug} style={{marginTop: 8, textTransform: "none", fontFamily: MONO, fontWeight: 700, letterSpacing: "-0.02em"}}>lower(email)</Slam>
+        <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.14em", color: C.dim, marginTop: 50, opacity: out(f, 88, 94)}}>THE INDEX ONLY KNOWS</div>
+        <Slam at={115} size={110} color={C.g} style={{marginTop: 8, textTransform: "none", fontFamily: MONO, fontWeight: 700}}>email</Slam>
       </div>
       <div style={{position: "absolute", right: 170, top: 540}}>
-        <Slam at={120} size={210} color={C.bug} style={{transformOrigin: "center"}}>≠</Slam>
+        <Slam at={128} size={210} color={C.bug} style={{transformOrigin: "center"}}>≠</Slam>
       </div>
       {/* the wrapper: index arrow can't get inside lower( ) */}
-      <div style={{position: "absolute", left: 64, right: 150, top: 900, height: 250, border: `2.5px solid ${C.line}`, borderRadius: 24, background: C.card, opacity: out(f, 140, 150), overflow: "hidden"}}>
-        <div style={{position: "absolute", left: ax, top: 104, display: "flex", alignItems: "center", fontFamily: MONO, fontSize: 26, color: C.g, opacity: f > 172 ? 1 : 0}}>
+      <div style={{position: "absolute", left: 64, right: 150, top: 900, height: 250, border: `2.5px solid ${C.line}`, borderRadius: 24, background: C.card, opacity: out(f, 40, 52), transform: `translateY(${(1 - out(f, 40, 52)) * 30}px)`, overflow: "hidden"}}>
+        <div style={{position: "absolute", left: ax, top: 104, display: "flex", alignItems: "center", fontFamily: MONO, fontSize: 26, color: C.g, opacity: f > 176 ? 1 : 0}}>
           idx_email <span style={{display: "inline-block", width: 70, height: 4, background: C.g, margin: "0 0 0 12px"}} />▶
         </div>
         <div style={{position: "absolute", left: 400, top: 82, display: "flex", alignItems: "center", fontFamily: MONO, fontSize: 54, fontWeight: 700}}>
@@ -235,11 +234,11 @@ const Cause: React.FC = () => {
           <span style={{color: C.g, padding: "0 6px"}}>email</span>
           <span style={{color: C.bug, transform: `translateX(${(1 - close) * 120}px)`, opacity: close}}>)</span>
         </div>
-        {f > 198 ? <div style={{position: "absolute", left: 350, top: 40, fontFamily: MONO, fontSize: 40, fontWeight: 700, color: C.bug, opacity: 1 - out(f, 226, 240) * 0.3}}>✕</div> : null}
+        {f > 200 ? <div style={{position: "absolute", left: 350, top: 40, fontFamily: MONO, fontSize: 40, fontWeight: 700, color: C.bug, opacity: 1 - out(f, 226, 240) * 0.3}}>✕</div> : null}
       </div>
       <div style={{position: "absolute", left: 64, top: 1200}}>
-        <Slam at={150} size={60}>Function on the column</Slam>
-        <Slam at={196} size={60} color={C.bug} style={{marginTop: 8}}>= index can't see it.</Slam>
+        <Slam at={141} size={60}>Function on the column</Slam>
+        <Slam at={194} size={60} color={C.bug} style={{marginTop: 8}}>= index can't see it.</Slam>
       </div>
     </AbsoluteFill>
   );
@@ -248,7 +247,7 @@ const Cause: React.FC = () => {
 // ---- scene 3: the fix, the cloud becomes a B-tree ----
 const Fix: React.FC = () => {
   const f = useCurrentFrame();
-  const m = ease(f, 70, 118);
+  const m = ease(f, 78, 126);
   const ax = -0.42 * (1 - m), ay = (0.6 + (P3 + f) * 0.012) * (1 - m);
   const cx = 540, cy = 1050, R = 0.98;
   const pts = CUBE.map((p, i) => {
@@ -260,24 +259,24 @@ const Fix: React.FC = () => {
   });
   const by = [...pts].sort((a, b) => b.z - a.z);
   const P = (level: number, idx: number) => pts[nodeIndex(level, idx)];
-  const edges = out(f, 112, 128);
-  const lit = (step: number) => f > 128 + step * 7;
+  const edges = out(f, 120, 134);
+  const lit = (step: number) => f > 136 + step * 7;
   const pathEdges: [number, number, number, number][] = [[0, 0, 1, PATH.l1], [1, PATH.l1, 2, PATH.l2], [2, PATH.l2, 3, PATH.leaf]];
   const rowHit = pts.find((p) => p.t.kind === "row" && p.t.leaf === PATH.leaf && p.t.depth === PATH.depth);
-  const ms = Math.round(interpolate(f, [140, 168], [2431, 3], {...clamp, easing: Easing.out(Easing.cubic)}));
+  const ms = Math.round(interpolate(f, [182, 198], [2500, 3], {...clamp, easing: Easing.out(Easing.cubic)}));
   return (
     <AbsoluteFill>
       <Section text="03 / THE FIX" />
       <div style={{position: "absolute", left: 64, top: 330}}>
         <Slam at={2} size={88}>Index the</Slam>
-        <Slam at={10} size={88} color={C.g} style={{marginTop: 6}}>expression.</Slam>
+        <Slam at={29} size={88} color={C.g} style={{marginTop: 6}}>expression.</Slam>
       </div>
-      <Card title="migration.sql" tag={f > 130 ? "INDEX SCAN · 4 HOPS" : f > 118 ? "FIX" : "TYPING"} tagColor={f > 118 ? C.g : C.dim} border={f > 118 ? C.g : C.line} style={{top: 555}}>
-        {typed("CREATE INDEX ON users", f, 66, 50)}
+      <Card title="migration.sql" tag={f > 136 ? "INDEX SCAN · 4 HOPS" : f > 126 ? "FIX" : "TYPING"} tagColor={f > 126 ? C.g : C.dim} border={f > 126 ? C.g : C.line} style={{top: 555}}>
+        {typed("CREATE INDEX ON users", f, 70, 50)}
         {"\n  "}
-        <span>{typed("(", f, 88, 50)}</span>
-        <span style={{color: C.g}}>{typed("lower(email)", f, 90, 50)}</span>
-        <span>{typed(");", f, 104, 50)}</span>
+        <span>{typed("(", f, 92, 50)}</span>
+        <span style={{color: C.g}}>{typed("lower(email)", f, 94, 50)}</span>
+        <span>{typed(");", f, 108, 50)}</span>
       </Card>
       <svg width={1080} height={1920} style={{position: "absolute", inset: 0}}>
         {edges > 0
@@ -297,13 +296,13 @@ const Fix: React.FC = () => {
           const r = m < 0.5 ? 4.4 * p.k : node ? (isLit ? 11 : 7.5) : 2.6;
           return <circle key={p.i} cx={p.x} cy={p.y} r={r} fill={node && m > 0.5 && !isLit ? C.card : color} stroke={node && m > 0.5 ? color : "none"} strokeWidth={3} opacity={m < 0.5 ? 0.55 : node ? 1 : 0.55} />;
         })}
-        {rowHit && f > 156 ? <circle cx={rowHit.x} cy={rowHit.y} r={9 + Math.sin(f / 3) * 2} fill={C.g} /> : null}
+        {rowHit && f > 160 ? <circle cx={rowHit.x} cy={rowHit.y} r={9 + Math.sin(f / 3) * 2} fill={C.g} /> : null}
       </svg>
       {f > 136 ? (
         <div style={{position: "absolute", left: 64, top: 1345, display: "flex", alignItems: "baseline", gap: 26, fontFamily: SANS, fontWeight: 900, fontStretch: "78%"}}>
-          <span style={{fontSize: 54, color: C.bug, textDecoration: f > 168 ? "line-through" : "none", opacity: 0.85}}>2,431 ms</span>
-          <span style={{fontSize: 40, color: C.dim}}>→</span>
-          <span style={{fontSize: 120, color: C.g, lineHeight: 1}}>{f > 168 ? "3" : ms.toLocaleString("en-US")} ms</span>
+          <span style={{fontSize: interpolate(f, [178, 186], [120, 54], clamp), lineHeight: 1, color: C.bug, textDecoration: f > 198 ? "line-through" : "none", opacity: f > 182 ? 0.85 : 1}}>2,500 ms</span>
+          {f > 182 ? <span style={{fontSize: 40, color: C.dim}}>→</span> : null}
+          {f > 182 ? <span style={{fontSize: 120, color: C.g, lineHeight: 1}}>{f > 198 ? "3" : ms.toLocaleString("en-US")} ms</span> : null}
         </div>
       ) : null}
     </AbsoluteFill>
@@ -324,13 +323,13 @@ const Rule: React.FC = () => {
       </div>
       <div style={{position: "absolute", left: 64, right: 150, top: 760, display: "grid", gap: 14, fontFamily: MONO, fontSize: 30}}>
         {[
-          ["WHERE", "lower(email) = $1", 40],
-          ["INDEX", "(lower(email))", 52],
+          ["WHERE", "lower(email) = $1", 30],
+          ["INDEX", "(lower(email))", 75],
         ].map(([k, v, at]) => (
           <div key={k as string} style={{display: "flex", gap: 22, padding: "18px 24px", borderRadius: 18, background: C.card, border: `2px solid ${C.line}`, opacity: out(f, at as number, (at as number) + 8), transform: `translateX(${(1 - out(f, at as number, (at as number) + 8)) * 40}px)`}}>
             <span style={{color: C.dim, width: 110}}>{k}</span>
             <span style={{color: C.g}}>{v}</span>
-            {k === "INDEX" && f > 64 ? <span style={{marginLeft: "auto", color: C.g}}>✓ match</span> : null}
+            {k === "INDEX" && f > 82 ? <span style={{marginLeft: "auto", color: C.g}}>✓ match</span> : null}
           </div>
         ))}
       </div>
