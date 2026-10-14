@@ -6,3 +6,6 @@ out/
 dist-web/
 content/db.json
 content/db.json.tmp
+
+# Debug Diaries: keep the voice parts, not the generated mixes
+content/debug-diaries/**/*.wav
