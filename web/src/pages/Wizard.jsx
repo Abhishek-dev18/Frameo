@@ -126,7 +126,7 @@ export default function Wizard({state, route, toast, refresh}) {
               <Field label="Language" hint="Script and voice.">
                 <LanguageSelect id="wiz-lang" value={f.language} languages={state.languages} onChange={(language) => setF({...f, language})} />
               </Field>
-              <Field label="Voiceover" hint={state.voiceReady ? "Adds 1 credit per 30 seconds." : "AI voiceover in Hindi, English and Hinglish is coming soon."}>
+              <Field label="Voiceover" hint={state.voiceReady ? "Adds 2 credits per 30 seconds." : "AI voiceover in Hindi, English and Hinglish is coming soon."}>
                 <VoiceChoice voice={f.voice} ready={state.voiceReady} length={f.length} onChange={(voice) => setF({...f, voice})} />
               </Field>
             </div>

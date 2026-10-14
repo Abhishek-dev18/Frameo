@@ -133,15 +133,16 @@ export const go = (to) => {
 // Plans, in order. Free makes single videos (watermarked, you upload them);
 // pipelines (scheduled auto-posting) start on Starter. Voiceover in Hindi, English or Hinglish on every plan.
 export const PLANS = [
-  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "20 credits once", note: "≈ 10 voiced videos", points: ["Make videos one at a time", "AI voiceover: Hindi, English, Hinglish", "Download and post them yourself", "\"Made with PixelScript\" watermark"]},
-  {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "60 credits a month", note: "≈ 30 voiced videos · 1 a day", points: ["1 auto-posting pipeline", "AI voiceover in 3 languages", "Schedule to Instagram + YouTube", "No watermark"]},
-  {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "150 credits a month", note: "≈ 75 voiced videos", points: ["5 pipelines", "60-second episodes", "AI voiceover in 3 languages", "Everything in Starter"], featured: true},
-  {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "400 credits a month", note: "≈ 200 voiced videos", points: ["Unlimited pipelines", "Priority rendering", "AI voiceover in 3 languages", "Everything in Creator"]},
+  {id: "free", name: "Free", price: "₹0", per: "to try", credits: "30 credits once", note: "≈ 10 videos with voice, or 30 without", points: ["Make videos one at a time", "AI voiceover: Hindi, English, Hinglish", "Download and post them yourself", "\"Made with PixelScript\" watermark"]},
+  {id: "starter", name: "Starter", price: "₹499", per: "/month", credits: "90 credits a month", note: "≈ 30 videos with voice · 1 a day", points: ["1 auto-posting pipeline", "AI voiceover in 3 languages", "Schedule to Instagram + YouTube", "No watermark"]},
+  {id: "creator", name: "Creator", price: "₹999", per: "/month", credits: "225 credits a month", note: "≈ 75 videos with voice", points: ["5 pipelines", "60-second episodes", "AI voiceover in 3 languages", "Everything in Starter"], featured: true},
+  {id: "pro", name: "Pro", price: "₹2,499", per: "/month", credits: "600 credits a month", note: "≈ 200 videos with voice", points: ["Unlimited pipelines", "Priority rendering", "AI voiceover in 3 languages", "Everything in Creator"]},
 ];
-export const TOPUP = {price: "₹199", credits: 50};
+export const TOPUP = {price: "₹199", credits: 75};
 export const canPipeline = (state) => Boolean(state?.plan?.pipelines);
-// Same rule as the server: base × length, plus 1 credit per 30s of voiceover.
+// Same rule as the server: 1 credit per 30s, plus 2 per 30s with an AI voiceover.
+export const VOICE_CREDITS = 2;
 export const creditCost = (tplCredits = 1, length = 30, voice = false) => {
   const m = length >= 60 ? 2 : 1;
-  return tplCredits * m + (voice ? m : 0);
+  return tplCredits * m + (voice ? VOICE_CREDITS * m : 0);
 };

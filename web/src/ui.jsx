@@ -109,7 +109,7 @@ export function Footer() {
 
 // Voiceover choice. Voice adds 1 credit per 30 seconds. Disabled (with "SOON") until the voice pipeline is live.
 export function VoiceChoice({voice, onChange, ready, length = 30}) {
-  const extra = length >= 60 ? 2 : 1;
+  const extra = (length >= 60 ? 2 : 1) * 2;
   return (
     <div className="seg-choice" role="radiogroup" aria-label="Voiceover">
       <button type="button" role="radio" aria-checked={!voice} className={!voice ? "on" : ""} onClick={() => onChange(false)}>

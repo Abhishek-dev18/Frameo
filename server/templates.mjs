@@ -1,6 +1,6 @@
 // The video styles users can pick, in the order they are shown. Each maps to a Remotion composition in src/Root.tsx.
-// credits = cost of one 30-second episode without voice. 60 seconds costs double.
-// A voiceover adds 1 credit per 30 seconds (see costOf).
+// Credits follow real cost (1 credit ≈ ₹1): every style is 1 credit per 30 seconds,
+// an AI voiceover adds 2 credits per 30 seconds (voice is the expensive part).
 export const TEMPLATES = [
   {
     id: "explainer-cards",
@@ -18,7 +18,7 @@ export const TEMPLATES = [
     name: "Character story",
     series: "Tech Kahaani",
     composition: "RagStory",
-    credits: 2,
+    credits: 1,
     blurb: "Two cute characters act out the idea as a mini story, with stamps and flying props.",
     best: "Beginner-friendly explainers",
     preview: "/samples/kahaani.mp4",
@@ -29,7 +29,7 @@ export const TEMPLATES = [
     name: "Anime story",
     series: "Midnight Deploy",
     composition: "MidnightDeploy",
-    credits: 2,
+    credits: 1,
     blurb: "A developer and his AI drone fix a real bug before sunrise. Letterbox, impact words, real code.",
     best: "Bugs, outages, security stories",
     preview: "/samples/midnight-deploy.mp4",
@@ -40,7 +40,7 @@ export const TEMPLATES = [
     name: "Anime action",
     series: "The Last Blade",
     composition: "LastBlade",
-    credits: 3,
+    credits: 1,
     blurb: "Full anime episode: close-ups, split-screen eyes, a sword clash and a cliffhanger.",
     best: "Story channels, drama",
     preview: "/samples/anime-action.mp4",
@@ -49,10 +49,11 @@ export const TEMPLATES = [
 ];
 
 export const getTemplate = (tid) => TEMPLATES.find((t) => t.id === tid);
-// 30s explainer: 1 (2 with voice) · 30s story: 2 (3) · 60s explainer: 2 (4) · 60s story: 4 (6)
+// 30s: 1 credit (3 with voice) · 60s: 2 credits (6 with voice). Real cost ≈ ₹1.1 / ₹3.1 / ₹1.8 / ₹5.5.
+export const VOICE_CREDITS = 2; // per 30 seconds
 export const costOf = (tid, length = 30, voice = false) => {
   const m = length >= 60 ? 2 : 1;
-  return (getTemplate(tid)?.credits || 1) * m + (voice ? m : 0);
+  return (getTemplate(tid)?.credits || 1) * m + (voice ? VOICE_CREDITS * m : 0);
 };
 // Voiceover languages (Sarvam Bulbul). The voice pipeline is not built yet; until it is, VOICE_READY stays false
 // and requests for a voice are treated as silent videos (and charged as silent).
@@ -62,9 +63,9 @@ export const VOICE_READY = false;
 // What each plan can do. Free makes one video at a time to download (watermarked) and
 // upload by hand; pipelines (scheduled auto-posting) start on Starter.
 export const PLANS = {
-  free: {name: "Free", price: 0, credits: 20, monthly: false, pipelines: 0, watermark: true},
-  starter: {name: "Starter", price: 499, credits: 60, monthly: true, pipelines: 1, watermark: false},
-  creator: {name: "Creator", price: 999, credits: 150, monthly: true, pipelines: 5, watermark: false},
-  pro: {name: "Pro", price: 2499, credits: 400, monthly: true, pipelines: Infinity, watermark: false},
+  free: {name: "Free", price: 0, credits: 30, monthly: false, pipelines: 0, watermark: true},
+  starter: {name: "Starter", price: 499, credits: 90, monthly: true, pipelines: 1, watermark: false},
+  creator: {name: "Creator", price: 999, credits: 225, monthly: true, pipelines: 5, watermark: false},
+  pro: {name: "Pro", price: 2499, credits: 600, monthly: true, pipelines: Infinity, watermark: false},
 };
 export const planOf = (user) => PLANS[user?.plan] || PLANS.free;

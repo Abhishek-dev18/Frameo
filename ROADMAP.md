@@ -53,10 +53,10 @@ Today: one YouTube channel connected through a **Desktop OAuth client** with a l
 Today: plans and prices are shown (Free / Starter ₹499 / Creator ₹999 / Pro ₹2,499), "Upgrade" buttons are disabled, credits and plans are only changed by the admin (Admin page).
 
 Plan rules already enforced in code (`server/templates.mjs` → `PLANS`):
-- **Free**: 20 credits once; single videos only, one at a time; "Made with PixelScript" watermark; user downloads the MP4 and uploads it by hand. No pipelines, no auto-posting.
-- **Starter** ₹499: 60 credits/month, 1 live pipeline, auto-posting, no watermark. **Creator** ₹999: 150 credits, 5 pipelines, 60s videos. **Pro** ₹2,499: 400 credits, unlimited. **Top-up**: 50 credits for ₹199.
-- **Credit cost** (`costOf`): 30s explainer 1 · story styles 2–3 · 60s ×2 · AI voiceover +1 per 30s (Hindi, English, Hinglish).
-- **Unit economics (estimate, Oct 2026):** one video ≈ ₹1.1 silent / ₹3.1 with voice (Gemini Flash-Lite script ≈ ₹0.75, Sarvam Bulbul voice ≈ ₹2, render ≈ ₹0.3). Max ≈ ₹1.6 per credit → ~67–70% margin on paid plans after 18% GST and 2.36% Razorpay. Fixed infra ≈ ₹2,500/month (one Hetzner CAX31 running web + Postgres + renderer). One-time ≈ ₹17k lean (domain, trademark 2 classes, legal review, CA).
+- **Free**: 30 credits once; single videos only, one at a time; "Made with PixelScript" watermark; user downloads the MP4 and uploads it by hand. No pipelines, no auto-posting.
+- **Starter** ₹499: 90 credits/month (≈30 voiced videos), 1 live pipeline, auto-posting, no watermark. **Creator** ₹999: 225 credits, 5 pipelines, 60s videos. **Pro** ₹2,499: 600 credits, unlimited. **Top-up**: 75 credits for ₹199.
+- **Credit cost** (`costOf`), 1 credit ≈ ₹1 of real cost: 30s video 1 credit in any style · AI voiceover +2 per 30s (Hindi, English, Hinglish) · 60s ×2. So 30s = 1 / 3 with voice, 60s = 2 / 6 with voice.
+- **Unit economics (estimate, Oct 2026):** one video ≈ ₹1.1 silent / ₹3.1 with voice (Gemini Flash-Lite script ≈ ₹0.75, Sarvam Bulbul voice ≈ ₹2, render ≈ ₹0.3). ≈ ₹1.0–1.1 per credit → ~67–70% margin on paid plans after 18% GST and 2.36% Razorpay. Fixed infra ≈ ₹2,500/month (one Hetzner CAX31 running web + Postgres + renderer). One-time ≈ ₹17k lean (domain, trademark 2 classes, legal review, CA).
 - **Voiceover is priced but not built yet** (`VOICE_READY = false`): the app shows the option as "SOON" and never charges for it. Building it = Sarvam API per script part → measure each part → time scenes to the voice → music ducked under the voice (the Debug Diaries workflow, automated).
 - Downgrading to Free stops that user's pipelines (nothing renders or posts until they upgrade).
 
