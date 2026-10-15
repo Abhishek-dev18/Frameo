@@ -1,15 +1,19 @@
 // Debug Diaries · Entry 005 "₹499 order, ₹998 debited" (UPI double charge → idempotency key).
 // Cinematic cut like 004, but the lower half is used too: bank SMS, running totals, "save this".
-// Timed to estimated Hinglish voice; re-time P2/P3/RULE/P4/E5_TOTAL and the in-scene cues once the audio is in.
+// Timed to the Hinglish Sarvam voice (content/debug-diaries/005/voice.wav, pauses ≤0.18s), phrase starts (s):
+//   P1 0.06 ₹499 order · ~2.7 ₹998 · 3.44 user ne pay · 4.29 do baar dabaya · 5.54 server ne dono baar
+//   P2 7.62 slow · 9.0 retry · 10.42 dono requests nayi · 11.93 pata hi nahi · 12.54 same payment
+//   P3 14.12 fix · 14.9 idempotency key · 16.02 unique key bhejo · 17.85 same key dobara · 20.69 charge nahi
+//   RULE 21.58 · 22.11 jo request · P4 25.0 follow (voice ends 27.43)
 import React from "react";
 import {AbsoluteFill, Sequence, interpolate, useCurrentFrame, Easing} from "remotion";
 import {C, MONO, SANS, clamp, out, typed, Backdrop, Hud, Section, Slam, Card, Cut} from "./cine";
 
-export const P2 = 228;
-export const P3 = 453;
-export const RULE = 693;
-export const P4 = 786;
-export const E5_TOTAL = 870;
+export const P2 = 226;
+export const P3 = 422;
+export const RULE = 645;
+export const P4 = 750;
+export const E5_TOTAL = 837;
 
 const money = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`;
 
@@ -67,7 +71,7 @@ const Ripple: React.FC<{x: number; y: number; at: number}> = ({x, y, at}) => {
 };
 
 // ---- scene 1: the double debit ----
-const TAP1 = 100, TAP2 = 109, SMS1 = 158, SMS2 = 176;
+const TAP1 = 129, TAP2 = 139, SMS1 = 168, SMS2 = 198;
 const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const processing = f >= TAP1 + 2;
@@ -77,7 +81,7 @@ const Hook: React.FC = () => {
     <AbsoluteFill>
       <div style={{position: "absolute", left: 64, top: 268}}>
         <Slam at={-30} size={100}>₹499 order.</Slam>
-        <Slam at={36} size={100} color={C.bug} style={{marginTop: 10}}>₹998 debited.</Slam>
+        <Slam at={78} size={100} color={C.bug} style={{marginTop: 10}}>₹998 debited.</Slam>
       </div>
 
       {/* request log, left of the phone */}
@@ -132,7 +136,7 @@ const Hook: React.FC = () => {
 const LANES = [{x: 190, name: "APP"}, {x: 540, name: "SERVER"}, {x: 860, name: "BANK"}];
 const Cause: React.FC = () => {
   const f = useCurrentFrame();
-  const slow = interpolate(f, [22, 56], [0, 1], clamp);
+  const slow = interpolate(f, [18, 46], [0, 1], clamp);
   return (
     <AbsoluteFill>
       <Section text="02 / WHAT HAPPENED" />
@@ -148,20 +152,20 @@ const Cause: React.FC = () => {
       <Arrow y={560} x1={540} x2={860} at={14} color={C.g} label="debit ₹499" />
       {/* the slow call */}
       <div style={{position: "absolute", left: 856, top: 575, width: 8, height: 130 * slow, background: C.bug, borderRadius: 4, opacity: 0.85}} />
-      <div style={{position: "absolute", left: 580, top: 610, fontFamily: MONO, fontSize: 23, color: C.bug, opacity: out(f, 26, 34)}}>bank is slow… {(slow * 4.2).toFixed(1)}s</div>
-      <div style={{position: "absolute", left: 82, top: 650, padding: "8px 16px", borderRadius: 12, border: `2px solid ${C.bug}`, fontFamily: MONO, fontSize: 23, color: C.bug, opacity: out(f, 50, 56)}}>timeout → retry</div>
-      <Arrow y={760} x1={190} x2={540} at={62} color={C.bug} label="POST /pay ₹499 (again)" />
-      {[[100, "req #1 · new ✓", 830], [112, "req #2 · new ✓", 885]].map(([at, t, y]) => (
-        <div key={t as string} style={{position: "absolute", left: 420, width: 240, top: y as number, textAlign: "center", padding: "6px 0", borderRadius: 12, background: C.card, border: `2px solid ${(at as number) === 112 ? C.bug : C.line}`, fontFamily: MONO, fontSize: 22, color: (at as number) === 112 ? C.bug : C.text, opacity: out(f, at as number, (at as number) + 6)}}>{t as string}</div>
+      <div style={{position: "absolute", left: 580, top: 610, fontFamily: MONO, fontSize: 23, color: C.bug, opacity: out(f, 20, 28)}}>bank is slow… {(slow * 4.2).toFixed(1)}s</div>
+      <div style={{position: "absolute", left: 82, top: 650, padding: "8px 16px", borderRadius: 12, border: `2px solid ${C.bug}`, fontFamily: MONO, fontSize: 23, color: C.bug, opacity: out(f, 42, 48)}}>timeout → retry</div>
+      <Arrow y={760} x1={190} x2={540} at={50} color={C.bug} label="POST /pay ₹499 (again)" />
+      {[[90, "req #1 · new ✓", 830], [102, "req #2 · new ✓", 885]].map(([at, t, y]) => (
+        <div key={t as string} style={{position: "absolute", left: 420, width: 240, top: y as number, textAlign: "center", padding: "6px 0", borderRadius: 12, background: C.card, border: `2px solid ${(at as number) === 102 ? C.bug : C.line}`, fontFamily: MONO, fontSize: 22, color: (at as number) === 102 ? C.bug : C.text, opacity: out(f, at as number, (at as number) + 6)}}>{t as string}</div>
       ))}
-      <Arrow y={990} x1={540} x2={860} at={128} color={C.bug} label="debit ₹499 (again)" />
-      <Arrow y={1080} x1={860} x2={190} at={142} color={C.dim} label="✓ ₹499" dur={14} />
-      <Arrow y={1170} x1={860} x2={190} at={150} color={C.bug} label="✓ ₹499" dur={14} />
+      <Arrow y={990} x1={540} x2={860} at={112} color={C.bug} label="debit ₹499 (again)" />
+      <Arrow y={1080} x1={860} x2={190} at={122} color={C.dim} label="✓ ₹499" dur={14} />
+      <Arrow y={1170} x1={860} x2={190} at={128} color={C.bug} label="✓ ₹499" dur={14} />
       <div style={{position: "absolute", left: 64, top: 1300}}>
-        <Slam at={160} size={84} color={C.bug}>Same payment.</Slam>
-        <Slam at={180} size={84} style={{marginTop: 10}}>Server had no idea.</Slam>
+        <Slam at={132} size={76}>Server had no idea</Slam>
+        <Slam at={160} size={76} color={C.bug} style={{marginTop: 10}}>it's the same payment.</Slam>
       </div>
-      <div style={{position: "absolute", left: 64, right: 150, top: 1510, fontFamily: MONO, fontSize: 28, color: C.text, opacity: out(f, 190, 200)}}>
+      <div style={{position: "absolute", left: 64, right: 150, top: 1510, fontFamily: MONO, fontSize: 28, color: C.text, opacity: out(f, 174, 182)}}>
         2 requests · 2 charges · 1 angry customer
       </div>
     </AbsoluteFill>
@@ -169,7 +173,7 @@ const Cause: React.FC = () => {
 };
 
 // ---- scene 3: idempotency key ----
-const R1 = 96, R2 = 136, HIT = 158, BACK = 176;
+const R1 = 90, R2 = 116, HIT = 152, BACK = 170, NOCHARGE = 186;
 const Fix: React.FC = () => {
   const f = useCurrentFrame();
   const pill = (at: number, y: number, n: number) => {
@@ -187,14 +191,14 @@ const Fix: React.FC = () => {
     <AbsoluteFill>
       <Section text="03 / THE FIX" />
       <div style={{position: "absolute", left: 64, top: 330}}>
-        <Slam at={4} size={100} color={C.g}>Idempotency</Slam>
-        <Slam at={16} size={100} style={{marginTop: 8}}>key.</Slam>
+        <Slam at={24} size={100} color={C.g}>Idempotency</Slam>
+        <Slam at={36} size={100} style={{marginTop: 8}}>key.</Slam>
       </div>
-      <Card title="app → server" tag={f > 100 ? "1 KEY PER PAYMENT" : "TYPING"} tagColor={f > 100 ? C.g : C.dim} border={f > 100 ? C.g : C.line} style={{top: 560}}>
-        {typed("POST /pay  {amount: 499}", f, 62, 60)}
+      <Card title="app → server" tag={f > 96 ? "1 KEY PER PAYMENT" : "TYPING"} tagColor={f > 96 ? C.g : C.dim} border={f > 96 ? C.g : C.line} style={{top: 560}}>
+        {typed("POST /pay  {amount: 499}", f, 56, 60)}
         {"\n"}
-        <span>{typed("Idempotency-Key: ", f, 80, 60)}</span>
-        <span style={{color: C.g}}>{typed("7f3a-91c2", f, 96, 60)}</span>
+        <span>{typed("Idempotency-Key: ", f, 72, 60)}</span>
+        <span style={{color: C.g}}>{typed("7f3a-91c2", f, 86, 60)}</span>
       </Card>
 
       {/* requests → key store → bank */}
@@ -214,7 +218,7 @@ const Fix: React.FC = () => {
       <Arrow y={870} x1={710} x2={770} at={R1 + 20} color={C.g} dur={6} label="" />
       {f > R1 + 26 ? <div style={{position: "absolute", left: 770, width: 160, top: 900, textAlign: "center", fontFamily: MONO, fontSize: 22, color: C.g}}>✓ 1 charge</div> : null}
       {/* second request never reaches the bank */}
-      {f > HIT + 4 ? <div style={{position: "absolute", left: 726, top: 960, fontFamily: MONO, fontSize: 46, fontWeight: 700, color: C.bug, opacity: out(f, HIT + 4, HIT + 10)}}>✕</div> : null}
+      {f > NOCHARGE ? <div style={{position: "absolute", left: 726, top: 960, fontFamily: MONO, fontSize: 46, fontWeight: 700, color: C.bug, opacity: out(f, NOCHARGE, NOCHARGE + 6)}}>✕</div> : null}
       <Arrow y={1060} x1={545} x2={190} at={BACK} color={C.g} label="↩ same result, no charge" dur={14} />
 
       {/* bottom: what the customer sees now */}
@@ -247,14 +251,14 @@ const Rule: React.FC = () => {
     <AbsoluteFill>
       <Section text="04 / THE RULE" />
       <div style={{position: "absolute", left: 64, top: 330}}>
-        <Slam at={2} size={96}>If a request</Slam>
-        <Slam at={16} size={96} style={{marginTop: 8}}>can come twice,</Slam>
-        <Slam at={34} size={96} color={C.bug} style={{marginTop: 8}}>it will.</Slam>
+        <Slam at={14} size={96}>If a request</Slam>
+        <Slam at={32} size={96} style={{marginTop: 8}}>can come twice,</Slam>
+        <Slam at={62} size={96} color={C.bug} style={{marginTop: 8}}>it will.</Slam>
       </div>
-      <div style={{position: "absolute", left: 64, right: 150, top: 690, borderRadius: 24, background: C.card, border: `2.5px solid ${C.line}`, overflow: "hidden", opacity: out(f, 44, 52)}}>
+      <div style={{position: "absolute", left: 64, right: 150, top: 690, borderRadius: 24, background: C.card, border: `2.5px solid ${C.line}`, overflow: "hidden", opacity: out(f, 72, 80)}}>
         <div style={{padding: "14px 24px", borderBottom: `2px solid ${C.line}`, fontFamily: MONO, fontSize: 22, color: C.dim}}>payments cheat sheet · save this</div>
         {ROWS.map(([k, v], i) => (
-          <div key={k} style={{display: "flex", justifyContent: "space-between", gap: 20, padding: "18px 24px", borderTop: i ? `2px solid ${C.line}` : "none", opacity: out(f, 50 + i * 7, 58 + i * 7)}}>
+          <div key={k} style={{display: "flex", justifyContent: "space-between", gap: 20, padding: "18px 24px", borderTop: i ? `2px solid ${C.line}` : "none", opacity: out(f, 78 + i * 6, 86 + i * 6)}}>
             <span style={{fontFamily: MONO, fontSize: 27, color: C.g}}>{k}</span>
             <span style={{fontFamily: SANS, fontSize: 29, color: C.text}}>{v}</span>
           </div>
@@ -267,7 +271,7 @@ const Rule: React.FC = () => {
           <div style={{fontFamily: MONO, fontSize: 28, color: C.g, marginTop: 12}}>{typed("follow @debugdiaries.io", f, n + 10, 40)}</div>
         </div>
       ) : null}
-      <div style={{position: "absolute", left: 64, right: 150, top: 1420, display: "flex", alignItems: "center", gap: 18, opacity: out(f, 70, 80)}}>
+      <div style={{position: "absolute", left: 64, right: 150, top: 1420, display: "flex", alignItems: "center", gap: 18, opacity: out(f, 96, 106)}}>
         <svg width={34} height={44}><path d="M3 3 H31 V41 L17 30 L3 41 Z" fill="none" stroke={C.g} strokeWidth={4} strokeLinejoin="round" /></svg>
         <div>
           <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: "0.16em", color: C.g}}>SAVE FOR LATER</div>
