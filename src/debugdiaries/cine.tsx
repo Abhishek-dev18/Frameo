@@ -134,3 +134,28 @@ export const FlipIn: React.FC<{children: React.ReactNode; dur?: number}> = ({chi
     </AbsoluteFill>
   );
 };
+
+// 3D card transition: the scene is a card; it flips in from edge-on and flips out at its end.
+// Used per scene with its own length, so the old card turns away and the next one turns in.
+export const Card3D: React.FC<{len: number; children: React.ReactNode; first?: boolean; last?: boolean; dur?: number}> = ({len, children, first, last, dur = 9}) => {
+  const f = useCurrentFrame();
+  const qin = first ? 0 : 1 - interpolate(f, [0, dur], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  const qout = last ? 0 : interpolate(f, [len - dur, len], [0, 1], {...clamp, easing: Easing.in(Easing.cubic)});
+  const q = Math.max(qin, qout);
+  if (q <= 0) return <AbsoluteFill>{children}</AbsoluteFill>;
+  const angle = qin > 0 ? -88 * qin : 88 * qout;
+  return (
+    <AbsoluteFill style={{perspective: 2200}}>
+      <AbsoluteFill
+        style={{
+          transform: `rotateY(${angle}deg) scale(${1 - 0.16 * Math.sin(q * Math.PI / 2)}) translateZ(${-260 * q}px)`,
+          borderRadius: 56 * Math.min(1, q * 3), overflow: "hidden", background: C.bg,
+          boxShadow: `0 0 0 4px ${C.line}, 0 40px 120px rgba(0,0,0,.6)`,
+        }}
+      >
+        {children}
+        <AbsoluteFill style={{background: "#000", opacity: q * 0.45}} />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
