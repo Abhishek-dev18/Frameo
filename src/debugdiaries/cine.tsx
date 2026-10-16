@@ -122,3 +122,15 @@ export const Cut: React.FC<{at: number}> = ({at}) => {
     </>
   );
 };
+
+// 3D transition: the new scene swings in like a card turning on its left edge.
+export const FlipIn: React.FC<{children: React.ReactNode; dur?: number}> = ({children, dur = 12}) => {
+  const f = useCurrentFrame();
+  const p = interpolate(f, [0, dur], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
+  if (p >= 1) return <AbsoluteFill>{children}</AbsoluteFill>;
+  return (
+    <AbsoluteFill style={{perspective: 1600, perspectiveOrigin: "0% 50%"}}>
+      <AbsoluteFill style={{transformOrigin: "0% 50%", transform: `rotateY(${(1 - p) * 75}deg) translateZ(${(1 - p) * -200}px)`, opacity: Math.min(1, p * 1.6)}}>{children}</AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
