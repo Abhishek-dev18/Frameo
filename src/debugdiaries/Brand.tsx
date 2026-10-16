@@ -50,6 +50,13 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
   series: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 300, color: C.g, lineHeight: 1}}>#</span>,
   basics: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 230, color: C.g, lineHeight: 1}}>&gt;_</span>,
+  crashes: (
+    <svg width={420} height={260} viewBox="0 0 420 260">
+      <polyline points="10,150 90,150 120,90 150,210 185,40 215,150 250,150" fill="none" stroke={C.g} strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points="250,150 395,150" fill="none" stroke={C.bug} strokeWidth={18} strokeLinecap="round" />
+      <circle cx={395} cy={150} r={22} fill={C.bug} />
+    </svg>
+  ),
 };
 export const HIGHLIGHTS = Object.keys(ICONS);
 export const Highlight: React.FC<{kind: string}> = ({kind}) => (
