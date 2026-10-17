@@ -50,6 +50,14 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
   series: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 300, color: C.g, lineHeight: 1}}>#</span>,
   basics: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 230, color: C.g, lineHeight: 1}}>&gt;_</span>,
+  postmortem: (
+    <svg width={360} height={360} viewBox="0 0 360 360">
+      <path d="M180 40 A140 140 0 1 1 52 122" fill="none" stroke={C.g} strokeWidth={20} strokeLinecap="round" />
+      <path d="M30 78 L52 124 L100 106" fill="none" stroke={C.g} strokeWidth={20} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M180 100 V182 L236 222" fill="none" stroke={C.text} strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={180} cy={182} r={14} fill={C.bug} />
+    </svg>
+  ),
   crashes: (
     <svg width={420} height={260} viewBox="0 0 420 260">
       <polyline points="10,150 90,150 120,90 150,210 185,40 215,150 250,150" fill="none" stroke={C.g} strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
