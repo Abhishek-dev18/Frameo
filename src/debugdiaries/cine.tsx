@@ -43,7 +43,7 @@ export const Backdrop: React.FC = () => {
   );
 };
 
-export const Hud: React.FC<{ep: string; total: number}> = ({ep, total}) => {
+export const Hud: React.FC<{ep: string; total: number; series?: string}> = ({ep, total, series = "DEBUG DIARIES"}) => {
   const f = useCurrentFrame();
   const sec = f / 30;
   const tc = `00:${String(Math.floor(sec)).padStart(2, "0")}.${String(Math.floor((sec % 1) * 100)).padStart(2, "0")}`;
@@ -55,7 +55,7 @@ export const Hud: React.FC<{ep: string; total: number}> = ({ep, total}) => {
         {corners.map(([x, y, sx, sy], i) => <path key={i} d={`M${x} ${y + L * sy} L${x} ${y} L${x + L * sx} ${y}`} stroke={C.line} strokeWidth={4} fill="none" />)}
       </svg>
       <div style={{position: "absolute", left: 64, right: 64, top: 140, display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: MONO, fontSize: 32, letterSpacing: "0.12em", color: C.dim}}>
-        <span>DEBUG DIARIES · <span style={{color: C.g}}>{ep}</span></span>
+        <span>{series} · <span style={{color: C.g}}>{ep}</span></span>
         <span style={{display: "flex", alignItems: "center", gap: 14, letterSpacing: "0.06em"}}>
           <span style={{width: 16, height: 16, borderRadius: 8, background: C.bug, opacity: Math.floor(f / 15) % 2 ? 1 : 0.3}} />
           REC {tc}
