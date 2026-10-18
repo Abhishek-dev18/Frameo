@@ -50,6 +50,17 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
   series: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 300, color: C.g, lineHeight: 1}}>#</span>,
   basics: <span style={{fontFamily: MONO, fontWeight: 700, fontSize: 230, color: C.g, lineHeight: 1}}>&gt;_</span>,
+  inside: (
+    <svg width={380} height={380} viewBox="0 0 380 380">
+      <rect x={60} y={70} width={200} height={56} rx={12} fill="none" stroke={C.dim} strokeWidth={10} />
+      <rect x={60} y={150} width={200} height={56} rx={12} fill="none" stroke={C.dim} strokeWidth={10} />
+      <rect x={60} y={230} width={200} height={56} rx={12} fill="none" stroke={C.dim} strokeWidth={10} />
+      <circle cx={230} cy={190} r={86} fill={C.card} stroke={C.g} strokeWidth={16} />
+      <rect x={180} y={160} width={100} height={20} rx={6} fill={C.g} />
+      <rect x={180} y={196} width={64} height={20} rx={6} fill={C.bug} />
+      <path d="M292 252 L336 296" stroke={C.g} strokeWidth={22} strokeLinecap="round" />
+    </svg>
+  ),
   postmortem: (
     <svg width={360} height={360} viewBox="0 0 360 360">
       <path d="M180 40 A140 140 0 1 1 52 122" fill="none" stroke={C.g} strokeWidth={20} strokeLinecap="round" />
