@@ -23,6 +23,7 @@ import {DebugDiaries008, E8_TOTAL} from "./debugdiaries/Entry008";
 import {Origins01, O1_TOTAL} from "./debugdiaries/Origins01";
 import {Origins02, O2_TOTAL} from "./debugdiaries/Origins02";
 import {Inside01, I1_TOTAL} from "./debugdiaries/Inside01";
+import {DebugDiaries009, E9_TOTAL} from "./debugdiaries/Entry009";
 import {Banner, Highlight, HIGHLIGHTS} from "./debugdiaries/Brand";
 
 // Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
@@ -60,6 +61,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="Origins01" component={Origins01} durationInFrames={O1_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Origins02" component={Origins02} durationInFrames={O2_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Inside01" component={Inside01} durationInFrames={I1_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="DebugDiaries009" component={DebugDiaries009} durationInFrames={E9_TOTAL} fps={30} width={1080} height={1920} />
     <Still id="DD-Banner" component={Banner} width={2560} height={1440} />
     {HIGHLIGHTS.map((k) => <Still key={k} id={`DD-Highlight-${k}`} component={() => <Highlight kind={k} />} width={1080} height={1920} />)}
     {Object.entries(AVATARS).map(([name, A]) => <Still key={name} id={`DD-Avatar-${name}`} component={A} width={1080} height={1080} />)}
