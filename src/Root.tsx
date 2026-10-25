@@ -22,6 +22,7 @@ import {DebugDiaries007, E7_TOTAL} from "./debugdiaries/Entry007";
 import {DebugDiaries008, E8_TOTAL} from "./debugdiaries/Entry008";
 import {Origins01, O1_TOTAL} from "./debugdiaries/Origins01";
 import {Origins02, O2_TOTAL} from "./debugdiaries/Origins02";
+import {Origins03, O3_TOTAL} from "./debugdiaries/Origins03";
 import {Inside01, I1_TOTAL} from "./debugdiaries/Inside01";
 import {DebugDiaries009, E9_TOTAL} from "./debugdiaries/Entry009";
 import {DebugDiaries010, E10_TOTAL} from "./debugdiaries/Entry010";
@@ -64,6 +65,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="DebugDiaries008" component={DebugDiaries008} durationInFrames={E8_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Origins01" component={Origins01} durationInFrames={O1_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Origins02" component={Origins02} durationInFrames={O2_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="Origins03" component={Origins03} durationInFrames={O3_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="Inside01" component={Inside01} durationInFrames={I1_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries009" component={DebugDiaries009} durationInFrames={E9_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries010" component={DebugDiaries010} durationInFrames={E10_TOTAL} fps={30} width={1080} height={1920} />
