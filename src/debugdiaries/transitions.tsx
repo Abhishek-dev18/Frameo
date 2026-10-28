@@ -5,6 +5,7 @@
 //   flip    — outgoing scene turns away like a page around its left edge
 //   glitch  — incoming scene arrives with RGB split, slice offsets and jitter
 //   iris    — incoming scene opens from a circle at (ix, iy)
+//   bsod    — incoming scene is preceded by a blue crash-screen flash
 //   none    — no animation (used when the other side does the work)
 import React from "react";
 import {AbsoluteFill, interpolate, useCurrentFrame, Easing, random} from "remotion";
@@ -12,7 +13,7 @@ import {clamp} from "./cine";
 import {GlassBg} from "./glass";
 
 export const OV = 12;
-export type TIn = "none" | "zoom" | "glitch" | "iris";
+export type TIn = "none" | "zoom" | "glitch" | "iris" | "bsod";
 export type TOut = "none" | "zoom" | "shuffle" | "flip";
 
 export const Scene: React.FC<{len: number; tin: TIn; tout: TOut; ix?: number; iy?: number; children: React.ReactNode}> = ({len, tin, tout, ix = 540, iy = 960, children}) => {
@@ -45,9 +46,17 @@ export const Scene: React.FC<{len: number; tin: TIn; tout: TOut; ix?: number; iy
   return (
     <AbsoluteFill style={{zIndex: z}}>
       <AbsoluteFill style={{transform: tf || undefined, transformOrigin: origin, opacity: op, filter: filter || undefined, clipPath: clip, borderRadius: pout > 0 && (tout === "shuffle" || tout === "flip") ? 40 : 0, overflow: "hidden", boxShadow: pout > 0 && (tout === "shuffle" || tout === "flip") ? "0 40px 120px rgba(0,0,0,.7)" : undefined}}>
-        {tin === "iris" || tin === "glitch" || tout === "shuffle" || tout === "flip" ? <GlassBg /> : null}
+        {tin === "iris" || tin === "glitch" || tin === "bsod" || tout === "shuffle" || tout === "flip" ? <GlassBg /> : null}
         {children}
       </AbsoluteFill>
+      {/* blue crash-screen flash */}
+      {tin === "bsod" && f < OV + 6 ? (
+        <AbsoluteFill style={{background: "#1060C8", opacity: interpolate(f, [0, 2, OV, OV + 6], [0, 1, 1, 0], clamp), padding: "520px 90px", boxSizing: "border-box", color: "#fff", fontFamily: "Archivo, sans-serif"}}>
+          <div style={{fontSize: 220, lineHeight: 1}}>:(</div>
+          <div style={{fontSize: 52, marginTop: 60, fontWeight: 600}}>CRASH · restarting…</div>
+          <div style={{fontSize: 30, marginTop: 30, opacity: 0.8, fontFamily: "monospace"}}>{Math.min(100, Math.round((f / OV) * 100))}% complete</div>
+        </AbsoluteFill>
+      ) : null}
       {/* glitch slices overlay */}
       {tin === "glitch" && f < OV ? (
         <AbsoluteFill style={{pointerEvents: "none"}}>
