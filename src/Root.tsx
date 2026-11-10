@@ -34,6 +34,7 @@ import {DebugDiaries015, E15_TOTAL} from "./debugdiaries/Entry015";
 import {DebugDiaries016, E16_TOTAL} from "./debugdiaries/Entry016";
 import {Showcase, SHOWCASE_TOTAL, LeakTest} from "./debugdiaries/Showcase";
 import {DebugDiaries017, E17_TOTAL} from "./debugdiaries/Entry017";
+import {DebugDiaries018, E18_TOTAL} from "./debugdiaries/Entry018";
 import {Banner, Highlight, HIGHLIGHTS} from "./debugdiaries/Brand";
 
 // Episode styles get the Free-plan watermark when rendered with {"watermark": true}.
@@ -81,6 +82,8 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="DebugDiaries015" component={DebugDiaries015} durationInFrames={E15_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries016" component={DebugDiaries016} durationInFrames={E16_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries017" component={DebugDiaries017} durationInFrames={E17_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="DebugDiaries018" component={DebugDiaries018} durationInFrames={E18_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="DebugDiaries018-FX" component={DebugDiaries018} defaultProps={{shaders: true}} durationInFrames={E18_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DD-Showcase" component={Showcase} durationInFrames={SHOWCASE_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DD-LeakTest" component={LeakTest} durationInFrames={30} fps={30} width={1080} height={1920} />
     <Still id="DD-Banner" component={Banner} width={2560} height={1440} />

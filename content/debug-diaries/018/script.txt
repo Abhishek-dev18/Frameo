@@ -1,0 +1,11 @@
+Customer ने रात 1 बजे order किया… और bill पर date आई कल की। Support पर complaints आने लगीं: "मेरा order गलत date पर क्यों दिख रहा है?"
+---
+मैंने अपने laptop पर order करके देखा। Date बिल्कुल सही। Staging पर भी सही। Classic case: मेरी machine पर तो चल रहा है।
+---
+फिर logs खोले, और सारे गलत orders का time देखा। एक pattern दिखा: सारे orders रात 12 से सुबह साढ़े 5 बजे के बीच के थे।
+---
+साढ़े पाँच घंटे… यही तो India और UTC का फर्क है। Server UTC में चल रहा था, और code date निकाल रहा था toISOString से, जो हमेशा UTC की date देता है। India में रात 1 बजे, UTC में अभी पिछला दिन ही चल रहा होता है।
+---
+Fix ये था: time हमेशा UTC में store करो, लेकिन date निकालो user के timezone में, जैसे Asia Kolkata। और test करते समय server का timezone बदलकर भी चलाओ।
+---
+सबक: जब bug सिर्फ कुछ घंटों में आए, तो सबसे पहले timezone पर शक करो। Laptop पर चल रहा है, इसका मतलब ये नहीं कि production में भी चलेगा। Follow करो Debug Diaries।
