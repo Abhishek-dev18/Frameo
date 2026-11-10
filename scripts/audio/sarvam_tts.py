@@ -46,7 +46,7 @@ def main() -> None:
         for attempt in range(3):
             try:
                 audio = client.text_to_speech.convert_stream(
-                    text=text, target_language_code="hi-IN", speaker=speaker, model=model, pace=pace, speech_sample_rate=24000,
+                    text=text, language_code="hi-IN", speaker=speaker, model=model, pace=pace, speech_sample_rate=24000, output_audio_codec="mp3",
                 )
                 data = audio if isinstance(audio, (bytes, bytearray)) else b"".join(audio)
                 (out / f"p{i}.mp3").write_bytes(data)
