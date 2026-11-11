@@ -1,0 +1,11 @@
+सोचो एक company है. दस हज़ार employees, पाँच सौ apps. अब सवाल ये है — कौन किस app को खोल सकता है, और ये decide कौन करता है? Answer है — IAM.
+---
+IAM मतलब Identity and Access Management. Identity — digital दुनिया में तुम कौन हो. Access — तुम क्या क्या open कर सकते हो. IAM इन दोनों को manage करता है.
+---
+Office का example लो. तुम्हारा ID badge — वो है तुम्हारी identity. Gate पे guard badge check करता है — वो है authentication. और badge से कौन से floors खुलते हैं — वो है authorization.
+---
+अब सोचो, कोई employee company छोड़ देता है, पर उसका account active रह गया. वो घर बैठे company का data खोल सकता है. ज़्यादातर breaches ऐसे ही गलत या चोरी हुए credentials से होते हैं.
+---
+IAM में आता है — login, MFA, single sign-on, roles और permissions, नए employee को access देना, पुराने का access हटाना, और audit. इस series में level by level सब cover करेंगे.
+---
+Clearance check! Gate पे guard को badge दिखाना — ये authentication है या authorization? Answer next reel में. Follow करो Debug Diaries.
