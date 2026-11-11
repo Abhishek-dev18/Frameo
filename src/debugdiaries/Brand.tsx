@@ -76,6 +76,16 @@ const ICONS: Record<string, React.ReactNode> = {
       <circle cx={395} cy={150} r={22} fill={C.bug} />
     </svg>
   ),
+  // Access Granted (IAM series): purple shield with a keyhole, green "granted" check
+  access: (
+    <svg width={340} height={380} viewBox="0 0 340 380">
+      <path d="M170 24 L300 76 V176 C300 268 244 330 170 356 C96 330 40 268 40 176 V76 Z" fill="#A78BFA1F" stroke="#A78BFA" strokeWidth={22} strokeLinejoin="round" />
+      <circle cx={170} cy={168} r={38} fill="#A78BFA" />
+      <path d="M154 190 L144 262 H196 L186 190 Z" fill="#A78BFA" />
+      <circle cx={262} cy={300} r={52} fill={C.card} stroke={C.g} strokeWidth={14} />
+      <path d="M238 300 L256 318 L288 284" fill="none" stroke={C.g} strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
 };
 export const HIGHLIGHTS = Object.keys(ICONS);
 export const Highlight: React.FC<{kind: string}> = ({kind}) => (
