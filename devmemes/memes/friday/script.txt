@@ -1,0 +1,5 @@
+Friday, शाम छह बजे। PR में सिर्फ़ एक line का change है। Tests green हैं। क्या ही गलत हो सकता है? Merge.
+---
+रात दो बजे। Phone बजता है। Checkout down, CPU full, और manager के सत्रह missed calls।
+---
+Slack पर सब पूछ रहे हैं, ये किसने push किया? git blame चलाया... मैं ही था।

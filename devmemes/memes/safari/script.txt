@@ -1,0 +1,5 @@
+तीन दिन लगाकर landing page बनाया। Chrome में एकदम pixel perfect।
+---
+Demo में client ने iPhone पर Safari खोला...
+---
+Button screen से बाहर, layout टूटा हुआ। Safari, नया Internet Explorer।

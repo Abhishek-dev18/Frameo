@@ -1,0 +1,5 @@
+Standup में manager: ये bug कब तक fix होगा? मैं: अरे, पाँच minute का काम है।
+---
+npm install... peer dependency conflict. node_modules delete किया, फिर से install... अब भी broken.
+---
+Estimate, पाँच minute। Reality, पाँच घंटे। और fix क्या था? बस cache clear करना था।
