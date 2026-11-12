@@ -10,6 +10,7 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 01 friday — Friday 6 PM one-line deploy → 2 AM alerts → git blame: main hi tha
 - 02 fivemin — "bas 5 minute ka kaam hai" → npm hell → 5 ghante, fix was cache clear
 - 03 safari — pixel perfect in Chrome → client opens Safari on iPhone → naya Internet Explorer
+- 04 lgtm — 2-line PR gets 40 comments → 2000-line refactor PR → LGTM in 2 min, files viewed 0/86
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
@@ -23,7 +24,6 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - Merge conflict on Friday evening in package-lock.json
 - Regex written by you 6 months ago, unreadable today
 - Production DB vs local DB: "same schema" (it wasn't)
-- Code review: 2-line PR gets 40 comments, 2000-line PR gets "LGTM"
 - Timezone bug that only happens at midnight IST
 - Junior: "should I ask?" Senior: "kab se atke ho?" "3 din se"
 - Deleting one unused line → everything breaks

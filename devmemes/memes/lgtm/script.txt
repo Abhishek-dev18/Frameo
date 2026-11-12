@@ -1,0 +1,5 @@
+मैंने दो line का PR डाला। चालीस comments आ गए, variable का नाम तक बदलवाया।
+---
+तो अगले दिन मैंने दो हज़ार line का PR डाल दिया। पूरा refactor।
+---
+दो minute में approve. LGTM. किसी ने file खोली तक नहीं।
