@@ -1,0 +1,11 @@
+पिछले quiz का answer — authentication! Guard badge देखकर verify करता है कि तुम वही हो जो बोल रहे हो. आज का सवाल — identity, account और credential. तीनों एक ही चीज़ लगते हैं, पर हैं नहीं.
+---
+Identity मतलब तुम खुद — एक real इंसान, या एक service. Office में तुम Priya हो, यही तुम्हारी identity है. एक identity हमेशा एक ही होती है.
+---
+Account है एक system के अंदर तुम्हारा record. Email में एक account, HR app में दूसरा, cloud में तीसरा. एक identity, कई accounts.
+---
+Credential वो proof है जिससे तुम account में login करते हो — password, OTP, security key, या API token. Office में यही तुम्हारा badge है. Badge खो गया, तो badge बदलो — Priya वही रहती है.
+---
+Terminal में देखो — एक user ID, उसके साथ दो accounts, और हर account के अपने credentials. Password leak हुआ? Credential rotate करो. Employee गया? Identity disable करो, सारे accounts एक साथ बंद.
+---
+Clearance check! Password leak हो गया — तुम क्या बदलोगे? A, identity या B, credential? Answer next reel में. Follow करो Debug Diaries.
