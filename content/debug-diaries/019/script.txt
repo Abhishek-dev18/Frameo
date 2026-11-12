@@ -1,0 +1,11 @@
+App पर user ने अपना order खोला… और screen पर आया "Order not found"। Order database में था, payment भी हो चुका था। फिर भी 404।
+---
+मैंने local पर try किया। Order आराम से खुल गया, कोई error नहीं। लेकिन local database में IDs छोटे थे, एक, दो, तीन जैसे।
+---
+फिर logs खोले। Backend ने जो ID भेजी, और app ने जो ID वापस माँगी, दोनों अलग थीं। शुरू के digits same, लेकिन आखिरी digits zero बन चुके थे।
+---
+Root cause: हमारे IDs 64-bit integers थे। लेकिन JavaScript का Number सिर्फ 53 bits तक ही exact रहता है। JSON parse होते ही बड़ा ID round हो गया, और app ने गलत order माँगा।
+---
+Fix ये था: बड़े IDs को JSON में string बनाकर भेजो। Backend पर ID को string में serialize करो, और frontend पर उसे कभी Number में मत बदलो।
+---
+सबक: ID एक नाम है, number नहीं। उस पर कोई math नहीं होता, तो उसे string ही रखो। Follow करो Debug Diaries।
