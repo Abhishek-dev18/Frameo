@@ -9,3 +9,11 @@ content/db.json.tmp
 
 # Debug Diaries: keep the voice parts, not the generated mixes
 content/debug-diaries/**/*.wav
+
+# Lemo-Opuscar render outputs
+lemo/*/out/
+lemo/*/stills/
+lemo/*/events.json
+lemo/*/*.wav
+lemo/*/render.log
+content/debug-diaries/*/cues.txt
