@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, credential! Password leak हुआ तो password बदलो, Priya वही रहती है. आज का topic — IAM के चार A: Identification, Authentication, Authorization और Accounting.
+---
+पहला A — Identification. Lobby में Priya guard से कहती है, मैं Priya हूँ. यह सिर्फ एक claim है. Login screen पर यही तुम्हारा username है.
+---
+दूसरा A — Authentication. Guard बोलता है, साबित करो. Priya badge scan करती है. System में यह password, OTP या security key है — proof कि claim सच है.
+---
+तीसरा A — Authorization. Gate खुल गया, पर Priya सिर्फ अपने floor के doors खोल सकती है, server room नहीं. Cloud में यही policy है, जो तय करती है कौन सा action allowed है.
+---
+चौथा A — Accounting. हर badge swipe register में लिखा जाता है — कौन, कब, कहाँ. Tech में यही audit log है, जिससे incident के बाद पता चलता है किसने क्या किया.
+---
+Clearance check! Login successful हुआ, पर file खोलते ही access denied. कौन सा A fail हुआ? A, authentication या B, authorization? Answer next reel में. Follow करो Debug Diaries.
