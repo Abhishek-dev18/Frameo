@@ -1,0 +1,77 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+@font-face{font-family:'Noto Color Emoji';src:url('assets/fonts/NotoColorEmoji.ttf') format('truetype');}
+
+#s5{position:absolute;inset:0;overflow:hidden;font-family:'Inter','Noto Color Emoji',sans-serif;color:#F3F5F9;}
+#s5 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s5 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s5 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s5 .mono{font-family:'JetBrains Mono','Noto Color Emoji',monospace;}
+#s5 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s5 .mint{color:#4ADE80;} #s5 .coral{color:#FF6B5B;} #s5 .lil{color:#C4A7FF;} #s5 .dim{color:#8A94A8;}
+#s5 .ch{opacity:0;}
+
+#s5 .diff{left:50px;right:50px;top:480px;height:390px;padding:34px 0;font-size:35px;line-height:1.7;}
+#s5 .dl{padding:0 34px;white-space:nowrap;}
+#s5 .del{background:rgba(255,107,91,.14);color:#FF8F82;}
+#s5 .add{background:rgba(74,222,128,.13);color:#7EEAA6;}
+#s5 .seg{left:50px;right:50px;top:910px;height:330px;padding:30px 34px;font-size:33px;line-height:1.6;}
+#s5 .res{position:absolute;left:70px;right:70px;top:1290px;display:flex;gap:20px;}
+#s5 .chip{flex:1;padding:24px 10px;border-radius:26px;background:#141922;border:2px solid #273042;text-align:center;}
+#s5 .chip .k{font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;font-weight:700;}
+#s5 .chip .v{font-size:64px;font-weight:900;margin-top:6px;letter-spacing:-0.03em;}
+#s5 .out{position:absolute;left:70px;right:70px;top:1490px;font-size:56px;font-weight:900;letter-spacing:-0.03em;text-align:center;}
+</style>
+<div id="s5" data-composition-id="s5" data-width="1080" data-height="1920" data-duration="9.45">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 5 · THE FIX</div>
+<div class="h" id="s5-h1" style="top:280px;font-size:110px;">Cut <span class="mint">characters</span></div>
+<div class="card diff mono" id="s5-diff">
+<div class="dl dim"><span class="ch">/</span><span class="ch">/</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">i</span><span class="ch">f</span><span class="ch">y</span><span class="ch">.</span><span class="ch">j</span><span class="ch">s</span></div>
+<div class="dl del" id="s5-del"><span class="ch">-</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">o</span><span class="ch">n</span><span class="ch">s</span><span class="ch">t</span><span class="ch">&nbsp;</span><span class="ch">p</span><span class="ch">r</span><span class="ch">e</span><span class="ch">v</span><span class="ch">i</span><span class="ch">e</span><span class="ch">w</span><span class="ch">&nbsp;</span><span class="ch">=</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">.</span><span class="ch">s</span><span class="ch">l</span><span class="ch">i</span><span class="ch">c</span><span class="ch">e</span><span class="ch">(</span><span class="ch">0</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">6</span><span class="ch">)</span><span class="ch">;</span></div>
+<div class="dl add" id="s5-a1"><span class="ch">+</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">o</span><span class="ch">n</span><span class="ch">s</span><span class="ch">t</span><span class="ch">&nbsp;</span><span class="ch">p</span><span class="ch">r</span><span class="ch">e</span><span class="ch">v</span><span class="ch">i</span><span class="ch">e</span><span class="ch">w</span><span class="ch">&nbsp;</span><span class="ch">=</span><span class="ch">&nbsp;</span><span class="ch">A</span><span class="ch">r</span><span class="ch">r</span><span class="ch">a</span><span class="ch">y</span><span class="ch">.</span><span class="ch">f</span><span class="ch">r</span><span class="ch">o</span><span class="ch">m</span><span class="ch">(</span><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">)</span></div>
+<div class="dl add" id="s5-a2"><span class="ch">+</span><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">.</span><span class="ch">s</span><span class="ch">l</span><span class="ch">i</span><span class="ch">c</span><span class="ch">e</span><span class="ch">(</span><span class="ch">0</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">6</span><span class="ch">)</span><span class="ch">.</span><span class="ch">j</span><span class="ch">o</span><span class="ch">i</span><span class="ch">n</span><span class="ch">(</span><span class="ch">&quot;</span><span class="ch">&quot;</span><span class="ch">)</span><span class="ch">;</span></div>
+</div>
+<div class="card seg mono" id="s5-seg">
+<div class="lil"><span class="ch">/</span><span class="ch">/</span><span class="ch">&nbsp;</span><span class="ch">f</span><span class="ch">a</span><span class="ch">m</span><span class="ch">i</span><span class="ch">l</span><span class="ch">y</span><span class="ch">&nbsp;</span><span class="ch">e</span><span class="ch">m</span><span class="ch">o</span><span class="ch">j</span><span class="ch">i</span><span class="ch">?</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">o</span><span class="ch">u</span><span class="ch">n</span><span class="ch">t</span><span class="ch">&nbsp;</span><span class="ch">g</span><span class="ch">r</span><span class="ch">a</span><span class="ch">p</span><span class="ch">h</span><span class="ch">e</span><span class="ch">m</span><span class="ch">e</span><span class="ch">s</span></div>
+<div><span class="ch">c</span><span class="ch">o</span><span class="ch">n</span><span class="ch">s</span><span class="ch">t</span><span class="ch">&nbsp;</span><span class="ch">s</span><span class="ch">e</span><span class="ch">g</span><span class="ch">&nbsp;</span><span class="ch">=</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">e</span><span class="ch">w</span><span class="ch">&nbsp;</span><span class="ch">I</span><span class="ch">n</span><span class="ch">t</span><span class="ch">l</span><span class="ch">.</span><span class="ch">S</span><span class="ch">e</span><span class="ch">g</span><span class="ch">m</span><span class="ch">e</span><span class="ch">n</span><span class="ch">t</span><span class="ch">e</span><span class="ch">r</span><span class="ch">(</span><span class="ch">&quot;</span><span class="ch">e</span><span class="ch">n</span><span class="ch">&quot;</span><span class="ch">,</span></div>
+<div><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">{</span><span class="ch">&nbsp;</span><span class="ch">g</span><span class="ch">r</span><span class="ch">a</span><span class="ch">n</span><span class="ch">u</span><span class="ch">l</span><span class="ch">a</span><span class="ch">r</span><span class="ch">i</span><span class="ch">t</span><span class="ch">y</span><span class="ch">:</span><span class="ch">&nbsp;</span><span class="ch">&quot;</span><span class="ch">g</span><span class="ch">r</span><span class="ch">a</span><span class="ch">p</span><span class="ch">h</span><span class="ch">e</span><span class="ch">m</span><span class="ch">e</span><span class="ch">&quot;</span><span class="ch">&nbsp;</span><span class="ch">}</span><span class="ch">)</span><span class="ch">;</span></div>
+<div><span class="ch">[</span><span class="ch">.</span><span class="ch">.</span><span class="ch">.</span><span class="ch">s</span><span class="ch">e</span><span class="ch">g</span><span class="ch">.</span><span class="ch">s</span><span class="ch">e</span><span class="ch">g</span><span class="ch">m</span><span class="ch">e</span><span class="ch">n</span><span class="ch">t</span><span class="ch">(</span><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">)</span><span class="ch">]</span><span class="ch">.</span><span class="ch">s</span><span class="ch">l</span><span class="ch">i</span><span class="ch">c</span><span class="ch">e</span><span class="ch">(</span><span class="ch">0</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">6</span><span class="ch">)</span></div>
+</div>
+<div class="res">
+<div class="chip" id="s5-k1"><div class="k"><span style="font-family:'Noto Color Emoji'">👨‍👩‍👧</span> .length</div><div class="v coral">8</div></div>
+<div class="chip" id="s5-k2"><div class="k">Array.from</div><div class="v lil">5</div></div>
+<div class="chip" id="s5-k3"><div class="k">Segmenter</div><div class="v mint">1</div></div>
+</div>
+<div class="out" id="s5-out">preview → <span class="mint mono">"Riya 🎉"</span> ✓</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s5 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+slam("#s5-h1", 0.04);
+rise("#s5-diff", 0.2, 0.35);
+type("#s5-diff .dl:first-child", 0.3, 0.02);
+type("#s5-del", 0.6, 0.012);
+tl.fromTo(q("#s5-del"), {opacity:1}, {opacity:0.45, duration:0.3}, 2.28);
+type("#s5-a1", 1.49, 0.02);
+type("#s5-a2", 2.28, 0.02);
+rise("#s5-seg", 3.3, 0.35);
+type("#s5-seg", 3.47, 0.012);
+slam("#s5-k1", 4.7); slam("#s5-k2", 5.0); slam("#s5-k3", 5.73);
+tl.fromTo(q("#s5-out"), {opacity:0, scale:0.6}, {opacity:1, scale:1, duration:0.45, ease:"back.out(2)"}, 7.02);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:9.45, ease:"none"}, 0);
+window.__timelines["s5"] = tl;
+})();
+</script>
+</template>

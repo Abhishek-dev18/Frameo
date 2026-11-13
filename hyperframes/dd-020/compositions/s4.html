@@ -1,0 +1,70 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+@font-face{font-family:'Noto Color Emoji';src:url('assets/fonts/NotoColorEmoji.ttf') format('truetype');}
+
+#s4{position:absolute;inset:0;overflow:hidden;font-family:'Inter','Noto Color Emoji',sans-serif;color:#F3F5F9;}
+#s4 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s4 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s4 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s4 .mono{font-family:'JetBrains Mono','Noto Color Emoji',monospace;}
+#s4 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s4 .mint{color:#4ADE80;} #s4 .coral{color:#FF6B5B;} #s4 .lil{color:#C4A7FF;} #s4 .dim{color:#8A94A8;}
+#s4 .ch{opacity:0;}
+
+#s4 .wrong{position:absolute;left:70px;top:520px;font-size:64px;font-weight:800;letter-spacing:-0.03em;color:#8A94A8;}
+#s4 .strike{position:absolute;left:62px;top:556px;width:700px;height:10px;background:#FF6B5B;border-radius:5px;transform-origin:left center;}
+#s4 .right{position:absolute;left:70px;top:640px;font-size:80px;font-weight:900;letter-spacing:-0.04em;}
+#s4 .cell{position:absolute;top:1010px;width:122px;height:170px;border-radius:24px;background:#141922;border:2px solid #273042;text-align:center;}
+#s4 .cell.sur{background:#2A1518;border-color:#7A2E2E;}
+#s4 .cv{font-size:46px;font-weight:800;margin-top:34px;}
+#s4 .sur .cv{font-size:30px;color:#FF8F82;margin-top:46px;}
+#s4 .ci{font-size:28px;color:#8A94A8;margin-top:22px;}
+#s4 .sur .ci{margin-top:30px;}
+#s4 .emo{position:absolute;left:750px;top:900px;width:258px;text-align:center;font-size:80px;}
+#s4 .brace{position:absolute;left:750px;top:1196px;width:258px;height:14px;border:5px solid #FF6B5B;border-top:none;border-radius:0 0 14px 14px;}
+#s4 .knife{position:absolute;left:875px;top:950px;width:8px;height:300px;background:#FF6B5B;border-radius:4px;box-shadow:0 0 30px #FF6B5B;}
+#s4 .code{left:70px;right:70px;top:1300px;height:270px;padding:36px 40px;font-size:40px;line-height:1.6;}
+</style>
+<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="8.49">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 4 · ROOT CAUSE</div>
+<div class="h" id="s4-h1" style="top:280px;font-size:96px;">.length counts<br><span class="coral">UTF-16 units</span></div>
+<div class="wrong" id="s4-wrong" data-layout-allow-occlusion>length = characters</div>
+<div class="strike" id="s4-strike"></div>
+<div class="right" id="s4-right">"🎉".length → <span class="coral">2</span></div>
+<div class="emo" id="s4-emo">🎉</div>
+<div class="cell " id="s4-c0" style="left:70px"><div class="cv mono">R</div><div class="ci mono">0</div></div><div class="cell " id="s4-c1" style="left:206px"><div class="cv mono">i</div><div class="ci mono">1</div></div><div class="cell " id="s4-c2" style="left:342px"><div class="cv mono">y</div><div class="ci mono">2</div></div><div class="cell " id="s4-c3" style="left:478px"><div class="cv mono">a</div><div class="ci mono">3</div></div><div class="cell " id="s4-c4" style="left:614px"><div class="cv mono">␣</div><div class="ci mono">4</div></div><div class="cell sur" id="s4-c5" style="left:750px"><div class="cv mono">D83C</div><div class="ci mono">5</div></div><div class="cell sur" id="s4-c6" style="left:886px"><div class="cv mono">DF89</div><div class="ci mono">6</div></div>
+<div class="brace" id="s4-brace"></div>
+<div class="knife" id="s4-knife"></div>
+<div class="card code mono" id="s4-code"><div><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">.</span><span class="ch">s</span><span class="ch">l</span><span class="ch">i</span><span class="ch">c</span><span class="ch">e</span><span class="ch">(</span><span class="ch">0</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">6</span><span class="ch">)</span></div><div class="coral"><span class="ch">/</span><span class="ch">/</span><span class="ch">&nbsp;</span><span class="ch">k</span><span class="ch">e</span><span class="ch">e</span><span class="ch">p</span><span class="ch">s</span><span class="ch">&nbsp;</span><span class="ch">0</span><span class="ch">.</span><span class="ch">.</span><span class="ch">5</span><span class="ch">&nbsp;</span><span class="ch">→</span><span class="ch">&nbsp;</span><span class="ch">&quot;</span><span class="ch">R</span><span class="ch">i</span><span class="ch">y</span><span class="ch">a</span><span class="ch">&nbsp;</span><span class="ch">\</span><span class="ch">u</span><span class="ch">d</span><span class="ch">8</span><span class="ch">3</span><span class="ch">c</span><span class="ch">&quot;</span></div></div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s4 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+slam("#s4-h1", 0.04);
+rise("#s4-wrong", 0.4);
+sweep("#s4-strike", 1.4);
+slam("#s4-right", 2.87);
+for (let k = 0; k < 7; k++) tl.fromTo(q("#s4-c" + k), {opacity:0, y:60, rotateX:-60}, {opacity:1, y:0, rotateX:0, duration:0.35, ease:"back.out(1.8)"}, 3.3 + k * 0.09);
+tl.fromTo(q("#s4-emo"), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2)"}, 4.79);
+sweep("#s4-brace", 4.9);
+rise("#s4-code", 5.77, 0.35);
+type("#s4-code", 5.85, 0.03);
+tl.fromTo(q("#s4-knife"), {opacity:0, y:-400}, {opacity:1, y:0, duration:0.3, ease:"power4.in"}, 6.84);
+tl.fromTo(q("#s4-c6"), {opacity:1, x:0, rotate:0}, {opacity:0.25, x:60, rotate:12, duration:0.5, ease:"power2.out"}, 7.14);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.49, ease:"none"}, 0);
+window.__timelines["s4"] = tl;
+})();
+</script>
+</template>

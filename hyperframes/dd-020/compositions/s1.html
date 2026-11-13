@@ -1,0 +1,65 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+@font-face{font-family:'Noto Color Emoji';src:url('assets/fonts/NotoColorEmoji.ttf') format('truetype');}
+
+#s1{position:absolute;inset:0;overflow:hidden;font-family:'Inter','Noto Color Emoji',sans-serif;color:#F3F5F9;}
+#s1 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s1 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s1 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s1 .mono{font-family:'JetBrains Mono','Noto Color Emoji',monospace;}
+#s1 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s1 .mint{color:#4ADE80;} #s1 .coral{color:#FF6B5B;} #s1 .lil{color:#C4A7FF;} #s1 .dim{color:#8A94A8;}
+#s1 .ch{opacity:0;}
+
+#s1 .phone{position:absolute;left:150px;top:600px;width:780px;height:1000px;border-radius:80px;background:linear-gradient(160deg,#1B2232,#0F131B);border:3px solid #2C3549;box-shadow:0 60px 120px rgba(0,0,0,.6);}
+#s1 .time{position:absolute;left:0;right:0;top:110px;text-align:center;font-size:150px;font-weight:300;letter-spacing:-0.03em;color:#DDE3EE;}
+#s1 .notif{left:190px;width:700px;height:200px;padding:34px 36px;}
+#s1 .notif .app{font-size:28px;font-weight:700;color:#8A94A8;letter-spacing:.04em;}
+#s1 .notif .msg{margin-top:14px;font-size:44px;font-weight:800;letter-spacing:-0.02em;}
+#s1 .bad{color:#FF6B5B;}
+#s1 .ring{position:absolute;width:120px;height:120px;border-radius:60px;border:6px solid #FF6B5B;}
+#s1 .tickets{position:absolute;left:70px;right:70px;top:1480px;display:flex;justify-content:center;gap:18px;}
+#s1 .tk{padding:20px 26px;border-radius:22px;background:#2A1518;border:2px solid #5A2A2E;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:#FF8F82;}
+</style>
+<div id="s1" data-composition-id="s1" data-width="1080" data-height="1920" data-duration="7.33">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">CASE FILE · NOTIFICATIONS</div>
+<div class="h" id="s1-h1" style="top:280px;font-size:92px;white-space:nowrap;">Names look <span class="coral">broken</span></div>
+<div class="h dim" id="s1-h2" style="top:410px;font-size:52px;font-weight:700;letter-spacing:-0.02em;">…but only for some users</div>
+<div class="phone" id="s1-phone"><div class="time">21:00</div></div>
+<div class="card notif" id="s1-n1" style="top:880px"><div class="app">CHATAPP · now</div><div class="msg">Rahul: party tonight?</div></div>
+<div class="card notif" id="s1-n2" style="top:1110px"><div class="app">CHATAPP · now</div><div class="msg">Riya <span class="bad" id="s1-box">�</span> sent a photo</div></div>
+<div class="ring" id="s1-ring" style="left:289px;top:1153px"></div>
+<div class="tickets"><div class="tk" id="s1-t1">TICKET: weird ? box</div><div class="tk" id="s1-t2">TICKET: name glitch</div></div>
+<div class="tickets" style="top:1570px"><div class="tk" id="s1-t3">TICKET: � in push</div><div class="tk" id="s1-t4">+ 40 more</div></div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s1 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+slam("#s1-h1", 0.06);
+rise("#s1-phone", 0.25, 0.6);
+rise("#s1-n1", 0.9);
+rise("#s1-h2", 1.89);
+rise("#s1-n2", 2.3);
+tl.fromTo(q("#s1-ring"), {opacity:0, scale:2.2}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2)"}, 3.63);
+tl.fromTo(q("#s1-box"), {scale:1}, {scale:1.5, duration:0.25, yoyo:true, repeat:3, ease:"power1.inOut"}, 3.7);
+tl.fromTo(q("#s1-t1"), {opacity:0, y:40, rotate:-4}, {opacity:1, y:0, rotate:0, duration:0.3, ease:"back.out(2)"}, 5.91);
+tl.fromTo(q("#s1-t2"), {opacity:0, y:40, rotate:4}, {opacity:1, y:0, rotate:0, duration:0.3, ease:"back.out(2)"}, 6.15);
+tl.fromTo(q("#s1-t3"), {opacity:0, y:40, rotate:-3}, {opacity:1, y:0, rotate:0, duration:0.3, ease:"back.out(2)"}, 6.4);
+tl.fromTo(q("#s1-t4"), {opacity:0, scale:1.4}, {opacity:1, scale:1, duration:0.3, ease:"back.out(2)"}, 6.65);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:7.33, ease:"none"}, 0);
+window.__timelines["s1"] = tl;
+})();
+</script>
+</template>

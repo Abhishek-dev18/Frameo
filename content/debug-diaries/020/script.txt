@@ -1,0 +1,11 @@
+Push notification में user का नाम आता है, पर कुछ users को नाम के end में एक अजीब सा question mark वाला box दिख रहा था। Support tickets बढ़ते जा रहे थे।
+---
+Local पर reproduce किया, English names के साथ सब perfect। फिर नाम में एक emoji डाला, और वो box तुरंत आ गया।
+---
+Logs में preview check किया: code ने text को छह characters पर काटा था, और आख़िरी character अधूरा था, एक lone surrogate।
+---
+Root cause: JavaScript का string length characters नहीं, UTF-16 code units गिनता है। Emoji दो units का होता है, और slice ने उसे बीच से काट दिया।
+---
+Fix: string को Array.from से पूरे characters में तोड़ो, या Intl.Segmenter use करो, ताकि family emoji भी पूरा रहे। अब cut हमेशा पूरे character पर होता है।
+---
+Lesson: length हमेशा characters नहीं होती। Text काटने से पहले सोचो कि आप गिन क्या रहे हो। Follow करो Debug Diaries।

@@ -1,0 +1,49 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+@font-face{font-family:'Noto Color Emoji';src:url('assets/fonts/NotoColorEmoji.ttf') format('truetype');}
+
+#hud{position:absolute;inset:0;pointer-events:none;font-family:'Inter',sans-serif;}
+#hud .top{position:absolute;left:70px;right:70px;top:110px;display:flex;justify-content:space-between;align-items:center;}
+#hud .brand{font-size:40px;font-weight:900;letter-spacing:.06em;color:#4ADE80;}
+#hud .ep{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;color:#8A94A8;}
+#hud .strip{position:absolute;left:30px;right:30px;top:1720px;display:flex;gap:10px;justify-content:center;}
+#hud .pill{position:relative;padding:18px 16px;border-radius:40px;background:#141922;border:2px solid #273042;overflow:hidden;}
+#hud .pill span{position:relative;font-size:28px;font-weight:800;letter-spacing:.02em;color:#8A94A8;white-space:nowrap;}
+#hud .fill{position:absolute;inset:0;background:#4ADE80;transform-origin:left center;}
+</style>
+<div id="hud" data-composition-id="hud" data-width="1080" data-height="1920" data-duration="43.92">
+<div class="top"><div class="brand">DEBUG DIARIES</div><div class="ep">#020</div></div>
+<div class="strip" id="hud-strip"><div class="pill" id="hud-p0"><div class="fill" id="hud-f0"></div><span>SYMPTOM</span></div><div class="pill" id="hud-p1"><div class="fill" id="hud-f1"></div><span>REPRODUCE</span></div><div class="pill" id="hud-p2"><div class="fill" id="hud-f2"></div><span>LOGS</span></div><div class="pill" id="hud-p3"><div class="fill" id="hud-f3"></div><span>ROOT CAUSE</span></div><div class="pill" id="hud-p4"><div class="fill" id="hud-f4"></div><span>FIX</span></div></div>
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#hud .top", {opacity:0, y:-30}, {opacity:1, y:0, duration:0.4}, 0);
+tl.fromTo("#hud-strip", {opacity:0, y:60}, {opacity:1, y:0, duration:0.4}, 0);
+tl.fromTo("#hud-f0", {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.out"}, 0.05);
+tl.fromTo("#hud-p0 span", {color:"#8A94A8"}, {color:"#0B0D12", duration:0.2}, 0.1);
+tl.fromTo("#hud-f1", {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.out"}, 7.38);
+tl.fromTo("#hud-p1 span", {color:"#8A94A8"}, {color:"#0B0D12", duration:0.2}, 7.43);
+tl.fromTo("#hud-f0", {backgroundColor:"#4ADE80"}, {backgroundColor:"#1F5A3A", duration:0.3, immediateRender:false}, 7.38);
+tl.fromTo("#hud-p0 span", {color:"#0B0D12"}, {color:"#E8FFF0", duration:0.3, immediateRender:false}, 7.38);
+tl.fromTo("#hud-f2", {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.out"}, 13.030000000000001);
+tl.fromTo("#hud-p2 span", {color:"#8A94A8"}, {color:"#0B0D12", duration:0.2}, 13.08);
+tl.fromTo("#hud-f1", {backgroundColor:"#4ADE80"}, {backgroundColor:"#1F5A3A", duration:0.3, immediateRender:false}, 13.030000000000001);
+tl.fromTo("#hud-p1 span", {color:"#0B0D12"}, {color:"#E8FFF0", duration:0.3, immediateRender:false}, 13.030000000000001);
+tl.fromTo("#hud-f3", {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.out"}, 19.73);
+tl.fromTo("#hud-p3 span", {color:"#8A94A8"}, {color:"#0B0D12", duration:0.2}, 19.78);
+tl.fromTo("#hud-f2", {backgroundColor:"#4ADE80"}, {backgroundColor:"#1F5A3A", duration:0.3, immediateRender:false}, 19.73);
+tl.fromTo("#hud-p2 span", {color:"#0B0D12"}, {color:"#E8FFF0", duration:0.3, immediateRender:false}, 19.73);
+tl.fromTo("#hud-f4", {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.out"}, 28.220000000000002);
+tl.fromTo("#hud-p4 span", {color:"#8A94A8"}, {color:"#0B0D12", duration:0.2}, 28.270000000000003);
+tl.fromTo("#hud-f3", {backgroundColor:"#4ADE80"}, {backgroundColor:"#1F5A3A", duration:0.3, immediateRender:false}, 28.220000000000002);
+tl.fromTo("#hud-p3 span", {color:"#0B0D12"}, {color:"#E8FFF0", duration:0.3, immediateRender:false}, 28.220000000000002);
+
+tl.fromTo("#hud-strip", {opacity:1, y:0}, {opacity:0, y:60, duration:0.4, immediateRender:false}, 37.62);
+tl.fromTo("#hud .top", {opacity:1}, {opacity:1, duration:43.42, immediateRender:false}, 0.4);
+window.__timelines["hud"] = tl;
+})();
+</script>
+</template>

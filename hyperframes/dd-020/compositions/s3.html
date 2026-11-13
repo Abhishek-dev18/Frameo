@@ -1,0 +1,58 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+@font-face{font-family:'Noto Color Emoji';src:url('assets/fonts/NotoColorEmoji.ttf') format('truetype');}
+
+#s3{position:absolute;inset:0;overflow:hidden;font-family:'Inter','Noto Color Emoji',sans-serif;color:#F3F5F9;}
+#s3 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s3 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s3 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s3 .mono{font-family:'JetBrains Mono','Noto Color Emoji',monospace;}
+#s3 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s3 .mint{color:#4ADE80;} #s3 .coral{color:#FF6B5B;} #s3 .lil{color:#C4A7FF;} #s3 .dim{color:#8A94A8;}
+#s3 .ch{opacity:0;}
+
+#s3 .logs{left:50px;right:50px;top:560px;height:360px;padding:36px 34px;font-family:'JetBrains Mono','Noto Color Emoji',monospace;font-size:31px;line-height:1.75;}
+#s3 .ln{white-space:nowrap;}
+#s3 .bar{position:absolute;left:0;top:0;right:0;height:60px;border-bottom:2px solid #273042;border-radius:34px 34px 0 0;}
+#s3 .hl{position:absolute;left:24px;top:226px;width:960px;height:56px;background:rgba(255,107,91,.18);border-left:6px solid #FF6B5B;transform-origin:left center;}
+#s3 .zoom{left:150px;width:780px;top:1010px;height:400px;text-align:center;padding-top:40px;border-color:#7A2E2E;}
+#s3 .zoom .big{font-family:'JetBrains Mono',monospace;font-size:120px;font-weight:800;color:#FF6B5B;letter-spacing:-0.02em;}
+#s3 .zoom .sub{font-size:44px;font-weight:800;margin-top:20px;letter-spacing:-0.02em;}
+#s3 .zoom .sub2{font-family:'JetBrains Mono',monospace;font-size:30px;color:#C4A7FF;margin-top:14px;}
+</style>
+<div id="s3" data-composition-id="s3" data-width="1080" data-height="1920" data-duration="6.7">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 3 · READ THE LOGS</div>
+<div class="h" id="s3-h1" style="top:280px;font-size:100px;">Cut at <span class="lil">6</span>.<br>Last char <span class="coral">half</span>.</div>
+<div class="card logs" id="s3-card"><div class="hl" id="s3-hl"></div><div style="height:30px"></div><div class="ln dim" id="s3-l1"><span class="ch">[</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">i</span><span class="ch">f</span><span class="ch">y</span><span class="ch">]</span><span class="ch">&nbsp;</span><span class="ch">u</span><span class="ch">s</span><span class="ch">e</span><span class="ch">r</span><span class="ch">=</span><span class="ch">u</span><span class="ch">_</span><span class="ch">1</span><span class="ch">1</span><span class="ch">8</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">=</span><span class="ch">&quot;</span><span class="ch">R</span><span class="ch">a</span><span class="ch">h</span><span class="ch">u</span><span class="ch">l</span><span class="ch">&nbsp;</span><span class="ch">S</span><span class="ch">h</span><span class="ch">a</span><span class="ch">r</span><span class="ch">m</span><span class="ch">a</span><span class="ch">&quot;</span></div><div class="ln mint" id="s3-l2"><span class="ch">[</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">i</span><span class="ch">f</span><span class="ch">y</span><span class="ch">]</span><span class="ch">&nbsp;</span><span class="ch">p</span><span class="ch">r</span><span class="ch">e</span><span class="ch">v</span><span class="ch">i</span><span class="ch">e</span><span class="ch">w</span><span class="ch">=</span><span class="ch">&quot;</span><span class="ch">R</span><span class="ch">a</span><span class="ch">h</span><span class="ch">u</span><span class="ch">l</span><span class="ch">&nbsp;</span><span class="ch">&quot;</span><span class="ch">&nbsp;</span><span class="ch">l</span><span class="ch">e</span><span class="ch">n</span><span class="ch">=</span><span class="ch">6</span></div><div class="ln dim" id="s3-l3"><span class="ch">[</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">i</span><span class="ch">f</span><span class="ch">y</span><span class="ch">]</span><span class="ch">&nbsp;</span><span class="ch">u</span><span class="ch">s</span><span class="ch">e</span><span class="ch">r</span><span class="ch">=</span><span class="ch">u</span><span class="ch">_</span><span class="ch">2</span><span class="ch">0</span><span class="ch">4</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">a</span><span class="ch">m</span><span class="ch">e</span><span class="ch">=</span><span class="ch">&quot;</span><span class="ch">R</span><span class="ch">i</span><span class="ch">y</span><span class="ch">a</span><span class="ch">&nbsp;</span><span class="ch">🎉</span><span class="ch">&nbsp;</span><span class="ch">G</span><span class="ch">u</span><span class="ch">p</span><span class="ch">t</span><span class="ch">a</span><span class="ch">&quot;</span></div><div class="ln coral" id="s3-l4"><span class="ch">[</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">i</span><span class="ch">f</span><span class="ch">y</span><span class="ch">]</span><span class="ch">&nbsp;</span><span class="ch">p</span><span class="ch">r</span><span class="ch">e</span><span class="ch">v</span><span class="ch">i</span><span class="ch">e</span><span class="ch">w</span><span class="ch">=</span><span class="ch">&quot;</span><span class="ch">R</span><span class="ch">i</span><span class="ch">y</span><span class="ch">a</span><span class="ch">&nbsp;</span><span class="ch">\</span><span class="ch">u</span><span class="ch">d</span><span class="ch">8</span><span class="ch">3</span><span class="ch">c</span><span class="ch">&quot;</span><span class="ch">&nbsp;</span><span class="ch">l</span><span class="ch">e</span><span class="ch">n</span><span class="ch">=</span><span class="ch">6</span></div></div>
+<div class="card zoom" id="s3-zoom"><div class="big">\ud83c</div><div class="sub">a lone surrogate</div><div class="sub2">= half of 🎉</div></div>
+<div class="h dim" style="top:1470px;font-size:28px;font-weight:600;letter-spacing:0;font-family:'JetBrains Mono',monospace" id="s3-note">sample log lines · illustrative</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s3 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+rise("#s3-card", 0.04, 0.4);
+type("#s3-l1", 0.2, 0.012);
+type("#s3-l2", 0.75, 0.012);
+slam("#s3-h1", 1.49);
+type("#s3-l3", 1.9, 0.012);
+type("#s3-l4", 2.6, 0.02);
+sweep("#s3-hl", 3.7);
+tl.fromTo(q("#s3-zoom"), {opacity:0, scale:0.4, y:-200}, {opacity:1, scale:1, y:0, duration:0.55, ease:"back.out(1.8)"}, 5.44);
+rise("#s3-note", 5.7);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:6.7, ease:"none"}, 0);
+window.__timelines["s3"] = tl;
+})();
+</script>
+</template>
