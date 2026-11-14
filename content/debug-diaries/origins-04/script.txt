@@ -1,0 +1,11 @@
+Ctrl, Alt, Delete. तीन keys, एक साथ. पर ये combination आया कहाँ से? ज़्यादातर लोग सोचते हैं, Bill Gates ने बनाया. गलत. आज की कहानी, दुनिया के सबसे famous shortcut की.
+---
+उन्नीस सौ इक्यासी. IBM में engineer David Bradley, पहले IBM PC पर काम कर रहे थे. Testing में machine बार-बार hang होती, और हर बार power off-on करना पड़ता.
+---
+तो उन्होंने एक shortcut लिखा, जो बिना बंद किए computer को restart कर दे. Code लिखने में लगे बस कुछ मिनट. Keys जानबूझकर दूर रखीं, ताकि गलती से एक हाथ से न दब जाएँ.
+---
+ये developers का secret था, users के लिए नहीं. Computer अटका? Ctrl, Alt, Delete. पर बात फैल गई, और hang होते ही पूरी दुनिया यही दबाने लगी.
+---
+फिर Windows NT ने इसे login का secure रास्ता बना दिया. कोई app इसे पकड़ नहीं सकता, तो fake login screen आपका password नहीं चुरा सकती.
+---
+दो हज़ार तेरह में, Harvard के एक event में, Bill Gates ने माना, ये mistake थी, एक button होना चाहिए था. और Bradley ने मज़ाक में कहा, invent मैंने किया, famous Bill ने. Follow करो Debug Diaries.
