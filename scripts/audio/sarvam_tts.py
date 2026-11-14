@@ -41,7 +41,7 @@ def main() -> None:
     client = SarvamAI(api_subscription_key=api_key())
     speaker = os.environ.get("SARVAM_SPEAKER", "shubh_enhi_ads")
     model = os.environ.get("SARVAM_MODEL", "bulbul:v4-flash")
-    pace = float(os.environ.get("SARVAM_PACE", "1.1"))
+    pace = float(os.environ.get("SARVAM_PACE", "0.95"))
     for i, text in enumerate(parts, 1):
         for attempt in range(3):
             try:

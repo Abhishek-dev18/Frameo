@@ -1,7 +1,8 @@
 # Tighten pauses: every silence longer than MAXGAP becomes MAXGAP. Parts joined with PARTGAP.
 # Prints phrase start times (seconds) in the final timeline, per part.
-import subprocess, re, json, sys
-MAXGAP, PARTGAP, LEAD = 0.18, 0.08, 0.06
+import subprocess, re, json, sys, os
+# Calm delivery (user request 2026-11-14): longer breathing room between phrases and parts; override with env vars.
+MAXGAP = float(os.environ.get("TIGHTEN_MAXGAP", "0.30")); PARTGAP = float(os.environ.get("TIGHTEN_PARTGAP", "0.22")); LEAD = 0.06
 parts = sys.argv[1:-1]; out = sys.argv[-1]
 def dur(f): return float(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",f]).decode())
 def sil(f):
