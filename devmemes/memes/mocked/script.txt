@@ -1,0 +1,5 @@
+सारे tests पास, coverage पचानवे percent। मैंने पूरे confidence से deploy कर दिया।
+---
+दो minute बाद, production down। Database connection refused।
+---
+पता चला, tests ने database कभी देखा ही नहीं। सब mock था... मेरा confidence भी।

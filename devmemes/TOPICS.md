@@ -11,10 +11,10 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 02 fivemin — "bas 5 minute ka kaam hai" → npm hell → 5 ghante, fix was cache clear
 - 03 safari — pixel perfect in Chrome → client opens Safari on iPhone → naya Internet Explorer
 - 04 lgtm — 2-line PR gets 40 comments → 2000-line refactor PR → LGTM in 2 min, files viewed 0/86
+- 05 mocked — 142/142 tests green, 95% coverage → prod down, ECONNREFUSED → jest.mock('./db'): sab mock tha, mera confidence bhi
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
-- Tests 142 passed → prod down → tests mock the database
 - "quick console.log" → 200 logs → pushed to prod with all logs
 - Read the error message → 400-line stack trace → copies line 1 into ChatGPT
 - Standup: "looking into it" Mon→Fri
