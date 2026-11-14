@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, authorization! Login हो गया था, बस permission नहीं थी. आज का topic — four-oh-one vs four-oh-three, दो errors जो सबको confuse करते हैं.
+---
+Four-oh-one, Unauthorized. Priya का badge expire हो चुका है. Gate पूछता है — तुम हो कौन? पहचान ही साबित नहीं हुई.
+---
+Tech में — token missing है या expire हो गया. Server कहता है, पहले login करो. Fresh token लाओ, और request चल जाएगी.
+---
+Four-oh-three, Forbidden. नया badge, gate खुल गया. System Priya को पहचानता है. पर server room का door — बंद. पहचान पक्की, permission नहीं.
+---
+Tech में — token valid है, पर policy यह action allow नहीं करती. यहाँ दोबारा login करने से कुछ नहीं बदलेगा. Fun fact — four-oh-one का नाम Unauthorized है, पर असल मतलब है unauthenticated.
+---
+Clearance check! Token बिल्कुल valid है, पर तुमने admin page खोला जिसकी permission नहीं. कौन सा error आएगा? A, four-oh-one या B, four-oh-three? Answer next reel में. Follow करो Debug Diaries.
