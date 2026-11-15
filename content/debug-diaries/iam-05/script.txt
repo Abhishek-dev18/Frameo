@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, four-oh-three! Token valid था, बस permission नहीं थी. आज का topic — identity lifecycle: Joiner, Mover, Leaver.
+---
+Joiner. Priya का office में पहला दिन. HR में entry होते ही badge बनता है — सिर्फ उसकी team के doors के लिए.
+---
+Mover. Priya Finance से Engineering में shift होती है. नए doors खुलते हैं, और पुराने Finance doors बंद होने चाहिए. वरना access बस जमा होता जाता है.
+---
+Leaver. आखिरी दिन, badge वापस. और उसके सारे doors एक साथ बंद — उसी दिन, अगले हफ्ते नहीं.
+---
+Tech में — HR system source of truth होता है. वहाँ change होते ही, SCIM जैसा standard हर app में account बनाता, बदलता या disable करता है.
+---
+Clearance check! Priya company छोड़ चुकी है, पर उसका account अब भी active है. इसे क्या कहते हैं? A, orphan account या B, service account? Answer next reel में. Follow करो Debug Diaries.
