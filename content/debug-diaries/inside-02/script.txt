@@ -1,0 +1,15 @@
+आप एक message भेजते हो. पहले एक grey tick, फिर दो, फिर blue. इन तीन ticks के पीछे एक पूरा system है. आज देखते हैं, WhatsApp message actually deliver कैसे होता है.
+---
+जब app खुला होता है, आपका phone WhatsApp server से एक long-lived connection रखता है, जो Noise protocol से encrypted है. इसलिए हर message के लिए नया setup नहीं करना पड़ता. Pipe पहले से खुला है.
+---
+पहली chat पर, आपका phone server से friend की public keys लेता है, जैसे एक खुला ताला. फिर send दबाते ही, message आपके phone पर ही encrypt होता है, Signal protocol से. Server को बस एक locked डब्बा दिखता है.
+---
+Encrypted message server तक पहुँचा, server ने acknowledge किया, और आपको दिखा एक grey tick. मतलब: sent. पर अभी friend के phone तक नहीं पहुँचा.
+---
+अगर friend offline है, तो server message को queue में रखता है, और push notification से उसका phone जगाने की कोशिश करता है. WhatsApp की privacy policy के हिसाब से, undelivered message तीस दिन तक ही रखा जाता है.
+---
+Friend का phone online आते ही message download होता है, वहीं decrypt होता है, और phone एक delivery receipt वापस भेजता है. वो receipt आपके पास आया, तो दो grey ticks. Friend के कई devices हों, तो हर device के लिए अलग encrypted copy जाती है.
+---
+Friend ने chat खोलकर पढ़ा, तो एक और receipt जाता है: read. तब ticks blue होते हैं. Read receipts off हैं, तो blue नहीं दिखेगा. और group में blue तब, जब सबने पढ़ लिया.
+---
+तो एक tick मतलब server, दो मतलब phone, blue मतलब आँखें. हर step पर एक छोटा सा acknowledgement, जो उल्टी direction में चलता है. ये simplified version था, पर ticks का असली मतलब यही है. Follow करो Debug Diaries.
