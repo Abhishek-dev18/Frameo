@@ -1,0 +1,11 @@
+Feed scroll करते हुए users को same post दो बार दिख रही थी। Support में screenshots आने लगे, "feed टूटी हुई है"।
+---
+Local पर reproduce किया, सब perfect। फिर scroll के बीच में एक नई post डाली, और duplicate तुरंत आ गया।
+---
+Logs में दोनों API calls देखे। Query बिल्कुल सही थी, पर page two की पहली post वही थी जो page one की आख़िरी थी।
+---
+Root cause: offset pagination position गिनता है, posts नहीं। ऊपर एक नई post आई, सब एक जगह नीचे खिसक गए, और offset ने वही post फिर से उठा ली।
+---
+Fix: cursor pagination। Offset की जगह last post का id भेजो, और query करो where id less than cursor। अब नई posts आएँ या जाएँ, अगला page वहीं से शुरू होता है।
+---
+Lesson: जो data बदलता रहता है, उसे position से नहीं, cursor से पढ़ो। Follow करो Debug Diaries।

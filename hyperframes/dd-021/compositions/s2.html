@@ -1,0 +1,74 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s2{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s2 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s2 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s2 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s2 .mono{font-family:'JetBrains Mono',monospace;}
+#s2 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s2 .mint{color:#4ADE80;} #s2 .coral{color:#FF6B5B;} #s2 .lil{color:#C4A7FF;} #s2 .dim{color:#8A94A8;}
+#s2 .ch{opacity:0;}
+#s2 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;}
+#s2 .post{position:absolute;left:0;right:0;height:120px;border-radius:26px;background:#1A2030;border:2px solid #273042;display:flex;align-items:center;padding:0 30px;gap:26px;}
+#s2 .post .id{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:44px;color:#C4A7FF;width:110px;}
+#s2 .post .t{font-size:38px;font-weight:700;letter-spacing:-0.01em;}
+#s2 .post.bad{border-color:#FF6B5B;background:#2A1719;}
+#s2 .post.bad .id{color:#FF6B5B;}
+#s2 .post.new{border-color:#4ADE80;background:#14261C;}
+#s2 .post.new .id{color:#4ADE80;}
+#s2 .badge{position:absolute;right:24px;top:30px;padding:10px 18px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;background:#FF6B5B;color:#FFFFFF;}
+#s2 .badge.g{background:#4ADE80;color:#0B0D12;}
+
+#s2 .col{position:absolute;width:440px;top:720px;}
+#s2 .colh{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:#8A94A8;margin-bottom:24px;}
+#s2 .col .post{position:absolute;}
+#s2 .ok{position:absolute;left:70px;top:520px;font-size:56px;font-weight:900;color:#4ADE80;letter-spacing:-0.02em;}
+#s2 .newp{position:absolute;left:300px;right:300px;top:560px;}
+#s2 .verdict{position:absolute;left:70px;right:70px;top:1420px;text-align:center;font-size:84px;font-weight:900;letter-spacing:-0.03em;}
+#s2 .wipe{position:absolute;left:0;top:0;width:100%;height:100%;}
+
+</style>
+<div id="s2" data-composition-id="s2" data-width="1080" data-height="1920" data-duration="6.463">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 2 · REPRODUCE</div>
+<div class="h" id="s2-h1" style="top:280px;font-size:100px;">Local: all <span class="mint">perfect</span>.</div>
+<div class="ok" id="s2-ok">✓ no duplicates</div>
+<div class="newp" id="s2-new"><div class="post new" id="s2-np" style="top:0px"><div class="id">#11</div><div class="t">NEW</div></div></div>
+<div class="col" id="s2-c1" style="left:70px"><div class="colh">PAGE 1</div>
+<div class="post " id="s2-a1" style="top:70px"><div class="id">#10</div><div class="t">post</div></div><div class="post " id="s2-a2" style="top:210px"><div class="id">#9</div><div class="t">post</div></div><div class="post " id="s2-a3" style="top:350px"><div class="id">#8</div><div class="t">post</div></div></div>
+<div class="col" id="s2-c2" style="left:570px"><div class="colh">PAGE 2</div>
+<div class="post bad" id="s2-b1" style="top:70px"><div class="id">#8</div><div class="t">post</div><div class="badge ">DUP</div></div><div class="post " id="s2-b2" style="top:210px"><div class="id">#7</div><div class="t">post</div></div><div class="post " id="s2-b3" style="top:350px"><div class="id">#6</div><div class="t">post</div></div></div>
+<div class="verdict" id="s2-v"><span class="coral">Duplicate.</span> Instantly.</div>
+<div class="note" style="top:1580px;text-align:center" id="s2-note">insert 1 post between page 1 and page 2</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s2 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+
+slam("#s2-h1", 0.04);
+pop("#s2-ok", 1.62);
+rise("#s2-c1", 0.5); rise("#s2-a1", 0.7); rise("#s2-a2", 0.85); rise("#s2-a3", 1.0);
+tl.fromTo(q("#s2-ok"), {opacity:1}, {opacity:0, duration:0.25, immediateRender:false}, 2.45);
+drop("#s2-new", 2.53);
+rise("#s2-note", 2.9);
+rise("#s2-c2", 3.9); rise("#s2-b1", 4.77, 0.35); rise("#s2-b2", 4.9); rise("#s2-b3", 5.0);
+tl.fromTo(q("#s2-b1"), {scale:1}, {scale:1.08, duration:0.18, yoyo:true, repeat:1, immediateRender:false}, 5.2);
+slam("#s2-v", 5.6);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:6.463, ease:"none"}, 0);
+window.__timelines["s2"] = tl;
+})();
+</script>
+</template>

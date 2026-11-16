@@ -1,0 +1,80 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s3{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s3 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s3 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s3 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.0;}
+#s3 .mono{font-family:'JetBrains Mono',monospace;}
+#s3 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s3 .mint{color:#4ADE80;} #s3 .coral{color:#FF6B5B;} #s3 .lil{color:#C4A7FF;} #s3 .dim{color:#8A94A8;}
+#s3 .ch{opacity:0;}
+#s3 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;}
+#s3 .post{position:absolute;left:0;right:0;height:120px;border-radius:26px;background:#1A2030;border:2px solid #273042;display:flex;align-items:center;padding:0 30px;gap:26px;}
+#s3 .post .id{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:44px;color:#C4A7FF;width:110px;}
+#s3 .post .t{font-size:38px;font-weight:700;letter-spacing:-0.01em;}
+#s3 .post.bad{border-color:#FF6B5B;background:#2A1719;}
+#s3 .post.bad .id{color:#FF6B5B;}
+#s3 .post.new{border-color:#4ADE80;background:#14261C;}
+#s3 .post.new .id{color:#4ADE80;}
+#s3 .badge{position:absolute;right:24px;top:30px;padding:10px 18px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;background:#FF6B5B;color:#FFFFFF;}
+#s3 .badge.g{background:#4ADE80;color:#0B0D12;}
+
+#s3 .tgt{display:inline-block;border-radius:8px;padding:0 4px;}
+#s3 .logs{left:50px;right:50px;top:520px;height:470px;padding:40px 36px;font-family:'JetBrains Mono',monospace;font-size:36px;line-height:1.75;}
+#s3 .ln{white-space:pre;position:relative;}
+#s3 .hl{position:absolute;height:60px;background:rgba(255,107,91,.22);border-bottom:5px solid #FF6B5B;transform-origin:left center;}
+#s3 .qok{position:absolute;left:70px;top:1080px;padding:20px 30px;border-radius:24px;background:#14261C;border:2px solid #4ADE80;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;color:#4ADE80;}
+#s3 .zoom{left:110px;right:110px;top:1200px;height:380px;text-align:center;padding-top:30px;border-color:#7A2E2E;}
+#s3 .zoom .big{font-family:'JetBrains Mono',monospace;font-size:150px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;}
+#s3 .zoom .sub{font-size:42px;font-weight:800;margin-top:16px;letter-spacing:-0.02em;}
+
+</style>
+<div id="s3" data-composition-id="s3" data-width="1080" data-height="1920" data-duration="8.142">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 3 · READ THE LOGS</div>
+<div class="h" id="s3-h1" style="top:280px;font-size:92px;">Query is <span class="mint">fine</span>.<br>Data is <span class="coral">not</span>.</div>
+<div class="card logs" id="s3-card">
+<div class="ln dim" id="s3-l1"><span class="ch">G</span><span class="ch">E</span><span class="ch">T</span><span class="ch">&nbsp;</span><span class="ch">/</span><span class="ch">f</span><span class="ch">e</span><span class="ch">e</span><span class="ch">d</span><span class="ch">?</span><span class="ch">o</span><span class="ch">f</span><span class="ch">f</span><span class="ch">s</span><span class="ch">e</span><span class="ch">t</span><span class="ch">=</span><span class="ch">0</span><span class="ch">&amp;</span><span class="ch">l</span><span class="ch">i</span><span class="ch">m</span><span class="ch">i</span><span class="ch">t</span><span class="ch">=</span><span class="ch">3</span></div>
+<div class="ln" id="s3-l1b"><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">→</span><span class="ch">&nbsp;</span><span class="ch">2</span><span class="ch">0</span><span class="ch">0</span><span class="ch">&nbsp;</span><span class="ch">[</span><span class="ch">1</span><span class="ch">0</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">9</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch tgt" id="s3-tA">8</span><span class="ch">]</span></div>
+<div class="ln lil" id="s3-l2"><span class="ch">P</span><span class="ch">O</span><span class="ch">S</span><span class="ch">T</span><span class="ch">&nbsp;</span><span class="ch">/</span><span class="ch">p</span><span class="ch">o</span><span class="ch">s</span><span class="ch">t</span><span class="ch">s</span><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">→</span><span class="ch">&nbsp;</span><span class="ch">i</span><span class="ch">d</span><span class="ch">=</span><span class="ch">1</span><span class="ch">1</span></div>
+<div class="ln dim" id="s3-l3"><span class="ch">G</span><span class="ch">E</span><span class="ch">T</span><span class="ch">&nbsp;</span><span class="ch">/</span><span class="ch">f</span><span class="ch">e</span><span class="ch">e</span><span class="ch">d</span><span class="ch">?</span><span class="ch">o</span><span class="ch">f</span><span class="ch">f</span><span class="ch">s</span><span class="ch">e</span><span class="ch">t</span><span class="ch">=</span><span class="ch">3</span><span class="ch">&amp;</span><span class="ch">l</span><span class="ch">i</span><span class="ch">m</span><span class="ch">i</span><span class="ch">t</span><span class="ch">=</span><span class="ch">3</span></div>
+<div class="ln" id="s3-l3b"><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">→</span><span class="ch">&nbsp;</span><span class="ch">2</span><span class="ch">0</span><span class="ch">0</span><span class="ch">&nbsp;</span><span class="ch">[</span><span class="ch tgt" id="s3-tB">8</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">7</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">6</span><span class="ch">]</span></div>
+</div>
+<div class="qok" id="s3-qok">SQL ✓ ORDER BY id DESC LIMIT 3</div>
+<div class="card zoom" id="s3-zoom"><div class="big"><span class="coral">8</span> <span class="dim">=</span> <span class="coral">8</span></div><div class="sub">page 2 first = page 1 last</div></div>
+<div class="note" style="top:1620px;text-align:center" id="s3-note">sample log lines · illustrative</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s3 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+
+rise("#s3-card", 0.04, 0.4);
+type("#s3-l1", 0.2, 0.012);
+type("#s3-l1b", 0.6, 0.015);
+type("#s3-l2", 1.0, 0.012);
+type("#s3-l3", 1.4, 0.012);
+type("#s3-l3b", 1.8, 0.015);
+slam("#s3-h1", 2.18);
+pop("#s3-qok", 2.5);
+tl.fromTo(q("#s3-tB"), {backgroundColor:"rgba(255,107,91,0)", color:"#F3F5F9"}, {backgroundColor:"rgba(255,107,91,0.35)", color:"#FF6B5B", duration:0.3, immediateRender:false}, 3.61);
+tl.fromTo(q("#s3-tA"), {backgroundColor:"rgba(255,107,91,0)", color:"#F3F5F9"}, {backgroundColor:"rgba(255,107,91,0.35)", color:"#FF6B5B", duration:0.3, immediateRender:false}, 5.71);
+tl.fromTo(q("#s3-zoom"), {opacity:0, scale:0.4, y:-200}, {opacity:1, scale:1, y:0, duration:0.55, ease:"back.out(1.8)"}, 5.9);
+rise("#s3-note", 6.4);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.142, ease:"none"}, 0);
+window.__timelines["s3"] = tl;
+})();
+</script>
+</template>
