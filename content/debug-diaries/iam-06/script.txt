@@ -1,0 +1,11 @@
+पिछले quiz का answer — A, orphan account! Person चला गया, पर account अब भी ज़िंदा. आज का topic — privilege creep और orphan accounts.
+---
+Privilege creep. हर नए project पर Priya एक नया door access माँगती है. नया access मिल जाता है, पर पुराना कभी वापस नहीं जाता.
+---
+दो साल बाद, उसके badge पर काम से कहीं ज़्यादा doors हैं. Access धीरे धीरे जमा होता गया — यही है privilege creep.
+---
+और orphan account. Raj कब का जा चुका, पर उसका door lamp अब भी जल रहा है. कोई owner नहीं, कोई देख नहीं रहा — attacker के लिए perfect entry.
+---
+Tech में इलाज है access review. हर quarter manager confirm करता है किसे क्या चाहिए, बाकी revoke. और HR feed से leavers के accounts अपने आप disable.
+---
+Clearance check! Priya को सिर्फ उतना access मिले, जितना काम के लिए ज़रूरी है. इस principle को क्या कहते हैं? A, least privilege या B, zero trust? Answer next reel में. Follow करो Debug Diaries.
