@@ -12,12 +12,12 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 03 safari — pixel perfect in Chrome → client opens Safari on iPhone → naya Internet Explorer
 - 04 lgtm — 2-line PR gets 40 comments → 2000-line refactor PR → LGTM in 2 min, files viewed 0/86
 - 05 mocked — 142/142 tests green, 95% coverage → prod down, ECONNREFUSED → jest.mock('./db'): sab mock tha, mera confidence bhi
+- 06 standup — "looking into it" Mon→Thu standups → QA closes ticket: Cannot reproduce → Friday standup: "FIXED." (commits: 0)
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
 - "quick console.log" → 200 logs → pushed to prod with all logs
 - Read the error message → 400-line stack trace → copies line 1 into ChatGPT
-- Standup: "looking into it" Mon→Fri
 - "It's not a bug, it's a feature" → client demo
 - Naming a variable takes longer than writing the function
 - Works after restart, nobody knows why

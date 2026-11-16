@@ -1,0 +1,5 @@
+सोमवार standup में बोला, उस bug को देख रहा हूँ। आज ही हो जाएगा।
+---
+मंगल, बुध, गुरुवार... हर standup में same line। Looking into it।
+---
+शुक्रवार को QA ने ticket close कर दिया, cannot reproduce। और standup में मैंने बोला... fixed।
