@@ -1,0 +1,85 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s4{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s4 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s4 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s4 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.02;}
+#s4 .mono{font-family:'JetBrains Mono',monospace;}
+#s4 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s4 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s4 .mint{color:#4ADE80;} #s4 .coral{color:#FF6B5B;} #s4 .lil{color:#C4A7FF;} #s4 .dim{color:#8A94A8;} #s4 .str{color:#FFD58A;}
+#s4 .ch{opacity:0;}
+#s4 .ln{white-space:pre;position:relative;}
+#s4 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s4 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;}
+#s4 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s4 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s4 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s4 .hl{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s4 .hlg{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+
+
+#s4 .code{left:50px;right:50px;top:500px;height:350px;padding:30px 36px;font-family:'JetBrains Mono',monospace;font-size:34px;line-height:1.7;}
+#s4 .tgt{position:relative;display:inline-block;}
+#s4 .truth{left:50px;right:50px;top:900px;height:330px;padding:30px 40px;font-family:'JetBrains Mono',monospace;font-size:40px;line-height:1.9;}
+#s4 .row{display:flex;justify-content:space-between;}
+#s4 .big{position:absolute;left:70px;right:70px;top:1280px;text-align:center;font-size:58px;font-weight:900;letter-spacing:-0.03em;}
+#s4 .loc{position:absolute;left:70px;right:70px;top:1420px;justify-content:center;display:flex;}
+#s4 .chip{position:relative;}
+
+</style>
+<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="15.27">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 4 · ROOT CAUSE</div>
+<div class="h" id="s4-h1" style="top:280px;font-size:84px;">Env vars are<br><span class="coral">always strings</span>.</div>
+<div class="card code" id="s4-code">
+<div class="ln" id="s4-c0"><span class="dim"><span class="ch">/</span><span class="ch">/</span><span class="ch">&nbsp;</span><span class="ch">s</span><span class="ch">e</span><span class="ch">r</span><span class="ch">v</span><span class="ch">e</span><span class="ch">r</span><span class="ch">.</span><span class="ch">j</span><span class="ch">s</span></span></div>
+<div class="ln" id="s4-c1w"><span class="tgt"><span class="hl" id="s4-hl"></span><span class="ch">i</span><span class="ch">f</span><span class="ch">&nbsp;</span><span class="ch">(</span><span class="lil"><span class="ch">p</span><span class="ch">r</span><span class="ch">o</span><span class="ch">c</span><span class="ch">e</span><span class="ch">s</span><span class="ch">s</span><span class="ch">.</span><span class="ch">e</span><span class="ch">n</span><span class="ch">v</span><span class="ch">.</span><span class="ch">M</span><span class="ch">A</span><span class="ch">I</span><span class="ch">N</span><span class="ch">T</span><span class="ch">E</span><span class="ch">N</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span><span class="ch">_</span><span class="ch">M</span><span class="ch">O</span><span class="ch">D</span><span class="ch">E</span></span><span class="ch">)</span></span><span class="ch">&nbsp;</span><span class="ch">{</span></div>
+<div class="ln" id="s4-c2"><span class="ch">&nbsp;</span><span class="ch">&nbsp;</span><span class="ch">r</span><span class="ch">e</span><span class="ch">t</span><span class="ch">u</span><span class="ch">r</span><span class="ch">n</span><span class="ch">&nbsp;</span><span class="ch">r</span><span class="ch">e</span><span class="ch">s</span><span class="ch">.</span><span class="ch">s</span><span class="ch">t</span><span class="ch">a</span><span class="ch">t</span><span class="ch">u</span><span class="ch">s</span><span class="ch">(</span><span class="coral"><span class="ch">5</span><span class="ch">0</span><span class="ch">3</span></span><span class="ch">)</span><span class="ch">;</span></div>
+<div class="ln" id="s4-c3"><span class="ch">}</span></div>
+</div>
+<div class="card truth" id="s4-truth">
+<div class="row" id="s4-r1"><span>Boolean(<span class="str" id="s4-f" style="display:inline-block">"false"</span>)</span><span class="coral">→ true</span></div>
+<div class="row" id="s4-r2"><span>Boolean(<span class="str">""</span>)</span><span class="dim">→ false</span></div>
+<div class="row" id="s4-r3"><span>Boolean(<span class="dim">undefined</span>)</span><span class="dim">→ false</span></div>
+</div>
+<div class="big" id="s4-big">non-empty string = <span class="coral">truthy</span></div>
+<div class="loc"><div class="chip l" id="s4-loc">local: unset → undefined → bug hidden</div></div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s4 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+
+slam("#s4-h1", 0.95);
+rise("#s4-code", 3.38, 0.4);
+type("#s4-c0", 3.63, 0.02);
+type("#s4-c1w", 4.38, 0.03);
+type("#s4-c2", 5.68, 0.025);
+type("#s4-c3", 6.38, 0.02);
+sweep("#s4-hl", 6.98);
+rise("#s4-truth", 8.23);
+rise("#s4-r1", 8.48);
+rise("#s4-r2", 9.08);
+rise("#s4-r3", 9.48);
+slam("#s4-big", 9.68);
+tl.fromTo(q("#s4-f"), {color:"#FFD58A", textShadow:"0 0 0px rgba(255,107,91,0)"}, {color:"#FF6B5B", textShadow:"0 0 18px rgba(255,107,91,0.9)", duration:0.3, ease:"power2.out", immediateRender:false}, 10.63);
+tl.fromTo(q("#s4-r1"), {backgroundColor:"rgba(255,107,91,0)"}, {backgroundColor:"rgba(255,107,91,0.16)", duration:0.3, immediateRender:false}, 10.63);
+pop("#s4-loc", 12.33);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:15.27, ease:"none"}, 0);
+window.__timelines["s4"] = tl;
+})();
+</script>
+</template>

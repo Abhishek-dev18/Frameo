@@ -1,0 +1,75 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s2{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s2 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 38%, #1A2233 0%, #0B0D12 70%);}
+#s2 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s2 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.02;}
+#s2 .mono{font-family:'JetBrains Mono',monospace;}
+#s2 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s2 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s2 .mint{color:#4ADE80;} #s2 .coral{color:#FF6B5B;} #s2 .lil{color:#C4A7FF;} #s2 .dim{color:#8A94A8;} #s2 .str{color:#FFD58A;}
+#s2 .ch{opacity:0;}
+#s2 .ln{white-space:pre;position:relative;}
+#s2 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s2 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;}
+#s2 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s2 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s2 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s2 .hl{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s2 .hlg{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+
+
+#s2 .env{left:70px;right:70px;height:480px;padding:36px 44px;}
+#s2 .env .name{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;letter-spacing:.1em;}
+#s2 .env .cmd{font-family:'JetBrains Mono',monospace;font-size:34px;line-height:1.7;margin-top:24px;}
+#s2 .res{position:absolute;left:44px;bottom:36px;}
+#s2 .chip{position:relative;display:inline-block;}
+
+</style>
+<div id="s2" data-composition-id="s2" data-width="1080" data-height="1920" data-duration="7.47">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 2 · REPRODUCE</div>
+<div class="h" id="s2-h1" style="top:280px;font-size:88px;">Local: <span class="mint">fine</span>.<br>Staging: <span class="coral">down</span>.</div>
+<div class="card env" id="s2-loc" style="top:530px"><div class="name mint">LOCAL · laptop</div>
+<div class="cmd ln" id="s2-c1"><span class="dim"><span class="ch">$</span><span class="ch">&nbsp;</span></span><span class="ch">n</span><span class="ch">p</span><span class="ch">m</span><span class="ch">&nbsp;</span><span class="ch">r</span><span class="ch">u</span><span class="ch">n</span><span class="ch">&nbsp;</span><span class="ch">d</span><span class="ch">e</span><span class="ch">v</span></div>
+<div class="cmd ln" id="s2-c1b"><span class="lil"><span class="ch">M</span><span class="ch">A</span><span class="ch">I</span><span class="ch">N</span><span class="ch">T</span><span class="ch">E</span><span class="ch">N</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span><span class="ch">_</span><span class="ch">M</span><span class="ch">O</span><span class="ch">D</span><span class="ch">E</span><span class="ch">&nbsp;</span></span><span class="dim"><span class="ch">(</span><span class="ch">n</span><span class="ch">o</span><span class="ch">t</span><span class="ch">&nbsp;</span><span class="ch">s</span><span class="ch">e</span><span class="ch">t</span><span class="ch">)</span></span></div>
+<div class="res"><div class="chip g" id="s2-ok">GET /  → 200 OK ✓</div></div></div>
+<div class="card env" id="s2-stg" style="top:1060px"><div class="name coral">STAGING</div>
+<div class="cmd ln" id="s2-c2"><span class="lil"><span class="ch">M</span><span class="ch">A</span><span class="ch">I</span><span class="ch">N</span><span class="ch">T</span><span class="ch">E</span><span class="ch">N</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span><span class="ch">_</span><span class="ch">M</span><span class="ch">O</span><span class="ch">D</span><span class="ch">E</span></span><span class="dim"><span class="ch">=</span></span><span class="ch">f</span><span class="ch">a</span><span class="ch">l</span><span class="ch">s</span><span class="ch">e</span></div>
+<div class="cmd ln" id="s2-c2b"><span class="dim"><span class="ch">$</span><span class="ch">&nbsp;</span></span><span class="ch">c</span><span class="ch">u</span><span class="ch">r</span><span class="ch">l</span><span class="ch">&nbsp;</span><span class="ch">-</span><span class="ch">I</span><span class="ch">&nbsp;</span><span class="ch">s</span><span class="ch">t</span><span class="ch">a</span><span class="ch">g</span><span class="ch">i</span><span class="ch">n</span><span class="ch">g</span><span class="ch">/</span></div>
+<div class="res"><div class="chip r" id="s2-bad">HTTP 503 · maintenance ✗</div></div></div>
+<div class="note" style="top:1610px" id="s2-note">illustrative commands</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s2 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+
+
+slam("#s2-h1", 0.04);
+rise("#s2-loc", 0.3);
+type("#s2-c1", 0.7, 0.03);
+type("#s2-c1b", 1.2, 0.02);
+pop("#s2-ok", 1.87);
+rise("#s2-stg", 3.32);
+type("#s2-c2", 3.62, 0.03);
+type("#s2-c2b", 4.72, 0.03);
+tl.fromTo(q("#s2-bad"), {opacity:0, scale:2.2, rotation:-8}, {opacity:1, scale:1, rotation:-3, duration:0.35, ease:"back.out(2)"}, 5.72);
+tl.fromTo(q("#s2-stg"), {x:0}, {x:14, duration:0.06, yoyo:true, repeat:5, ease:"none", immediateRender:false}, 5.87);
+rise("#s2-note", 6.32);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:7.47, ease:"none"}, 0);
+window.__timelines["s2"] = tl;
+})();
+</script>
+</template>

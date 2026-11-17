@@ -1,0 +1,11 @@
+Deploy के बाद production पर पूरी site "Down for maintenance" दिखा रही थी। पर dashboard में maintenance flag साफ़ false था।
+---
+Local पर reproduce किया, site बिल्कुल normal चली। फिर staging पर भी flag false रखा, और site फिर से maintenance में।
+---
+Logs में पूरा config print किया। MAINTENANCE_MODE की value false ही थी, पर quotes के अंदर। ये boolean नहीं, string थी।
+---
+Root cause: environment variables हमेशा string होते हैं। Code में सिर्फ़ if process dot env dot MAINTENANCE_MODE लिखा था, और JavaScript में हर non-empty string truthy होती है, "false" भी। Local पर variable set ही नहीं था, इसलिए bug छुपा रहा।
+---
+Fix: value को साफ़ compare करो, triple equals "true"। और startup पर config एक बार parse करके validate करो, ताकि गलत value पर app वहीं fail हो जाए।
+---
+Lesson: env vars कभी boolean नहीं होते, हमेशा parse करो। Follow करो Debug Diaries।
