@@ -1,0 +1,11 @@
+पिछले quiz का answer — A, least privilege! और आज का topic भी वही — least privilege और need-to-know.
+---
+Least privilege मतलब — हर identity को सिर्फ उतना access, जितना उसके काम के लिए ज़रूरी है. एक door भी ज़्यादा नहीं.
+---
+Priya finance में है. उसका badge finance floor और printer room खोलता है. Server room और HR — नहीं.
+---
+Need-to-know और भी पतला है. Finance floor पर भी, Priya सिर्फ अपने clients की files खोल सकती है, सबकी नहीं.
+---
+Tech में — backup script को पूरे cloud का admin मत दो. उसे सिर्फ एक bucket पर write permission दो. Key leak हुई, तो damage भी छोटा.
+---
+Clearance check! एक ही इंसान payment बनाए और खुद approve भी करे — इसे रोकने वाला principle? A, separation of duties या B, single sign-on? Answer next reel में. Follow करो Debug Diaries.
