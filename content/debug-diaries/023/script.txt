@@ -1,0 +1,11 @@
+बारह नवंबर. दुनिया भर में Outlook खुलना बंद. Mailbox load नहीं हो रहा, emails घंटों late. Microsoft 365 का email करीब एक दिन लड़खड़ाता रहा.
+---
+Engineers ने deployments रोके, servers restart किए. पर अजीब clue मिला: traffic बढ़ा ही नहीं था. बस servers एक-एक करके unresponsive हो रहे थे.
+---
+जो server गिरता, उसका traffic बाकी servers पर जाता. वो overload होकर गिरते. यही है cascade. एक point पर अस्सी प्रतिशत से ज़्यादा servers जवाब नहीं दे रहे थे.
+---
+Root cause: networking gateway servers पर महीनों से छुपा एक latent bug. Teams का failover traffic आया, कुछ capacity पहले से बाहर थी, और connections बनाने वाला process lock contention में फँस गया.
+---
+Fix: उस defective change को revert किया, और servers को groups में patch करके वापस लाए. करीब चौबीस घंटे बाद service normal हुई.
+---
+Lesson: failover तभी बचाता है जब बाकी servers में headroom हो. Bulkheads रखो, ताकि एक failure पूरी fleet ना गिराए. Follow करो Debug Diaries.
