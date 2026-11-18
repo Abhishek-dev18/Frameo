@@ -13,6 +13,7 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 04 lgtm — 2-line PR gets 40 comments → 2000-line refactor PR → LGTM in 2 min, files viewed 0/86
 - 05 mocked — 142/142 tests green, 95% coverage → prod down, ECONNREFUSED → jest.mock('./db'): sab mock tha, mera confidence bhi
 - 06 standup — "looking into it" Mon→Thu standups → QA closes ticket: Cannot reproduce → Friday standup: "FIXED." (commits: 0)
+- 07 unused — IDE: 'legacy' is never read → delete 1 line → 37 tests fail, checkout total: undefined → line restored with // DO NOT TOUCH: ab main bhi legacy hoon
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
@@ -26,4 +27,3 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - Production DB vs local DB: "same schema" (it wasn't)
 - Timezone bug that only happens at midnight IST
 - Junior: "should I ask?" Senior: "kab se atke ho?" "3 din se"
-- Deleting one unused line → everything breaks

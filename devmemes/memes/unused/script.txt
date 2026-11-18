@@ -1,0 +1,5 @@
+Code cleanup में IDE बोला, ये variable कभी use ही नहीं हुआ। तो मैंने वो एक line delete कर दी।
+---
+अगले ही second, सैंतीस tests fail, और checkout पे total आया... undefined।
+---
+Line वापस डाली, ऊपर comment लिखा, do not touch। अब मैं भी उस legacy का हिस्सा हूँ।
