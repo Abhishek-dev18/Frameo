@@ -1,0 +1,11 @@
+पिछले quiz का answer — A, separation of duties! और आज का topic भी वही — Separation of Duties, यानी SoD.
+---
+SoD मतलब — कोई भी critical काम एक ही इंसान शुरू से end तक अकेले पूरा नहीं कर सकता. काम दो हाथों में बँटता है.
+---
+Office lobby सोचो. Visitor pass guard बनाता है, लेकिन approve सिर्फ host employee करता है. Guard अकेले किसी को अंदर नहीं ला सकता.
+---
+Finance में — Priya payment create करती है, लेकिन approve कोई दूसरा manager करता है. अब fraud के लिए दो लोगों की मिलीभगत चाहिए.
+---
+Tech में — developer code लिखता है, पर production में merge से पहले कोई दूसरा reviewer approve करता है. IAM tools conflicting roles एक ही user को देने से रोकते हैं.
+---
+Clearance check! Firewall, MFA और least privilege — एक के ऊपर एक security layers. इसे क्या कहते हैं? A, defense in depth या B, single sign-on? Answer next reel में. Follow करो Debug Diaries.
