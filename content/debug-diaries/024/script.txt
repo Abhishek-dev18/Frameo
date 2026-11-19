@@ -1,0 +1,11 @@
+हमारी Node API हर कुछ घंटों में crash हो रही थी। Dashboard पर memory धीरे धीरे ऊपर जाती, फिर out of memory, और server restart।
+---
+Local पर reproduce करने के लिए load test चलाया, हज़ारों requests भेजीं। हर request के बाद memory थोड़ी बढ़ी, और कभी वापस नीचे नहीं आई।
+---
+Logs ध्यान से पढ़े, तो एक warning बार बार दिख रही थी: MaxListenersExceededWarning. Possible EventEmitter memory leak detected.
+---
+Root cause: feed handler के अंदर हर request पर bus dot on से एक नया listener जुड़ रहा था, और कभी हटता नहीं था। हर listener अपनी request को पकड़े रखता था, इसलिए garbage collector उसे साफ़ नहीं कर पाता था।
+---
+Fix: listener को handler से बाहर निकालो, और startup पर सिर्फ़ एक बार जोड़ो। हज़ार requests के बाद भी listener count एक ही रहा, और memory flat हो गई।
+---
+Lesson: हर on के साथ एक off, या फिर on सिर्फ़ एक बार। Follow करो Debug Diaries।
