@@ -1,0 +1,11 @@
+पिछले quiz का answer — A, defense in depth! आज समझते हैं, यह काम कैसे करता है.
+---
+Defense in depth मतलब — security की एक दीवार नहीं, कई layers. एक layer fail हो, तो अगली रोक लेती है.
+---
+Office lobby सोचो. पहले gate पर badge, फिर guard check करता है, फिर हर floor का door अलग lock है, और ऊपर से camera सब record करता है.
+---
+IAM इसमें कई layers देता है — MFA login पर, least privilege doors पर, और logs से हर access का record.
+---
+Tech example — Priya का password leak हुआ. MFA ने रोक लिया. MFA भी bypass होता, तो least privilege नुकसान छोटा रखता, और alerts team को बता देते.
+---
+Clearance check! CI pipeline का service account — यह कौन सी identity है? A, human या B, non-human? Answer next reel में. Follow करो Debug Diaries.
