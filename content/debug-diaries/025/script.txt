@@ -1,0 +1,11 @@
+एक router ने पूरे America की flights रोक दीं। तेरह November को FAA ने nationwide ground stop लगाया, और हज़ारों flights ज़मीन पर रुक गईं।
+---
+Air traffic control का communication network unstable हो गया था। पहला शक, cyberattack? लेकिन Homeland Security ने कहा, ऐसा कोई evidence नहीं मिला।
+---
+फिर network traffic में clue मिला। एक नया router, हर चार-पाँच seconds में, लगभग हज़ार connection attempts भेज रहा था।
+---
+ये router Arkansas की एक remote site पर, copper से fiber upgrade के दौरान लगा था। उसकी requests ने बाकी routers को overload कर दिया, और पूरा network लड़खड़ा गया। Full root cause की जाँच अभी जारी है।
+---
+Fix: गड़बड़ source को network से अलग किया, और flights दोबारा शुरू हुईं। Code में इसका जवाब है rate limit: एक source कितनी requests भेज सकता है, उसकी limit।
+---
+Lesson: एक छोटा सा edge change भी पूरा core गिरा सकता है। Rate limit लगाओ, rollout धीरे करो। Follow करो Debug Diaries।

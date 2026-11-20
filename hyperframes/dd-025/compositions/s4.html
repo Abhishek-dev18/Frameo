@@ -1,0 +1,78 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s4{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s4 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s4 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s4 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s4 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s4 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s4 .mint{color:#4ADE80;} #s4 .coral{color:#FF6B5B;} #s4 .lil{color:#C4A7FF;} #s4 .dim{color:#8A94A8;} #s4 .str{color:#FFD58A;}
+#s4 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s4 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s4 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s4 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s4 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s4 .mono{font-family:'JetBrains Mono',monospace;}
+#s4 .ln{white-space:pre;}
+#s4 .ch{opacity:0;}
+#s4 .strike{position:absolute;left:-10px;right:-10px;top:50%;height:8px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s4 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s4 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s4 .node{position:absolute;width:120px;height:120px;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;color:#8A94A8;}
+
+</style>
+<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="11.853">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 4 · ROOT CAUSE</div>
+<div class="h" id="h1" style="top:280px;font-size:80px;">A remote site in<br><span class="lil">southern Arkansas</span></div>
+<div class="card" id="up" style="left:70px;right:70px;top:500px;height:220px;padding:36px 44px;">
+ <div class="mono dim" style="font-size:28px;font-weight:700">UPGRADE IN PROGRESS</div>
+ <div style="position:absolute;left:44px;top:100px;display:flex;gap:26px;align-items:center;font-size:62px;font-weight:900">
+   <span id="cu" style="color:#E3A06B">COPPER</span><span id="ar" class="dim">→</span><span id="fi" class="mint">FIBER</span><span id="nr" class="chip l" style="position:relative;font-size:30px">+ new router</span></div>
+</div>
+<div id="dia"><svg style="position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:visible" viewBox="0 0 1080 1920"><path class="fl" d="M540,900 L165,1010" pathLength="1" stroke="#FF6B5B" stroke-width="8" fill="none" stroke-dasharray="0.06 0.04" stroke-dashoffset="1"/><path class="fl" d="M540,900 L415,1010" pathLength="1" stroke="#FF6B5B" stroke-width="8" fill="none" stroke-dasharray="0.06 0.04" stroke-dashoffset="1"/><path class="fl" d="M540,900 L665,1010" pathLength="1" stroke="#FF6B5B" stroke-width="8" fill="none" stroke-dasharray="0.06 0.04" stroke-dashoffset="1"/><path class="fl" d="M540,900 L915,1010" pathLength="1" stroke="#FF6B5B" stroke-width="8" fill="none" stroke-dasharray="0.06 0.04" stroke-dashoffset="1"/></svg>
+<div class="node" id="bad" style="left:470px;top:780px;width:140px;height:120px;border-color:#FF6B5B;color:#FF6B5B">NEW</div>
+<div class="node core" id="c0" style="left:110px;top:1010px;width:110px;height:110px">core</div><div class="node core" id="c1" style="left:360px;top:1010px;width:110px;height:110px">core</div><div class="node core" id="c2" style="left:610px;top:1010px;width:110px;height:110px">core</div><div class="node core" id="c3" style="left:860px;top:1010px;width:110px;height:110px">core</div></div>
+<div class="h" id="ov" style="top:1170px;font-size:110px;text-align:center"><span class="coral">OVERLOAD</span></div>
+<div class="card" id="hedge" style="left:70px;right:70px;top:1340px;height:230px;padding:36px 44px;border-color:#C4A7FF">
+ <div class="mono lil" style="font-size:28px;font-weight:700">STATUS · per FAA / DOT</div>
+ <div style="position:absolute;left:44px;right:44px;top:96px;font-size:46px;font-weight:800;line-height:1.2">Full root cause:<br><span class="lil">still under investigation</span></div>
+</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+
+const q = s => "#s4 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const draw = (s, t, d) => tl.fromTo(q(s), {strokeDashoffset:1}, {strokeDashoffset:0, duration:d||0.8, ease:"power1.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0.3, immediateRender:false}, to), t);
+
+
+slam("#h1", 0.04);
+drop("#up", 2.593); pop("#fi", 3.319); pop("#nr", 4.119);
+tl.fromTo(q("#ar"), {opacity:0}, {opacity:1, duration:0.3}, 3.119);
+pop("#bad", 4.319);
+tl.fromTo(q(".core"), {opacity:0, y:40}, {opacity:1, y:0, duration:0.3, stagger:0.08}, 4.619);
+tl.fromTo(q(".fl"), {strokeDashoffset:1}, {strokeDashoffset:0, duration:0.5, repeat:5, ease:"none"}, 5.205);
+turn(".core", 5.919, {borderColor:"#3A4660", color:"#8A94A8", backgroundColor:"#1A2130"}, {borderColor:"#FF6B5B", color:"#FF6B5B", backgroundColor:"#2A1719", stagger:0.12});
+slam("#ov", 6.519);
+shake("#dia", 8.049, 9); shake("#ov", 8.049, 9);
+tl.fromTo(q("#bad"), {scale:1}, {scale:1.15, duration:0.25, yoyo:true, repeat:5, immediateRender:false}, 5.205);
+rise("#hedge", 9.86);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:11.853, ease:"none"}, 0);
+window.__timelines["s4"] = tl;
+})();
+</script>
+</template>
