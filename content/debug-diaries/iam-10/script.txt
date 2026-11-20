@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, non-human! CI pipeline का service account कोई इंसान नहीं है. आज समझते हैं — human और non-human identities.
+---
+Human identity मतलब एक असली इंसान, जैसे Priya. वो खुद login करती है, password डालती है, और MFA approve करती है.
+---
+Non-human identity मतलब machine — service accounts, API keys, bots और workloads. ये बिना किसी इंसान के, अपने आप access लेते हैं.
+---
+Office lobby सोचो. Priya अपने badge से gate पार करती है. लेकिन रात में delivery robot भी अपनी key से server room खोलता है. दोनों identities हैं, दोनों को rules चाहिए.
+---
+Tech example — CI pipeline cloud में deploy करने के लिए एक secret key use करती है. वो key code में leak हुई, तो attacker को वही access मिल जाता है. इसलिए machine identities को भी least privilege दो, और short-lived tokens use करो.
+---
+Clearance check! Phone पर आया OTP — यह कौन सा factor है? A, something you know, या B, something you have? Answer next reel में. Follow करो Debug Diaries.
