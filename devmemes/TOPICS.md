@@ -14,11 +14,11 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 05 mocked — 142/142 tests green, 95% coverage → prod down, ECONNREFUSED → jest.mock('./db'): sab mock tha, mera confidence bhi
 - 06 standup — "looking into it" Mon→Thu standups → QA closes ticket: Cannot reproduce → Friday standup: "FIXED." (commits: 0)
 - 07 unused — IDE: 'legacy' is never read → delete 1 line → 37 tests fail, checkout total: undefined → line restored with // DO NOT TOUCH: ab main bhi legacy hoon
+- 08 readerror — build fails, 400-line stack trace → Ctrl+V into AI, reinstall Node / clear cache, 20 min gone → line 1 said Cannot find module './utlis': error ne bataya tha, maine padha nahi
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
 - "quick console.log" → 200 logs → pushed to prod with all logs
-- Read the error message → 400-line stack trace → copies line 1 into ChatGPT
 - "It's not a bug, it's a feature" → client demo
 - Naming a variable takes longer than writing the function
 - Works after restart, nobody knows why

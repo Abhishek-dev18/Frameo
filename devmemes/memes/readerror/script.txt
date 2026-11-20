@@ -1,0 +1,5 @@
+Build fail हुआ। Terminal में चार सौ lines का stack trace।
+---
+पूरा copy करके AI को paste किया। Node reinstall, cache clear... बीस मिनट गए।
+---
+फिर पहली line पढ़ी। Import में typo था। Error ने पहले ही बता दिया था... मैंने पढ़ा ही नहीं।
