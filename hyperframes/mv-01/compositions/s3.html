@@ -32,7 +32,7 @@
 #s3 .av{position:absolute;width:150px;height:150px;border-radius:50%;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:#8A94A8}
 
 </style>
-<div id="s3" data-composition-id="s3" data-width="1080" data-height="1920" data-duration="6.830">
+<div id="s3" data-composition-id="s3" data-width="1080" data-height="1920" data-duration="8.480">
 <div class="bg"></div>
 
 <div class="tag" style="top:220px">THE ONLY DIFFERENCE</div>
@@ -60,14 +60,14 @@ const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0
 
 
 slam("#h1", 0.04);
-for (const [s,t] of [["#st1",3.49],["#st2",4.55],["#st3",5.67]]) {
+for (const [s,t] of [["#st1",4.11],["#st2",5.21],["#st3",6.77]]) {
   tl.fromTo(q(s), {opacity:0, x:-160}, {opacity:1, x:0, duration:0.35, ease:"back.out(1.8)"}, t);
   tl.fromTo(q(s), {borderColor:"#273042"}, {borderColor:"#4ADE80", duration:0.25, immediateRender:false}, t+0.1);
   tl.fromTo(q(s+" .n"), {color:"#8A94A8"}, {color:"#4ADE80", duration:0.25, immediateRender:false}, t+0.1);
 }
-pop("#loop", 5.69);
+pop("#loop", 7.14);
 
-tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:6.830, ease:"none"}, 0);
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.480, ease:"none"}, 0);
 window.__timelines["s3"] = tl;
 })();
 </script>

@@ -32,7 +32,7 @@
 #s4 .av{position:absolute;width:150px;height:150px;border-radius:50%;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:#8A94A8}
 
 </style>
-<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="8.750">
+<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="8.950">
 <div class="bg"></div>
 
 <div class="tag" style="top:220px">REFRAME</div>
@@ -63,20 +63,20 @@ const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0
 
 
 drop("#flip", 0.04);
-tl.fromTo(q("#w2"), {opacity:0, rotationX:-90}, {opacity:1, rotationX:0, duration:0.45, ease:"back.out(1.6)"}, 1.39);
-tl.fromTo(q("#w1"), {opacity:1, rotationX:0}, {opacity:0, rotationX:90, duration:0.3, immediateRender:false}, 1.31);
-tl.fromTo(q("#flip"), {borderColor:"#FF6B5B", backgroundColor:"#2A1719"}, {borderColor:"#4ADE80", backgroundColor:"#14261C", duration:0.3, immediateRender:false}, 1.39);
-rise("#ins", 2.11); sweep("#stk", 2.71);
-tl.fromTo(q(".layer"), {opacity:0, y:50}, {opacity:1, y:0, duration:0.3, stagger:0.12}, 3.91);
-pop("#pin", 4.41);
-tl.fromTo(q("#pin"), {y:0}, {y:450, duration:2.6, ease:"power2.inOut", immediateRender:false}, 4.71);
-turn("#ly0", 4.71, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
-turn("#ly1", 5.51, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
-turn("#ly2", 6.31, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
-turn("#ly3", 7.01, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
-slam("#deep", 6.91);
+tl.fromTo(q("#w2"), {opacity:0, rotationX:-90}, {opacity:1, rotationX:0, duration:0.45, ease:"back.out(1.6)"}, 1.68);
+tl.fromTo(q("#w1"), {opacity:1, rotationX:0}, {opacity:0, rotationX:90, duration:0.3, immediateRender:false}, 1.61);
+tl.fromTo(q("#flip"), {borderColor:"#FF6B5B", backgroundColor:"#2A1719"}, {borderColor:"#4ADE80", backgroundColor:"#14261C", duration:0.3, immediateRender:false}, 1.68);
+rise("#ins", 2.06); sweep("#stk", 2.84);
+tl.fromTo(q(".layer"), {opacity:0, y:50}, {opacity:1, y:0, duration:0.3, stagger:0.12}, 4.16);
+pop("#pin", 4.36);
+tl.fromTo(q("#pin"), {y:0}, {y:450, duration:2.6, ease:"power2.inOut", immediateRender:false}, 4.62);
+turn("#ly0", 4.62, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
+turn("#ly1", 5.39, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
+turn("#ly2", 6.06, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
+turn("#ly3", 6.82, {borderColor:"#273042", color:"#8A94A8"}, {borderColor:"#4ADE80", color:"#4ADE80"});
+slam("#deep", 6.82);
 
-tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.750, ease:"none"}, 0);
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.950, ease:"none"}, 0);
 window.__timelines["s4"] = tl;
 })();
 </script>

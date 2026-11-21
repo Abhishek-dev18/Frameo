@@ -4,6 +4,9 @@ import subprocess, re, json, sys, os
 # Calm delivery (user request 2026-11-14): longer breathing room between phrases and parts; override with env vars.
 MAXGAP = float(os.environ.get("TIGHTEN_MAXGAP", "0.30")); PARTGAP = float(os.environ.get("TIGHTEN_PARTGAP", "0.22")); LEAD = 0.06
 parts = sys.argv[1:-1]; out = sys.argv[-1]
+# Optional per-part gaps (gap AFTER part i), e.g. TIGHTEN_PARTGAPS="1.0,0.5,0.5,0.5,1.0" for dramatic beats in motivation reels.
+_pg = [float(x) for x in os.environ.get("TIGHTEN_PARTGAPS", "").split(",") if x.strip()]
+PG = lambda i: _pg[i] if i < len(_pg) else PARTGAP
 def dur(f): return float(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",f]).decode())
 def sil(f):
     e = subprocess.run(["ffmpeg","-i",f,"-af","silencedetect=noise=-35dB:d=0.12","-f","null","-"],capture_output=True,text=True).stderr
@@ -28,7 +31,7 @@ for pi,f in enumerate(parts):
             segs.append((pi,mid,mid+g/2)); segs.append((pi,a-g/2,a)); t+=g
         pc.append(round(t,3)); segs.append((pi,a,b)); t+=b-a
     cues.append({"part":pi+1,"start":pc[0],"phrases":pc,"end":round(t,3)})
-    t+=PARTGAP
+    t+=PG(pi)
 # build with ffmpeg
 inputs=[]; flt=[]
 for i,f in enumerate(parts): inputs+=["-i",f]
@@ -41,8 +44,8 @@ flt.append(f"anullsrc=r=44100:cl=mono,atrim=0:{LEAD}[lead]"); seq.append("[lead]
 last=None
 for k,(pi,a,b) in enumerate(segs):
     if last is not None and pi!=last:
-        flt.append(f"anullsrc=r=44100:cl=mono,atrim=0:{PARTGAP}[g{k}]"); seq.append(f"[g{k}]")
+        flt.append(f"anullsrc=r=44100:cl=mono,atrim=0:{PG(last)}[g{k}]"); seq.append(f"[g{k}]")
     seq.append(f"[s{k}]"); last=pi
 flt.append("".join(seq)+f"concat=n={len(seq)}:v=0:a=1[v]")
 subprocess.run(["ffmpeg","-y","-loglevel","error",*inputs,"-filter_complex",";".join(flt),"-map","[v]",out],check=True)
-print(json.dumps(cues,indent=1)); print("total",round(t-PARTGAP,3))
+print(json.dumps(cues,indent=1)); print("total",round(t-PG(len(parts)-1),3))

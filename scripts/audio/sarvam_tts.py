@@ -9,6 +9,8 @@ Writes out_dir/p1.mp3, p2.mp3, ... (one Sarvam call per part, in order).
 
 The API key is read from SARVAM_API_KEY (environment) or from the repo's .env file (gitignored). It is never printed.
 Defaults match the channel voice; override with env vars SARVAM_SPEAKER, SARVAM_MODEL, SARVAM_PACE.
+Optional (unset = API default): SARVAM_TEMPERATURE (0.01-1, expressiveness, default 0.6), SARVAM_PITCH (-0.5..0.5),
+SARVAM_LOUDNESS (0.1-2.5). Used for Mindset/motivation reels; leave unset for the calm series voice.
 """
 import os
 import pathlib
@@ -42,11 +44,12 @@ def main() -> None:
     speaker = os.environ.get("SARVAM_SPEAKER", "shubh_enhi_ads")
     model = os.environ.get("SARVAM_MODEL", "bulbul:v4-flash")
     pace = float(os.environ.get("SARVAM_PACE", "0.95"))
+    extra = {k: float(os.environ[e]) for k, e in (("temperature", "SARVAM_TEMPERATURE"), ("pitch", "SARVAM_PITCH"), ("loudness", "SARVAM_LOUDNESS")) if os.environ.get(e)}
     for i, text in enumerate(parts, 1):
         for attempt in range(3):
             try:
                 audio = client.text_to_speech.convert_stream(
-                    text=text, language_code="hi-IN", speaker=speaker, model=model, pace=pace, speech_sample_rate=24000, output_audio_codec="mp3",
+                    text=text, language_code="hi-IN", speaker=speaker, model=model, pace=pace, speech_sample_rate=24000, output_audio_codec="mp3", **extra,
                 )
                 data = audio if isinstance(audio, (bytes, bytearray)) else b"".join(audio)
                 (out / f"p{i}.mp3").write_bytes(data)

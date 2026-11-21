@@ -32,7 +32,7 @@
 #s1 .av{position:absolute;width:150px;height:150px;border-radius:50%;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:#8A94A8}
 
 </style>
-<div id="s1" data-composition-id="s1" data-width="1080" data-height="1920" data-duration="8.120">
+<div id="s1" data-composition-id="s1" data-width="1080" data-height="1920" data-duration="9.230">
 <div class="bg"></div>
 
 <div class="tag" style="top:220px">LATE NIGHT · STILL DEBUGGING</div>
@@ -65,15 +65,15 @@ const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0
 
 
 slam("#clock", 0.06);
-drop("#term", 1.4);
-type("#e1", 1.7, 0.025);
-rise("#e2", 3.27, 0.25); rise("#e3", 3.6, 0.25);
-pop("#x3", 3.4); shake("#term", 3.6, 5);
-tl.fromTo(q("#bub"), {opacity:0, scale:0.85, y:40}, {opacity:1, scale:1, y:0, duration:0.6, ease:"power3.out"}, 4.22);
-tl.fromTo(q("#clock"), {opacity:1}, {opacity:0.35, duration:0.6, immediateRender:false}, 4.4);
-rise("#nt", 6.4);
+drop("#term", 1.5);
+type("#e1", 1.75, 0.025);
+rise("#e2", 2.87, 0.25); rise("#e3", 3.2, 0.25);
+pop("#x3", 2.95); shake("#term", 3.2, 5);
+tl.fromTo(q("#bub"), {opacity:0, scale:0.85, y:40}, {opacity:1, scale:1, y:0, duration:0.6, ease:"power3.out"}, 3.99);
+tl.fromTo(q("#clock"), {opacity:1}, {opacity:0.35, duration:0.6, immediateRender:false}, 4.2);
+rise("#nt", 6.9);
 
-tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:8.120, ease:"none"}, 0);
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:9.230, ease:"none"}, 0);
 window.__timelines["s1"] = tl;
 })();
 </script>
