@@ -1,0 +1,80 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s2{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s2 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s2 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s2 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s2 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s2 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s2 .mint{color:#4ADE80;} #s2 .coral{color:#FF6B5B;} #s2 .lil{color:#C4A7FF;} #s2 .dim{color:#8A94A8;} #s2 .str{color:#FFD58A;}
+#s2 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s2 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s2 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s2 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s2 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s2 .mono{font-family:'JetBrains Mono',monospace;}
+#s2 .ln{white-space:pre;}
+#s2 .ch{opacity:0;}
+#s2 .strike{position:absolute;left:-10px;right:-10px;top:50%;height:8px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s2 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s2 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s2 .node{position:absolute;width:120px;height:120px;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;color:#8A94A8;}
+
+#s2 .bub{position:absolute;left:90px;right:90px;padding:36px 44px;border-radius:40px;background:#161A24;border:2px dashed #3A4660;font-size:56px;font-weight:700;font-style:italic;color:#AEB6C6;line-height:1.2}
+#s2 .step{position:absolute;left:90px;right:90px;height:170px;border-radius:34px;background:#141922;border:3px solid #273042;display:flex;align-items:center;gap:34px;padding:0 44px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+#s2 .step .n{font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:800;color:#8A94A8;width:70px}
+#s2 .step .t{font-size:66px;font-weight:900;letter-spacing:-0.03em}
+#s2 .bar{position:absolute;left:90px;height:110px;border-radius:26px;transform-origin:left center;display:flex;align-items:center;padding-left:34px;font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:800;color:#0B0D12;white-space:nowrap}
+#s2 .layer{position:absolute;left:150px;right:150px;height:120px;border-radius:26px;background:#141922;border:2px solid #273042;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:800;color:#8A94A8}
+#s2 .dot{position:absolute;width:22px;height:22px;border-radius:6px}
+#s2 .av{position:absolute;width:150px;height:150px;border-radius:50%;background:#1A2130;border:3px solid #3A4660;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:#8A94A8}
+
+</style>
+<div id="s2" data-composition-id="s2" data-width="1080" data-height="1920" data-duration="10.940">
+<div class="bg"></div>
+
+<div class="h" id="ruko" style="top:300px;font-size:230px;text-align:center"><span class="mint">RUKO.</span></div>
+<div class="h" id="h2" style="top:580px;font-size:70px;text-align:center">Every dev feels this.</div>
+<div class="av" id="a0" style="left:90px;top:780px">?</div><div class="av" id="a1" style="left:275px;top:780px">?</div><div class="av" id="a2" style="left:460px;top:780px">?</div><div class="av" id="a3" style="left:645px;top:780px">?</div><div class="av" id="a4" style="left:830px;top:780px">?</div>
+<div class="card" id="sen" style="left:70px;right:70px;top:1010px;height:560px;padding:44px;">
+ <div class="mono dim" style="font-size:30px;font-weight:700;letter-spacing:.08em">THAT "GENIUS" SENIOR</div>
+ <div style="position:absolute;left:44px;top:110px;font-size:86px;font-weight:900;letter-spacing:-0.04em" id="gen">writes code like<br><span class="mint">magic</span></div>
+ <div class="mono" id="fb" style="position:absolute;left:44px;right:44px;top:330px;padding:28px 32px;border-radius:24px;background:#2A1719;border:2px solid #FF6B5B;">
+   <div style="font-size:30px;color:#FF6B5B;font-weight:800">FLASHBACK · DAY 1</div>
+   <div style="font-size:44px;font-weight:800;color:#F3F5F9;margin-top:10px">stuck on 1 bug · <span class="coral" id="hrs">ALL DAY</span></div>
+ </div>
+</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+
+const q = s => "#s2 " + s;
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const draw = (s, t, d) => tl.fromTo(q(s), {strokeDashoffset:1}, {strokeDashoffset:0, duration:d||0.8, ease:"power1.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0.3, immediateRender:false}, to), t);
+
+
+tl.fromTo(q("#ruko"), {opacity:0, scale:2.6}, {opacity:1, scale:1, duration:0.4, ease:"back.out(1.6)"}, 0.04);
+tl.fromTo(q(".bg"), {backgroundColor:"#4ADE80"}, {backgroundColor:"rgba(0,0,0,0)", duration:0.5}, 0.04);
+rise("#h2", 0.87);
+tl.fromTo(q(".av"), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.35, ease:"back.out(2.2)", stagger:0.12}, 1.38);
+turn(".av", 2.48, {borderColor:"#3A4660", color:"#8A94A8"}, {borderColor:"#C4A7FF", color:"#C4A7FF", stagger:0.1});
+drop("#sen", 3.75); slam("#gen", 4.28);
+tl.fromTo(q("#fb"), {opacity:0, x:-200}, {opacity:1, x:0, duration:0.5, ease:"power3.out"}, 7.17);
+pop("#hrs", 8.82); shake("#fb", 9.25, 3);
+
+tl.fromTo(q(".bg"), {scale:1}, {scale:1.08, duration:10.940, ease:"none"}, 0);
+window.__timelines["s2"] = tl;
+})();
+</script>
+</template>
