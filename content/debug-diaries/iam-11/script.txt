@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, something you have! OTP उस phone पर आता है जो आपके पास है. आज समझते हैं — authentication के तीन factors.
+---
+पहला factor — something you know. जैसे password या PIN. ये आपके दिमाग में है, लेकिन कोई इसे guess या चुरा भी सकता है.
+---
+दूसरा — something you have. जैसे phone, authenticator app या security key. और तीसरा — something you are. यानी fingerprint या face, आपकी biometrics.
+---
+Office lobby सोचो. Priya gate पर PIN डालती है, अपना badge tap करती है, और scanner उसका face देखता है. तीन अलग proof, तभी gate खुलता है.
+---
+Tech example — bank app में password डाला, फिर phone पर OTP आया. ये दो अलग factors हैं, यही असली MFA है. लेकिन password और security question, दोनों something you know हैं — एक ही factor, दो बार.
+---
+Clearance check! Password के बाद security question पूछा — क्या ये 2FA है? A, हाँ, या B, नहीं? Answer next reel में. Follow करो Debug Diaries.
