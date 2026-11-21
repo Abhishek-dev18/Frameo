@@ -1,0 +1,11 @@
+हर email address के बीच में एक symbol होता है, @. रोज़ लिखते हो, पर कभी सोचा, ये @ आया कहाँ से? और किसने चुना?
+---
+Email उससे पहले भी था. उन्नीस सौ पैंसठ में, MIT के computer पर लोग message भेजते थे, पर सिर्फ़ उसी एक machine के users को. दूसरे computer तक message? वो रास्ता था ही नहीं.
+---
+फिर उन्नीस सौ इकहत्तर. BBN के engineer Ray Tomlinson, एक ही कमरे में दो computers, ARPANET से जुड़े. सवाल था, message दूसरी machine तक कैसे जाए?
+---
+उन्होंने mail program को file transfer program से जोड़ दिया. अब address में दो चीज़ें चाहिए थीं, user कौन, और machine कौन सी.
+---
+बीच में एक separator चाहिए था. Keyboard पर @ ऐसा symbol था, जो किसी नाम में नहीं आता, और पढ़ने में भी बनता है, user at host. यानी, ये user, उस machine पर. Perfect choice.
+---
+और पहला message? Ray को खुद याद नहीं, शायद QWERTYUIOP जैसा कुछ random. एक छोटा सा choice, जो आज हर inbox में है. Follow करो Debug Diaries.
