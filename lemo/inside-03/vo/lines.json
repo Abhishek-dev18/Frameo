@@ -1,0 +1,205 @@
+[
+ {
+  "id": "v1",
+  "hi": "सब्ज़ी वाले के ठेले पर एक काला-सफ़ेद चौकोर. Camera दिखाया, और payment screen खुल गया. पर phone ने इसमें actually पढ़ा क्या? चलो, अंदर चलते हैं.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Sabzi ke thele par ek kaala-safed chaukor.",
+    "en": "A black-and-white square on a vegetable cart."
+   },
+   {
+    "t": 2.767,
+    "hg": "Camera dikhaya, payment screen khul gaya.",
+    "en": "Point the camera, the payment screen opens."
+   },
+   {
+    "t": 5.618,
+    "hg": "Par phone ne isme actually padha kya?",
+    "en": "But what did the phone actually read?"
+   },
+   {
+    "t": 8.362,
+    "hg": "Chalo, andar chalte hain.",
+    "en": "Let's go inside."
+   }
+  ]
+ },
+ {
+  "id": "v2",
+  "hi": "ये QR code है, Quick Response. इसे Japan की Denso Wave company ने बनाया था, car parts track करने के लिए. आज यही code, हर दुकान पर UPI का दरवाज़ा है.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Ye QR code hai: Quick Response.",
+    "en": "This is a QR code: Quick Response."
+   },
+   {
+    "t": 2.483,
+    "hg": "Japan ki Denso Wave ne banaya tha,",
+    "en": "Made by Denso Wave in Japan,"
+   },
+   {
+    "t": 5.461,
+    "hg": "car parts track karne ke liye.",
+    "en": "to track car parts."
+   },
+   {
+    "t": 7.254,
+    "hg": "Aaj har dukaan par UPI ka darwaaza.",
+    "en": "Today it's UPI's front door at every shop."
+   }
+  ]
+ },
+ {
+  "id": "v3",
+  "hi": "पास से देखो, तो ये छोटे-छोटे squares का एक grid है. इन squares को modules कहते हैं. सबसे छोटा QR, इक्कीस बाय इक्कीस modules का होता है.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Paas se dekho: chhote squares ka grid.",
+    "en": "Up close: a grid of tiny squares."
+   },
+   {
+    "t": 3.525,
+    "hg": "In squares ko modules kehte hain.",
+    "en": "These squares are called modules."
+   },
+   {
+    "t": 5.405,
+    "hg": "Sabse chhota QR: 21 x 21 modules.",
+    "en": "The smallest QR: 21 x 21 modules."
+   }
+  ]
+ },
+ {
+  "id": "v4",
+  "hi": "और code थोड़ा फटा हो, या गंदा हो, तब भी scan हो जाता है. Data के साथ extra error correction bits रखे जाते हैं. सबसे high level पर, लगभग तीस percent damage तक data वापस मिल जाता है.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Code thoda phata ho ya ganda ho,",
+    "en": "Torn a little, or dirty,"
+   },
+   {
+    "t": 2.765,
+    "hg": "tab bhi scan ho jaata hai.",
+    "en": "it still scans."
+   },
+   {
+    "t": 4.133,
+    "hg": "Data ke saath extra error correction bits.",
+    "en": "Extra error-correction bits ride with the data."
+   },
+   {
+    "t": 7.631,
+    "hg": "Highest level par ~30% damage tak",
+    "en": "At the highest level, up to ~30% damage"
+   },
+   {
+    "t": 11.376,
+    "hg": "data wapas mil jaata hai.",
+    "en": "can be recovered."
+   }
+  ]
+ },
+ {
+  "id": "v5",
+  "hi": "अब एक corner. ये बड़ा square है finder pattern. इसकी black-white पट्टियों का ratio हमेशा एक, एक, तीन, एक, एक रहता है. तीन corners पर ये pattern देखकर, camera code को किसी भी angle से पहचान लेता है.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Ab ek corner: ye hai finder pattern.",
+    "en": "Now a corner: the finder pattern."
+   },
+   {
+    "t": 4.135,
+    "hg": "Pattiyon ka ratio hamesha 1 : 1 : 3 : 1 : 1.",
+    "en": "Its stripes are always 1 : 1 : 3 : 1 : 1."
+   },
+   {
+    "t": 7.958,
+    "hg": "Teen corners par ye pattern dekhkar,",
+    "en": "Spotting it in three corners,"
+   },
+   {
+    "t": 10.858,
+    "hg": "camera kisi bhi angle se code pehchaanta hai.",
+    "en": "the camera finds the code from any angle."
+   }
+  ]
+ },
+ {
+  "id": "v6",
+  "hi": "और पास. ये आठ modules मिलकर एक byte हैं. Dark module मतलब एक, light मतलब zero. आठ bits, एक character.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Aur paas: ye 8 modules milkar ek byte.",
+    "en": "Closer: these 8 modules make one byte."
+   },
+   {
+    "t": 3.451,
+    "hg": "Dark module = 1, light = 0.",
+    "en": "Dark module = 1, light module = 0."
+   },
+   {
+    "t": 6.796,
+    "hg": "8 bits, ek character.",
+    "en": "8 bits, one character."
+   }
+  ]
+ },
+ {
+  "id": "v7",
+  "hi": "UPI QR में ये सारे characters मिलकर बस एक text बनाते हैं: एक UPI pay link, जिसमें दुकान की UPI ID और नाम होता है. Phone ये link पढ़कर आपका UPI app खोल देता है. पैसे QR के अंदर नहीं होते.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "UPI QR mein characters milkar bas ek text:",
+    "en": "In a UPI QR, the characters form plain text:"
+   },
+   {
+    "t": 3.758,
+    "hg": "ek UPI pay link: dukaan ki UPI ID aur naam.",
+    "en": "a UPI pay link with the shop's UPI ID and name."
+   },
+   {
+    "t": 7.853,
+    "hg": "Phone link padhkar UPI app khol deta hai.",
+    "en": "The phone reads it and opens your UPI app."
+   },
+   {
+    "t": 10.598,
+    "hg": "Paise QR ke andar nahi hote.",
+    "en": "The money is not inside the QR."
+   }
+  ]
+ },
+ {
+  "id": "v8",
+  "hi": "तो module से bits, bits से text, और text से payment. ये simplified version था, पर हर scan में यही होता है. Follow करो Debug Diaries.",
+  "cues": [
+   {
+    "t": 0.06,
+    "hg": "Module se bits, bits se text,",
+    "en": "Modules to bits, bits to text,"
+   },
+   {
+    "t": 2.86,
+    "hg": "aur text se payment.",
+    "en": "and text to payment."
+   },
+   {
+    "t": 4.312,
+    "hg": "Simplified version tha, par har scan mein yahi.",
+    "en": "Simplified, but this is what every scan does."
+   },
+   {
+    "t": 7.912,
+    "hg": "Follow karo Debug Diaries.",
+    "en": "Follow Debug Diaries."
+   }
+  ]
+ }
+]

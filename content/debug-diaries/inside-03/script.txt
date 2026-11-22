@@ -1,0 +1,15 @@
+सब्ज़ी वाले के ठेले पर एक काला-सफ़ेद चौकोर. Camera दिखाया, और payment screen खुल गया. पर phone ने इसमें actually पढ़ा क्या? चलो, अंदर चलते हैं.
+---
+ये QR code है, Quick Response. इसे Japan की Denso Wave company ने बनाया था, car parts track करने के लिए. आज यही code, हर दुकान पर UPI का दरवाज़ा है.
+---
+पास से देखो, तो ये छोटे-छोटे squares का एक grid है. इन squares को modules कहते हैं. सबसे छोटा QR, इक्कीस बाय इक्कीस modules का होता है.
+---
+और code थोड़ा फटा हो, या गंदा हो, तब भी scan हो जाता है. Data के साथ extra error correction bits रखे जाते हैं. सबसे high level पर, लगभग तीस percent damage तक data वापस मिल जाता है.
+---
+अब एक corner. ये बड़ा square है finder pattern. इसकी black-white पट्टियों का ratio हमेशा एक, एक, तीन, एक, एक रहता है. तीन corners पर ये pattern देखकर, camera code को किसी भी angle से पहचान लेता है.
+---
+और पास. ये आठ modules मिलकर एक byte हैं. Dark module मतलब एक, light मतलब zero. आठ bits, एक character.
+---
+UPI QR में ये सारे characters मिलकर बस एक text बनाते हैं: एक UPI pay link, जिसमें दुकान की UPI ID और नाम होता है. Phone ये link पढ़कर आपका UPI app खोल देता है. पैसे QR के अंदर नहीं होते.
+---
+तो module से bits, bits से text, और text से payment. ये simplified version था, पर हर scan में यही होता है. Follow करो Debug Diaries.

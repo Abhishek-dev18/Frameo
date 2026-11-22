@@ -1,0 +1,1 @@
+- `guide.js`: **Kanchu**, the Sunday Inside guide: a small coral pebble-bodied walker with a blue cap, mint legs and one big jeweller's-loupe eye that is the camera lens (poses: look, lid, smile, zoom, wide, squash, step, wave).
