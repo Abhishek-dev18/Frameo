@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, नहीं! Password और security question, दोनों something you know हैं. आज समझते हैं — password store कैसे होता है: hashing और salting.
+---
+अच्छा system आपका password कभी plain text में save नहीं करता. वो उसका hash save करता है — एक one-way function, जिसे उल्टा चलाकर password वापस नहीं मिलता.
+---
+Login पर आपका typed password फिर से hash होता है. दोनों hash match हुए, तो access granted.
+---
+Office lobby सोचो. Guard के register में Priya का secret word नहीं, सिर्फ़ machine का बनाया code है. और machine हर person के लिए पहले एक random sticker जोड़ती है — यही salt है.
+---
+Tech example — Priya और Rahul का password same है, पर salt अलग, तो database में दोनों के hash अलग दिखते हैं. इससे attackers की पहले से बनी hash tables, यानी rainbow tables, बेकार हो जाती हैं.
+---
+Clearance check! क्या salt को secret रखना ज़रूरी है? A, हाँ, या B, नहीं? Answer next reel में. Follow करो Debug Diaries.
