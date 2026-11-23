@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, नहीं! Salt hash के साथ ही store होता है, वो secret नहीं. आज — bcrypt और Argon2, MD5 से बेहतर क्यों हैं?
+---
+MD5 और SHA बहुत fast हैं. एक GPU हर second अरबों guesses try कर सकता है.
+---
+Password के लिए fast होना ही problem है. bcrypt और Argon2 जानबूझकर slow हैं, और cost factor से और slow किए जा सकते हैं.
+---
+Office lobby सोचो. Guard हर badge को एक second देकर check करे, तो Priya को फ़र्क नहीं पड़ता. पर हज़ारों fake badges वाले चोर की line कभी खत्म नहीं होती.
+---
+Tech example — Argon2 memory-hard भी है, तो GPU पर guesses parallel चलाना महंगा पड़ता है. OWASP आज Argon2id recommend करता है.
+---
+Clearance check! NIST के हिसाब से, password में special character ज़रूरी है? A, हाँ, या B, नहीं? Answer next reel में. Follow करो Debug Diaries.
