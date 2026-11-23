@@ -1,0 +1,11 @@
+GitLab के एक engineer ने एक command चलाई, और production database का लगभग तीन सौ GB data गायब हो गया। GitLab dot com करीब अठारह घंटे down रहा।
+---
+शुरुआत spam से हुई। Database पर load बढ़ा, और secondary database, replication में पीछे छूट गया। रात हो चुकी थी, engineer उसे manually फिर से sync कर रहा था।
+---
+Plan था: secondary, यानी db2 का data folder delete करो, और fresh copy लो। लेकिन command चली db1 पर, यानी primary पर। एक-दो सेकंड में गलती दिखी, पर तब तक data उड़ चुका था।
+---
+अब backups? कई layers थीं, पर एक भी काम नहीं आई। pg_dump गलत version से चल रहा था और fail हो रहा था, failure वाली emails reject हो रही थीं, और S3 bucket खाली था।
+---
+बचा सिर्फ staging का एक snapshot, जो किसी ने छह घंटे पहले manually लिया था। Slow disks की वजह से copy में घंटों लगे। करीब पाँच हज़ार projects और सात सौ नए users का data गया।
+---
+Lesson: backup लेना काफी नहीं। जब तक restore test नहीं किया, backup सिर्फ एक उम्मीद है। Follow करो Debug Diaries.
