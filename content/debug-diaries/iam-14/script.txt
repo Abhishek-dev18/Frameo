@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, नहीं! NIST special character को ज़रूरी नहीं मानता. आज — NIST के modern password rules.
+---
+पुराने rules याद हैं? Capital, number, symbol, और हर नब्बे दिन नया password. लोग बस Password1 को Password2 कर देते थे.
+---
+NIST अब कहता है — length ज़्यादा ज़रूरी है. Password अकेला factor हो, तो कम से कम पंद्रह characters. और composition rules force मत करो.
+---
+Office lobby सोचो. Guard हर महीने Priya का badge नहीं बदलता. वो बस check करता है कि badge चोरी वाली list में तो नहीं. Leak का सबूत मिले, तभी नया badge.
+---
+Tech example — signup पर नया password breached passwords की list से compare करो. Password manager और paste allow करो. और security questions हटा दो.
+---
+Clearance check! Brute force और credential stuffing — एक ही attack हैं? A, हाँ, या B, नहीं? Answer next reel में. Follow करो Debug Diaries.
