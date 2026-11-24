@@ -1,0 +1,11 @@
+एक typo, और internet का बड़ा हिस्सा down. Amazon का S3 करीब चार घंटे टूटा रहा, और Slack, Trello, Quora जैसी sites भी साथ में गिर गईं।
+---
+Northern Virginia region में S3 errors देने लगा। मज़े की बात, AWS का अपना status page भी S3 पर depend करता था, तो वो भी update नहीं हो पा रहा था। Updates Twitter पर देने पड़े।
+---
+फिर clue मिला। S3 billing system को debug करते हुए, एक engineer ने playbook से command चलाई, कुछ servers हटाने के लिए। पर एक input गलत type हो गया।
+---
+और हट गए बहुत ज़्यादा servers। उनमें index और placement subsystems भी थे, जो हर object का पता और नई storage संभालते हैं। इन्हें पूरा restart करना पड़ा, और सालों से ऐसा हुआ नहीं था, तो घंटों लगे।
+---
+Fix: tool अब capacity धीरे-धीरे हटाता है। और अगर कोई subsystem अपनी minimum capacity से नीचे जाएगा, तो command चलेगी ही नहीं।
+---
+Lesson: इंसान से typo होगा ही। Tool ऐसा बनाओ कि एक typo पूरा system ना गिरा सके। Follow करो Debug Diaries.

@@ -1,0 +1,46 @@
+<!doctype html>
+<!--
+  Debug Diaries #027 "One Typo" (Series, FAMOUS incident told as a debugging story), built in HyperFrames.
+  Incident: Amazon S3 outage, AWS US-EAST-1 (Northern Virginia), 28 Feb 2017, ~9:37 AM to 1:54 PM PST (~4 h).
+  While debugging slow S3 billing, an authorized engineer ran an established playbook command to remove a small number of
+  servers; one input was entered incorrectly, removing a much larger set, including servers of the index and placement
+  subsystems. Both needed a full restart (not done in larger regions for years), which took hours. The AWS Service Health
+  Dashboard could not be updated (its admin console depended on S3); updates went out on Twitter. Sites such as Slack,
+  Trello, Quora were affected (press). Fix: tool removes capacity slowly and refuses to take a subsystem below its
+  minimum required capacity (AWS also partitioned the index into cells).
+  Bug type: HUMAN ERROR / FAT-FINGER INPUT + MISSING SAFETY GUARDRAIL (blast radius). Lesson: build guardrails.
+  On-screen log, command and fix code are illustrative/simplified (fix verified: remove(n) refused below minimum).
+  Sources: AWS "Summary of the Amazon S3 Service Disruption in the Northern Virginia (US-EAST-1) Region"
+  (aws.amazon.com/message/41926); InfoQ (Mar 2017); eWeek (Feb 2017).
+  Voice: content/debug-diaries/027 (Sarvam, 6 parts, calm defaults).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#0B0D12; }
+#main { position:relative; width:1080px; height:1920px; background:#0B0D12; font-family:'Inter',sans-serif; }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="60.311" data-width="1080" data-height="1920">
+<div id="s1" data-composition-id="s1" data-composition-src="compositions/s1.html" data-start="0" data-duration="9.408" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:1"></div>
+<div id="s2" data-composition-id="s2" data-composition-src="compositions/s2.html" data-start="9.408" data-duration="11.269" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:2"></div>
+<div id="s3" data-composition-id="s3" data-composition-src="compositions/s3.html" data-start="20.677" data-duration="10.006" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:3"></div>
+<div id="s4" data-composition-id="s4" data-composition-src="compositions/s4.html" data-start="30.683" data-duration="13.742" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:4"></div>
+<div id="s5" data-composition-id="s5" data-composition-src="compositions/s5.html" data-start="44.425" data-duration="7.75" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:5"></div>
+<div id="s6" data-composition-id="s6" data-composition-src="compositions/s6.html" data-start="52.175" data-duration="8.136" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:6"></div>
+<div id="hud" data-composition-id="hud" data-composition-src="compositions/hud.html" data-start="0" data-duration="60.311" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:20"></div>
+<audio id="voice" class="clip" src="assets/mix.wav" data-start="0" data-duration="60.22" data-track-index="4" data-volume="1"></audio>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = gsap.timeline({ paused: true });
+</script>
+</body>
+</html>

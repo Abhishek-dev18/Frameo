@@ -1,0 +1,106 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s4{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s4 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s4 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s4 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s4 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s4 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s4 .mint{color:#4ADE80;} #s4 .coral{color:#FF6B5B;} #s4 .lil{color:#C4A7FF;} #s4 .dim{color:#8A94A8;} #s4 .str{color:#FFD58A;}
+#s4 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s4 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s4 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s4 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s4 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s4 .mono{font-family:'JetBrains Mono',monospace;}
+#s4 .ln{white-space:pre;}
+#s4 .ch{opacity:0;}
+#s4 .strike{position:absolute;left:-6px;right:-6px;top:50%;height:8px;margin-top:-4px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s4 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s4 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s4 .node{position:absolute;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:800;color:#E6EAF2;text-align:center;}
+#s4 .node small{font-size:28px;font-weight:700;color:#8A94A8;margin-top:6px;}
+#s4 .row{position:absolute;left:40px;right:40px;display:flex;justify-content:space-between;align-items:center;}
+#s4 .srv{position:absolute;width:118px;height:62px;border-radius:14px;background:#1A2130;border:3px solid #3A4660;}
+#s4 .srv i{position:absolute;left:14px;top:22px;width:14px;height:14px;border-radius:7px;background:#4ADE80;}
+</style>
+<div id="s4" data-composition-id="s4" data-width="1080" data-height="1920" data-duration="13.742">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 3 · ROOT CAUSE</div>
+<div class="h" id="h1" style="top:268px;font-size:96px;"><span class="coral">Way more</span> servers</div>
+<div class="h" id="h1b" style="top:372px;font-size:96px;">removed</div>
+<div class="mono dim" id="gl" style="position:absolute;left:70px;top:505px;font-size:28px;font-weight:700">intended: 2 · removed: a much larger set (illustrative)</div>
+<div class="srv" id="v0" style="left:82px;top:560px"><i></i></div>
+<div class="srv" id="v1" style="left:216px;top:560px"><i></i></div>
+<div class="srv" id="v2" style="left:350px;top:560px"><i></i></div>
+<div class="srv" id="v3" style="left:484px;top:560px"><i></i></div>
+<div class="srv" id="v4" style="left:618px;top:560px"><i></i></div>
+<div class="srv" id="v5" style="left:752px;top:560px"><i></i></div>
+<div class="srv" id="v6" style="left:886px;top:560px"><i></i></div>
+<div class="srv" id="v7" style="left:82px;top:640px"><i></i></div>
+<div class="srv" id="v8" style="left:216px;top:640px"><i></i></div>
+<div class="srv" id="v9" style="left:350px;top:640px"><i></i></div>
+<div class="srv" id="v10" style="left:484px;top:640px"><i></i></div>
+<div class="srv" id="v11" style="left:618px;top:640px"><i></i></div>
+<div class="srv" id="v12" style="left:752px;top:640px"><i></i></div>
+<div class="srv" id="v13" style="left:886px;top:640px"><i></i></div>
+<div class="srv" id="v14" style="left:82px;top:720px"><i></i></div>
+<div class="srv" id="v15" style="left:216px;top:720px"><i></i></div>
+<div class="srv" id="v16" style="left:350px;top:720px"><i></i></div>
+<div class="srv" id="v17" style="left:484px;top:720px"><i></i></div>
+<div class="srv" id="v18" style="left:618px;top:720px"><i></i></div>
+<div class="srv" id="v19" style="left:752px;top:720px"><i></i></div>
+<div class="srv" id="v20" style="left:886px;top:720px"><i></i></div>
+<div class="srv" id="v21" style="left:82px;top:800px"><i></i></div>
+<div class="srv" id="v22" style="left:216px;top:800px"><i></i></div>
+<div class="srv" id="v23" style="left:350px;top:800px"><i></i></div>
+<div class="srv" id="v24" style="left:484px;top:800px"><i></i></div>
+<div class="srv" id="v25" style="left:618px;top:800px"><i></i></div>
+<div class="srv" id="v26" style="left:752px;top:800px"><i></i></div>
+<div class="srv" id="v27" style="left:886px;top:800px"><i></i></div>
+<div class="node" id="n1" style="left:70px;top:900px;width:450px;height:230px">INDEX<small>where every object lives</small></div>
+<div class="node" id="n2" style="left:560px;top:900px;width:450px;height:230px">PLACEMENT<small>allocates new storage</small></div>
+<div class="card" id="rs" style="left:70px;right:70px;top:1170px;height:270px;padding:32px 40px">
+ <div style="font-size:52px;font-weight:900">FULL RESTART</div>
+ <div style="position:absolute;left:40px;right:40px;top:110px;height:44px;border-radius:14px;background:#1A2130;overflow:hidden"><div id="bar" style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#FF6B5B;transform-origin:left center"></div></div>
+ <div class="mono" id="yrs" style="position:absolute;left:40px;top:180px;font-size:34px;font-weight:800">not done in big regions <span class="str">for years</span></div>
+</div>
+<div class="h" id="hrs" style="top:1480px;font-size:84px;text-align:center"><span class="coral">→ hours</span> of downtime</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s4 " + s;
+
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const turn = (s, t, from, to) => tl.fromTo(q(s), from, Object.assign({duration:0.3, immediateRender:false}, to), t);
+
+
+slam("#h1", 0.04); slam("#h1b", 0.4); rise("#gl", 0.6);
+tl.fromTo(q(".srv"), {opacity:0, y:40}, {opacity:1, y:0, duration:0.3, stagger:0.012}, 0.2);
+// intended 2 go coral, then a big chunk
+tl.fromTo(q("#v0,#v1"), {borderColor:"#3A4660", backgroundColor:"#1A2130"}, {borderColor:"#FF6B5B", backgroundColor:"#2A1719", duration:0.2, immediateRender:false}, 0.7);
+tl.fromTo(q("#v2,#v3,#v4,#v5,#v6,#v7,#v8,#v9,#v10,#v11,#v12,#v13,#v14,#v15,#v16,#v17,#v18,#v19"), {borderColor:"#3A4660", backgroundColor:"#1A2130"}, {borderColor:"#FF6B5B", backgroundColor:"#2A1719", duration:0.15, stagger:0.04, immediateRender:false}, 0.95);
+tl.fromTo(q(".srv i"), {backgroundColor:"#4ADE80"}, {backgroundColor:"#FF6B5B", duration:0.15, stagger:0.03, immediateRender:false}, 1.0);
+rise("#n1", 2.14); rise("#n2", 3.33);
+turn("#n1", 4.38, {borderColor:"#3A4660", color:"#E6EAF2"}, {borderColor:"#FF6B5B", color:"#FF6B5B"});
+turn("#n2", 5.85, {borderColor:"#3A4660", color:"#E6EAF2"}, {borderColor:"#FF6B5B", color:"#FF6B5B"});
+shake("#n1", 4.5, 3); shake("#n2", 6.0, 3);
+drop("#rs", 7.45); tl.fromTo(q("#bar"), {scaleX:0}, {scaleX:0.3, duration:4.0, ease:"none"}, 7.8);
+rise("#yrs", 9.38); slam("#hrs", 11.15);
+
+tl.fromTo(q('.bg'), {scale:1}, {scale:1.08, duration:13.742, ease:'none'}, 0);
+window.__timelines["s4"] = tl;
+})();
+</script>
+</template>
