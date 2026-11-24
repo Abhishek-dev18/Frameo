@@ -1,0 +1,5 @@
+तीन दिन से एक bug पे अटका था। Finally senior को message किया: भाई, एक call पे आ सकते हो?
+---
+Screen share किया, समझाना शुरू किया... ये function, ये call करता है, फिर ये value... रुको।
+---
+Bug खुद मिल गया। Senior ने एक word नहीं बोला, और मैंने कहा: thanks भाई, बहुत help हुई।
