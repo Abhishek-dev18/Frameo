@@ -1,0 +1,11 @@
+पिछले quiz का answer — B, नहीं! ये तीन अलग attacks हैं. आज — brute force, credential stuffing और password spraying.
+---
+Brute force मतलब एक account पर हज़ारों passwords try करना. एक-एक करके, जब तक कोई सही न लग जाए.
+---
+Credential stuffing में attacker किसी दूसरी site के leak हुए असली email और password pairs उठाता है, और यहाँ try करता है. Password reuse ही इसका ईंधन है.
+---
+Password spraying उल्टा है — एक common password, हज़ारों accounts पर. हर account पर बस एक-दो try, ताकि lockout trigger ही न हो.
+---
+Office lobby सोचो. Guard एक ही door पर बार-बार गलत badge देखे, तो alarm. पर अगर हर door पर एक-एक बार — वो pattern पूरे lobby में देखना पड़ता है. Tech में — MFA, breached password check, और login failures को सभी accounts में track करो.
+---
+Clearance check! Account lockout किसे सबसे अच्छे से रोकता है — A, brute force, या B, password spraying? Answer next reel में. Follow करो Debug Diaries.
