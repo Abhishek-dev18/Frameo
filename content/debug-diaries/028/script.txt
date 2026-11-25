@@ -1,0 +1,11 @@
+July 2019. Cloudflare के पीछे चल रही लाखों websites पर अचानक 502 Bad Gateway. Traffic करीब अस्सी percent गिर गया. और वजह थी, सिर्फ़ एक regex.
+---
+Engineers ने देखा, दुनिया भर के servers का CPU लगभग सौ percent पर. पहला शक, कोई बड़ा attack. लेकिन logs और CPU data एक ही तरफ़ इशारा कर रहे थे: WAF, यानी Web Application Firewall.
+---
+तीन मिनट पहले WAF में एक नया rule deploy हुआ था. उसकी regex में छुपा था, dot star, dot star, equals, dot star. ऐसा pattern अनगिनत रास्ते आज़माता है. इसे कहते हैं catastrophic backtracking.
+---
+Rule simulate mode में था, यानी block नहीं, सिर्फ़ log. फिर भी वो हर request पर चलता था. और ये rules पूरी दुनिया में एक साथ push हुए, कोई staged rollout नहीं.
+---
+Fix: पूरी दुनिया में WAF को एक साथ बंद किया, और CPU तुरंत normal. करीब सत्ताईस मिनट का outage.
+---
+Lesson: regex भी code है, उसका CPU cost भी test करो. और config को भी धीरे धीरे roll out करो. Follow करो Debug Diaries.

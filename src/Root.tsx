@@ -40,6 +40,7 @@ import {DebugDiaries017, E17_TOTAL} from "./debugdiaries/Entry017";
 import {DebugDiaries018, E18_TOTAL} from "./debugdiaries/Entry018";
 import {DebugDiaries019, E19_TOTAL} from "./debugdiaries/Entry019";
 import {DebugDiaries023, E23_TOTAL} from "./debugdiaries/Entry023";
+import {DebugDiaries028, E28_TOTAL} from "./debugdiaries/Entry028";
 import {Iam01, IAM01_TOTAL} from "./debugdiaries/Iam01";
 import {Iam02, IAM02_TOTAL} from "./debugdiaries/Iam02";
 import {Banner, Highlight, HIGHLIGHTS} from "./debugdiaries/Brand";
@@ -95,6 +96,7 @@ export const RemotionRoot: React.FC = () => (
     <Composition id="DebugDiaries018" component={DebugDiaries018} durationInFrames={E18_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries019" component={DebugDiaries019} durationInFrames={E19_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries023" component={DebugDiaries023} durationInFrames={E23_TOTAL} fps={30} width={1080} height={1920} />
+    <Composition id="DebugDiaries028" component={DebugDiaries028} durationInFrames={E28_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="DebugDiaries018-FX" component={DebugDiaries018} defaultProps={{shaders: true}} durationInFrames={E18_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="AccessGranted01" component={Iam01} durationInFrames={IAM01_TOTAL} fps={30} width={1080} height={1920} />
     <Composition id="AccessGranted02" component={Iam02} durationInFrames={IAM02_TOTAL} fps={30} width={1080} height={1920} />
