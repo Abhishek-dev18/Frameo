@@ -17,10 +17,10 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 08 readerror — build fails, 400-line stack trace → Ctrl+V into AI, reinstall Node / clear cache, 20 min gone → line 1 said Cannot find module './utlis': error ne bataya tha, maine padha nahi
 - 09 timezone — order-date feature: local perfect, QA pass → 12:31 AM support call: aaj ke orders kal ki date pe → code sahi tha, bas server London time (UTC) pe jeeta hai
 - 10 rubberduck — 3 din se bug pe atka → senior ko call, screen share, line-by-line explain... "ruko." → bug khud mil gaya, senior ke words: 0 → "thanks bhai, bahut help hui" (senior = rubber duck)
+- 11 consolelog — "bas ek console.log" → here, here again, aaaaa → PR merged → client demo, CTO opens DevTools (47 logs) → top: "bhai ye chal kyu nahi raha", bottom: "kisi ko pata na chale"
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
-- "quick console.log" → 200 logs → pushed to prod with all logs
 - "It's not a bug, it's a feature" → client demo
 - Naming a variable takes longer than writing the function
 - Works after restart, nobody knows why

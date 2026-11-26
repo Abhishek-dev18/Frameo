@@ -1,0 +1,5 @@
+Bug ढूँढने के लिए बस एक console.log डाला। फिर here, फिर here again, फिर... आआआ।
+---
+Bug fix हुआ, PR merge हुआ। अगले दिन client demo में, CTO ने DevTools खोला...
+---
+Console में सबसे ऊपर लिखा था: भाई ये चल क्यों नहीं रहा। और सबसे नीचे: किसी को पता ना चले।
