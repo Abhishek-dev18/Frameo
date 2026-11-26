@@ -1,0 +1,75 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s1{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s1 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s1 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s1 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s1 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s1 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s1 .mint{color:#4ADE80;} #s1 .coral{color:#FF6B5B;} #s1 .lil{color:#C4A7FF;} #s1 .dim{color:#8A94A8;} #s1 .str{color:#FFD58A;}
+#s1 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s1 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s1 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s1 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s1 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s1 .mono{font-family:'JetBrains Mono',monospace;}
+#s1 .ln{white-space:pre;font-family:'JetBrains Mono',monospace;font-size:34px;line-height:1.55;font-weight:600;}
+#s1 .ch{opacity:0;}
+#s1 .strike{position:absolute;left:-6px;right:-6px;top:50%;height:8px;margin-top:-4px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s1 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s1 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s1 .node{position:absolute;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:800;color:#E6EAF2;text-align:center;}
+#s1 .node small{font-size:28px;font-weight:700;color:#8A94A8;margin-top:6px;}
+#s1 .row{position:absolute;left:40px;right:40px;display:flex;justify-content:space-between;align-items:center;}
+#s1 .rel{position:relative;display:inline-block;}
+#s1 .arrow{position:absolute;height:8px;border-radius:4px;background:#3A4660;transform-origin:left center;}
+</style>
+<div id="s1" data-composition-id="s1" data-width="1080" data-height="1920" data-duration="8.154">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">8 JUN 2021 · FASTLY · GLOBAL CDN</div>
+<div class="h" id="h1" style="top:268px;font-size:92px;">1 setting changed.</div>
+<div class="h" id="h2" style="top:372px;font-size:190px;">Fastly</div>
+<div class="h" id="h3" style="top:590px;font-size:82px;"><span class="coral">Half the internet: DOWN</span></div>
+<div class="card" id="stat" style="left:70px;right:70px;top:740px;height:330px;padding:36px 40px;">
+ <div class="mono dim" style="font-size:28px;font-weight:700;letter-spacing:.08em">STATUS · EDGE NETWORK · GLOBAL</div>
+ <div class="row" style="top:110px"><div style="font-size:56px;font-weight:800">CDN delivery</div><div class="chip r" id="down" style="position:relative;font-size:46px">DOWN</div></div>
+ <div class="row" id="err" style="top:230px"><div class="dim" style="font-size:38px;font-weight:700">sites returning</div><div class="mono coral" style="font-size:44px;font-weight:800">ERRORS</div></div>
+</div>
+<div class="chip r" id="c1" style="left:70px;top:1130px;font-size:40px">Reddit</div>
+<div class="chip r" id="c2" style="left:360px;top:1130px;font-size:40px">New York Times</div>
+<div class="chip r" id="c3" style="left:70px;top:1250px;font-size:40px">Twitch</div>
+<div class="chip r" id="c4" style="left:350px;top:1250px;font-size:40px">GOV.UK</div>
+<div class="chip l" id="c5" style="left:650px;top:1250px;font-size:40px">+ many more</div>
+<div class="h" id="all" style="top:1380px;font-size:110px;text-align:center"><span class="coral">ERROR</span> everywhere</div>
+<div class="note" id="src" style="top:1630px">src: Fastly blog · NPR (June 2021)</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s1 " + s;
+
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const fade = (s, t, to) => tl.fromTo(q(s), {opacity:1}, {opacity:to===undefined?0.25:to, duration:0.3, immediateRender:false}, t);
+
+
+slam("#h1", 0.06); slam("#h2", 0.6); slam("#h3", 2.05); shake("#h3", 2.5, 5);
+drop("#stat", 2.4); pop("#down", 2.8); shake("#stat", 3.0, 5); rise("#err", 3.0);
+pop("#c1", 3.24); pop("#c2", 3.91); pop("#c3", 4.91); pop("#c4", 5.62); pop("#c5", 6.3);
+tl.fromTo(q("#all"), {opacity:0, scale:2.4}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.6)"}, 7.3);
+shake("#all", 7.8, 3); rise("#src", 4.0);
+
+tl.fromTo(q('.bg'), {scale:1}, {scale:1.08, duration:8.154, ease:'none'}, 0);
+window.__timelines["s1"] = tl;
+})();
+</script>
+</template>

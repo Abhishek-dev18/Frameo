@@ -1,0 +1,11 @@
+एक customer ने बस एक setting बदली... और आधा internet down. Reddit, New York Times, Twitch, UK government की site, सब पर error.
+---
+आठ June, दो हज़ार इक्कीस. Fastly, एक CDN, जो इन sites का content users तक पहुँचाता है. सिर्फ एक मिनट में monitoring ने पकड़ा: पचासी percent network errors दे रहा था.
+---
+पहला शक: कोई attack? नहीं. Engineers ने देखा, errors ठीक तभी शुरू हुए जब एक customer ने अपना config push किया. और वो config बिलकुल valid था.
+---
+Root cause: May के एक software deploy में एक bug छुपा बैठा था. वो सिर्फ एक खास configuration पर trigger होता था. करीब चार हफ़्ते सब normal, फिर उस setting ने उसे जगा दिया.
+---
+Fix: पहले वो configuration disable किया. उनचास मिनट में पंचानवे percent network वापस normal. फिर उसी दिन bug का permanent fix deploy होना शुरू हुआ.
+---
+Lesson: valid input भी system गिरा सकता है, अगर code में bug सो रहा हो. Fast detection और fast rollback ही नुकसान छोटा रखते हैं. Follow करो Debug Diaries.

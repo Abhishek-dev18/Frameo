@@ -1,0 +1,76 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s5{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s5 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s5 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s5 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s5 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s5 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s5 .mint{color:#4ADE80;} #s5 .coral{color:#FF6B5B;} #s5 .lil{color:#C4A7FF;} #s5 .dim{color:#8A94A8;} #s5 .str{color:#FFD58A;}
+#s5 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s5 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s5 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s5 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s5 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s5 .mono{font-family:'JetBrains Mono',monospace;}
+#s5 .ln{white-space:pre;font-family:'JetBrains Mono',monospace;font-size:34px;line-height:1.55;font-weight:600;}
+#s5 .ch{opacity:0;}
+#s5 .strike{position:absolute;left:-6px;right:-6px;top:50%;height:8px;margin-top:-4px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s5 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s5 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s5 .node{position:absolute;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:800;color:#E6EAF2;text-align:center;}
+#s5 .node small{font-size:28px;font-weight:700;color:#8A94A8;margin-top:6px;}
+#s5 .row{position:absolute;left:40px;right:40px;display:flex;justify-content:space-between;align-items:center;}
+#s5 .rel{position:relative;display:inline-block;}
+#s5 .arrow{position:absolute;height:8px;border-radius:4px;background:#3A4660;transform-origin:left center;}
+</style>
+<div id="s5" data-composition-id="s5" data-width="1080" data-height="1920" data-duration="8.67">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">STEP 4 · THE FIX</div>
+<div class="h" id="h1" style="top:268px;font-size:120px;"><span class="mint">Fix</span>, in 2 steps</div>
+<div class="card" id="diff" style="left:70px;right:70px;top:450px;height:330px;padding:36px 44px;">
+ <div class="mono dim" style="font-size:28px;font-weight:700;letter-spacing:.08em">1 · STOP THE BLEEDING (simplified)</div>
+ <div id="dl1" class="ln" style="margin-top:28px;padding:10px 18px;border-radius:12px;background:rgba(255,107,91,.16);color:#FF6B5B;font-size:40px">- customer_config: ENABLED</div>
+ <div id="dl2" class="ln" style="margin-top:16px;padding:10px 18px;border-radius:12px;background:rgba(74,222,128,.14);color:#4ADE80;font-size:40px">+ customer_config: DISABLED</div>
+</div>
+<div class="h" id="t49" style="top:830px;font-size:200px;text-align:center"><span class="mint">49 min</span></div>
+<div class="h" id="p95" style="top:1040px;font-size:70px;text-align:center"><span class="mint">95%</span> of network normal</div>
+<div class="card" id="perm" style="left:70px;right:70px;top:1180px;height:260px;padding:36px 44px;">
+ <div class="mono dim" style="font-size:28px;font-weight:700;letter-spacing:.08em">2 · FIX THE CODE</div>
+ <div class="ln" id="pl" style="margin-top:24px;font-size:40px"><span class="mint">17:25 UTC</span>  permanent bug fix</div>
+ <div class="ln" style="font-size:40px;color:#C9D1E0">           rollout begins</div>
+</div>
+<div class="note" id="src" style="top:1480px">src: Fastly, "Summary of June 8 outage"</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s5 " + s;
+
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const fade = (s, t, to) => tl.fromTo(q(s), {opacity:1}, {opacity:to===undefined?0.25:to, duration:0.3, immediateRender:false}, t);
+
+
+slam("#h1", 0.04);
+drop("#diff", 0.77); rise("#dl1", 1.0);
+tl.fromTo(q("#dl1"), {opacity:1}, {opacity:0.35, duration:0.3, immediateRender:false}, 1.7);
+tl.fromTo(q("#dl2"), {opacity:0, x:-60}, {opacity:1, x:0, duration:0.4, ease:"back.out(2)"}, 1.8);
+tl.fromTo(q("#t49"), {opacity:0, scale:2.4}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.6)"}, 2.8);
+slam("#p95", 3.6);
+drop("#perm", 5.58); rise("#src", 6.0);
+
+tl.fromTo(q('.bg'), {scale:1}, {scale:1.08, duration:8.67, ease:'none'}, 0);
+window.__timelines["s5"] = tl;
+})();
+</script>
+</template>

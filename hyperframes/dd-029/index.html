@@ -1,0 +1,45 @@
+<!doctype html>
+<!--
+  Debug Diaries #029 "One Setting" (Series, FAMOUS incident told as a debugging story), built in HyperFrames.
+  Incident: Fastly global CDN outage, 8 Jun 2021 (onset 09:47 UTC). A software deployment begun 12 May 2021 introduced a
+  bug triggerable by a specific customer configuration under specific circumstances; early 8 June a customer pushed a
+  VALID configuration change that triggered it and 85% of Fastly's network returned errors. Detected within 1 minute
+  (09:48), config identified 10:27, config disabled; within 49 minutes 95% of the network was normal; mitigated 12:35;
+  permanent bug fix rollout began 17:25 UTC. Affected sites (NPR): New York Times, Guardian, Twitch, Reddit, GOV.UK, CNN.
+  Bug type: LATENT BUG / untested code path triggered by valid input (config-driven), blast radius. Lesson: valid input
+  can still crash a system; detect fast and roll back fast.
+  On-screen code and config diff are illustrative/simplified, not Fastly's code (latent-path code verified with node).
+  Sources: Fastly blog "Summary of June 8 outage" (fastly.com/blog/summary-of-june-8-outage, Nick Rockwell);
+  NPR 9 Jun 2021; The Register 9 Jun 2021.
+  Voice: content/debug-diaries/029 (Sarvam, 6 parts, calm defaults).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#0B0D12; }
+#main { position:relative; width:1080px; height:1920px; background:#0B0D12; font-family:'Inter',sans-serif; }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="58.3" data-width="1080" data-height="1920">
+<div id="s1" data-composition-id="s1" data-composition-src="compositions/s1.html" data-start="0.0" data-duration="8.154" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:1"></div>
+<div id="s2" data-composition-id="s2" data-composition-src="compositions/s2.html" data-start="8.154" data-duration="11.117" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:2"></div>
+<div id="s3" data-composition-id="s3" data-composition-src="compositions/s3.html" data-start="19.271" data-duration="9.653" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:3"></div>
+<div id="s4" data-composition-id="s4" data-composition-src="compositions/s4.html" data-start="28.924" data-duration="10.156" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:4"></div>
+<div id="s5" data-composition-id="s5" data-composition-src="compositions/s5.html" data-start="39.08" data-duration="8.67" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:5"></div>
+<div id="s6" data-composition-id="s6" data-composition-src="compositions/s6.html" data-start="47.75" data-duration="10.55" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:6"></div>
+<div id="hud" data-composition-id="hud" data-composition-src="compositions/hud.html" data-start="0" data-duration="58.3" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:20"></div>
+<audio id="voice" class="clip" src="assets/mix.wav" data-start="0" data-duration="58.3" data-track-index="4" data-volume="1"></audio>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = gsap.timeline({ paused: true });
+</script>
+</body>
+</html>

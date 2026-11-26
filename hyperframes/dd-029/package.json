@@ -1,0 +1,14 @@
+{
+  "name": "dd-029",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.9.99 preview",
+    "check": "npx --yes hyperframes@0.9.99 check",
+    "render": "npx --yes hyperframes@0.9.99 render",
+    "publish": "npx --yes hyperframes@0.9.99 publish"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1"
+  }
+}

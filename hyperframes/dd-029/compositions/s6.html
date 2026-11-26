@@ -1,0 +1,70 @@
+<template>
+<style>
+@font-face{font-family:'Inter';src:url('assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;}
+@font-face{font-family:'JetBrains Mono';src:url('assets/fonts/JetBrainsMono.ttf') format('truetype');font-weight:100 800;}
+#s6{position:absolute;inset:0;overflow:hidden;font-family:'Inter',sans-serif;color:#F3F5F9;}
+#s6 *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#s6 .bg{position:absolute;inset:0;background:radial-gradient(900px 900px at 50% 40%, #1A2233 0%, #0B0D12 70%);}
+#s6 .card{position:absolute;background:#141922;border:2px solid #273042;border-radius:34px;box-shadow:0 40px 90px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4);}
+#s6 .h{position:absolute;left:70px;right:70px;font-weight:900;letter-spacing:-0.04em;line-height:1.04;}
+#s6 .tag{position:absolute;left:70px;font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:.12em;color:#C4A7FF;}
+#s6 .mint{color:#4ADE80;} #s6 .coral{color:#FF6B5B;} #s6 .lil{color:#C4A7FF;} #s6 .dim{color:#8A94A8;} #s6 .str{color:#FFD58A;}
+#s6 .note{position:absolute;left:70px;right:70px;font-family:'JetBrains Mono',monospace;font-size:28px;color:#8A94A8;text-align:center;}
+#s6 .chip{position:absolute;padding:20px 30px;border-radius:24px;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;white-space:nowrap;}
+#s6 .chip.g{background:#14261C;border:2px solid #4ADE80;color:#4ADE80;}
+#s6 .chip.r{background:#2A1719;border:2px solid #FF6B5B;color:#FF6B5B;}
+#s6 .chip.l{background:#1E1A2E;border:2px solid #C4A7FF;color:#C4A7FF;}
+#s6 .mono{font-family:'JetBrains Mono',monospace;}
+#s6 .ln{white-space:pre;font-family:'JetBrains Mono',monospace;font-size:34px;line-height:1.55;font-weight:600;}
+#s6 .ch{opacity:0;}
+#s6 .strike{position:absolute;left:-6px;right:-6px;top:50%;height:8px;margin-top:-4px;background:#FF6B5B;border-radius:4px;transform-origin:left center;}
+#s6 .hl{position:absolute;inset:0;background:rgba(255,107,91,.20);border-bottom:5px solid #FF6B5B;border-radius:8px;transform-origin:left center;}
+#s6 .hlg{position:absolute;inset:0;background:rgba(74,222,128,.16);border-bottom:5px solid #4ADE80;border-radius:8px;transform-origin:left center;}
+#s6 .node{position:absolute;border-radius:30px;background:#1A2130;border:3px solid #3A4660;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:800;color:#E6EAF2;text-align:center;}
+#s6 .node small{font-size:28px;font-weight:700;color:#8A94A8;margin-top:6px;}
+#s6 .row{position:absolute;left:40px;right:40px;display:flex;justify-content:space-between;align-items:center;}
+#s6 .rel{position:relative;display:inline-block;}
+#s6 .arrow{position:absolute;height:8px;border-radius:4px;background:#3A4660;transform-origin:left center;}
+</style>
+<div id="s6" data-composition-id="s6" data-width="1080" data-height="1920" data-duration="10.55">
+<div class="bg"></div>
+
+<div class="tag" style="top:220px">LESSON</div>
+<div class="h" id="h1" style="top:268px;font-size:120px;"><span class="mint">Valid</span> input</div>
+<div class="h" id="h2" style="top:400px;font-size:100px;">can still <span class="coral">crash</span> it</div>
+<div class="h" id="h3" style="top:540px;font-size:54px;font-weight:800;color:#C9D1E0">if a bug is <span class="coral">sleeping</span> in the code</div>
+<div class="h" id="w1" style="top:700px;font-size:110px;text-align:center"><span class="mint">DETECT</span> fast.</div>
+<div class="h" id="w2" style="top:860px;font-size:110px;text-align:center"><span class="mint">ROLL BACK</span> fast.</div>
+<div class="card" id="fol" style="left:120px;right:120px;top:1140px;height:300px;padding:50px;border-color:#4ADE80;text-align:center">
+ <div style="font-size:44px;font-weight:700;color:#C9D1E0">Follow</div>
+ <div style="font-size:96px;font-weight:900;letter-spacing:-0.03em;color:#4ADE80">Debug Diaries</div>
+ <div class="mono dim" style="font-size:32px;font-weight:700;margin-top:6px">@debugdiaries.io</div>
+</div>
+<div class="note" id="src" style="top:1500px">src: Fastly blog · NPR · The Register (2021)</div>
+
+</div>
+<script>
+(function(){
+const tl = gsap.timeline({ paused: true });
+const q = s => "#s6 " + s;
+
+const slam = (s, t) => tl.fromTo(q(s), {opacity:0, scale:1.35, y:30}, {opacity:1, scale:1, y:0, duration:0.38, ease:"back.out(2.2)"}, t);
+const rise = (s, t, d) => tl.fromTo(q(s), {opacity:0, y:80}, {opacity:1, y:0, duration:d||0.45, ease:"power3.out"}, t);
+const drop = (s, t) => tl.fromTo(q(s), {opacity:0, y:-120, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.5, ease:"back.out(1.8)"}, t);
+const pop = (s, t) => tl.fromTo(q(s), {opacity:0, scale:0.3}, {opacity:1, scale:1, duration:0.4, ease:"back.out(2.4)"}, t);
+const type = (s, t, st) => tl.fromTo(q(s + " .ch"), {opacity:0}, {opacity:1, duration:0.01, stagger:st||0.03}, t);
+const sweep = (s, t) => tl.fromTo(q(s), {scaleX:0}, {scaleX:1, duration:0.35, ease:"power2.inOut"}, t);
+const shake = (s, t, n) => tl.fromTo(q(s), {x:0}, {x:-14, duration:0.06, yoyo:true, repeat:n||5, ease:"none", immediateRender:false}, t);
+const fade = (s, t, to) => tl.fromTo(q(s), {opacity:1}, {opacity:to===undefined?0.25:to, duration:0.3, immediateRender:false}, t);
+
+
+slam("#h1", 0.04); slam("#h2", 0.79); rise("#h3", 2.97);
+tl.fromTo(q("#w1"), {opacity:0, scale:2.2}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.6)"}, 4.92);
+tl.fromTo(q("#w2"), {opacity:0, scale:2.2}, {opacity:1, scale:1, duration:0.45, ease:"back.out(1.6)"}, 6.4);
+pop("#fol", 8.35); rise("#src", 5.5);
+
+tl.fromTo(q('.bg'), {scale:1}, {scale:1.08, duration:10.55, ease:'none'}, 0);
+window.__timelines["s6"] = tl;
+})();
+</script>
+</template>
