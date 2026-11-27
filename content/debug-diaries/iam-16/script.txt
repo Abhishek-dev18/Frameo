@@ -1,0 +1,11 @@
+पिछले quiz का answer — A, brute force! Lockout एक account पर बार-बार गलत tries रोकता है, spraying तो उससे बचकर चलता है. आज — login के बाद क्या होता है? Sessions और cookies.
+---
+HTTP stateless है. हर request नई होती है, server को याद नहीं रहता कि आप कौन हो. तो क्या हर click पर password डालोगे?
+---
+नहीं. Login सफल होते ही server एक random session ID बनाता है, और Set-Cookie header से browser को दे देता है. फिर browser हर request के साथ वो cookie खुद भेजता है.
+---
+Office lobby सोचो. Guard ने एक बार ID check की, और दिन भर का visitor pass दे दिया. अब हर door पर बस pass दिखाओ, और guard register में देखता है कि pass valid है या नहीं.
+---
+इसलिए session cookie ही आपका pass है. वो चोरी हुई, तो password की ज़रूरत ही नहीं. Tech में — cookie पर HttpOnly, Secure और SameSite flags लगाओ, और logout पर server से session मिटाओ.
+---
+Clearance check! HttpOnly flag क्या रोकता है — A, JavaScript को cookie पढ़ने से, या B, cookie को HTTP पर जाने से? Answer next reel में. Follow करो Debug Diaries.
