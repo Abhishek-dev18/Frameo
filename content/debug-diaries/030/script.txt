@@ -1,0 +1,11 @@
+Roblox, तिहत्तर घंटे पूरी तरह down. Halloween weekend पर करोड़ों players, game में login ही नहीं कर पाए।
+---
+सब कुछ एक system पर टिका था: Consul, जो बताता है कौन सी service कहाँ चल रही है। Consul slow हुआ, तो पूरा Roblox रुक गया।
+---
+पहला शक, hardware खराब है। Team ने Consul servers को नई, ज़्यादा powerful machines से बदल दिया। पर Consul फिर भी उतना ही slow रहा।
+---
+फिर clue मिला: Consul का नया streaming feature हाल ही में चालू हुआ था। भारी load में वो आपस में अटकने लगा। Streaming बंद किया, तो हालत सुधरी।
+---
+पर जड़ और गहरी थी: Consul के अंदर BoltDB. खाली pages की list, यानी freelist, बढ़ती गई, और हर write धीमा होता गया। उसे ठीक करके, players को धीरे धीरे वापस आने दिया।
+---
+Lesson: जिस एक system पर सब टिका है, उसकी कमज़ोरी पूरे product की कमज़ोरी है। नया feature, असली load पर पहले test करो। Follow करो Debug Diaries.
