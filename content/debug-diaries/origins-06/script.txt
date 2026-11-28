@@ -1,0 +1,11 @@
+JavaScript और Java. नाम लगभग same, पर language बिल्कुल अलग. तो सवाल ये है, JavaScript को JavaScript नाम मिला क्यों? Story सुनो.
+---
+उन्नीस सौ पचानवे. Netscape का browser web पर राज कर रहा था, पर web pages बस static थे. उन्हें चाहिए थी एक छोटी scripting language, जो सीधे page के अंदर चले.
+---
+Netscape के engineer Brendan Eich ने उसका पहला prototype सिर्फ़ दस दिनों में बना दिया. Codename था Mocha. फिर browser के beta में नाम हुआ LiveScript.
+---
+उसी समय Java सबसे बड़ा hype था, और Netscape ने Sun के साथ deal की थी. Management चाहता था कि syntax थोड़ा Java जैसा दिखे. और December में LiveScript का नाम बदलकर रख दिया, JavaScript. Pure marketing.
+---
+अंदर से दोनों का कोई रिश्ता नहीं. और नाम का trademark Sun के पास था, जो बाद में Oracle के पास गया. इसलिए जब language standard बनी, उसका official नाम रखा गया, ECMAScript.
+---
+तो अगली बार कोई बोले JavaScript, Java का छोटा भाई है, बताना, ये बस एक marketing नाम था. Follow करो Debug Diaries.
