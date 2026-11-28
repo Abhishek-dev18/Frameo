@@ -18,11 +18,11 @@ No spoken "Follow करो Debug Diaries" at the end (the on-screen Follow pill
 - 09 timezone — order-date feature: local perfect, QA pass → 12:31 AM support call: aaj ke orders kal ki date pe → code sahi tha, bas server London time (UTC) pe jeeta hai
 - 10 rubberduck — 3 din se bug pe atka → senior ko call, screen share, line-by-line explain... "ruko." → bug khud mil gaya, senior ke words: 0 → "thanks bhai, bahut help hui" (senior = rubber duck)
 - 11 consolelog — "bas ek console.log" → here, here again, aaaaa → PR merged → client demo, CTO opens DevTools (47 logs) → top: "bhai ye chal kyu nahi raha", bottom: "kisi ko pata na chale"
+- 12 naming — function in 2 min, tests green → 40 min naming one variable (data, finalData, finalDataNew, actuallyFinal...) → named it "data"; PR comment 1 of 1: "nit: naming thoda better karo?" → 40 minute barbaad
 
 ## Backlog ideas (pick one not done, or a fresh relatable one)
 - "// TODO: fix later" written years ago → git blame: you
 - "It's not a bug, it's a feature" → client demo
-- Naming a variable takes longer than writing the function
 - Works after restart, nobody knows why
 - Merge conflict on Friday evening in package-lock.json
 - Regex written by you 6 months ago, unreadable today

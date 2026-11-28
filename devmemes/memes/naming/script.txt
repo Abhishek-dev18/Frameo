@@ -1,0 +1,5 @@
+Function लिखने में दो minute लगे। Logic perfect, tests green।
+---
+फिर एक variable का नाम सोचने में चालीस minute गए। data, final data, final data new, actually final...
+---
+आखिर में नाम रखा... data। और PR पे पहला comment: naming थोड़ा better करो?
